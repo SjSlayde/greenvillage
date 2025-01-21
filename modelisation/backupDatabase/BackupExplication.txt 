@@ -1,0 +1,17 @@
+Etape pour faire des back up de base donnée:
+
+1.ouvrir un terminal(alt + ctrl + t)
+
+
+2.pour sauvegarder la database :
+
+ecrire/copier-coller dans le terminal la commande suivante et remplir avec les donnée valide: 
+mysqldump --user=<nomUser> --password=<motDePasseUser> --routines --triggers <nomDeLaBaseDeDonnee> > <nomDuFichierBackup>.sql
+
+--routines et --triggers permet de sauvegarder les routines et les triggers de la base de donnee.
+
+
+3.pour restaurer la database :
+
+ecrire/copier-coller dans le terminal la commande suivante et remplir avec les donnée valide: 
+cat <nomDuFichierBackup>.sql | mysql --user=<nomUser> --password=<motDePasseUser> <nomDeLaBaseDeDonnée>
