@@ -1,0 +1,33 @@
+services:
+
+  db:
+    image: mariadb
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: Afpa1234
+    volumes:
+      - ./mysql:/var/lib/mysql
+    ports:
+      - 3310:3306
+
+  phpmyadmin:
+    image: phpmyadmin
+    restart: always
+    ports:
+      - 8080:80
+    environment:
+      - PMA_ARBITRARY=1
+
+  mailhog:
+    image: mailhog/mailhog:latest
+    restart: always
+    ports:
+      - 1025:1025
+      - 8025:8025
+
+  web:
+    build: .
+    ports:
+      - 9000:8000
+    volumes:
+      - ./symfony:/var/www

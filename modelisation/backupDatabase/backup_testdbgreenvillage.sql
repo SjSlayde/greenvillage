@@ -170,13 +170,16 @@ CREATE TABLE `commande` (
   `numFacturation` varchar(10) NOT NULL,
   `commandeTotalHt` decimal(8,2) NOT NULL,
   `commandeTotalTtc` decimal(8,2) NOT NULL,
+  `reduction` decimal(8,2) DEFAULT NULL,
   `CommandeTotalReduction` decimal(8,2) DEFAULT NULL,
-  `moyenPaiement_` varchar(50) DEFAULT NULL,
+  `moyenPaiement` varchar(50) DEFAULT NULL,
+  `statut` enum('En cours','Expédiée','Partiellement expédiée','Terminée') DEFAULT 'En cours',
+  `paiementValide` tinyint(1) DEFAULT 0,
   `refClient` varchar(50) NOT NULL,
   PRIMARY KEY (`idCommande`),
   KEY `refClient` (`refClient`),
   CONSTRAINT `commande_ibfk_1` FOREIGN KEY (`refClient`) REFERENCES `utilisateur` (`refClient`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -186,11 +189,31 @@ CREATE TABLE `commande` (
 LOCK TABLES `commande` WRITE;
 /*!40000 ALTER TABLE `commande` DISABLE KEYS */;
 INSERT INTO `commande` VALUES
-(1,'2025-01-15','FAC0001',1999.97,2399.97,2399.97,'Carte Bancaire','1'),
-(2,'2025-01-16','FAC0002',1099.97,1264.97,1201.72,'PayPal','4'),
-(3,'2025-01-17','FAC0003',799.99,959.99,959.99,'Carte Bancaire','1'),
-(4,'2025-01-18','FAC0004',129.99,155.99,155.99,'Virement Bancaire','12'),
-(5,'2025-01-19','FAC0005',1999.98,2359.98,1439.59,'Carte Bancaire','8');
+(1,'2025-01-15','FAC0001',2399.97,2879.97,0.00,2879.97,'Carte Bancaire','Expédiée',0,'1'),
+(2,'2025-01-16','FAC0002',1264.97,1517.97,72.28,1442.07,'PayPal','Expédiée',0,'4'),
+(3,'2025-01-17','FAC0003',959.99,1151.99,0.00,1151.99,'Carte Bancaire','Expédiée',0,'1'),
+(4,'2025-01-18','FAC0004',155.99,187.19,0.00,187.19,'Virement Bancaire','Expédiée',0,'12'),
+(5,'2025-01-19','FAC0005',2359.98,2831.98,794.58,1727.51,'Carte Bancaire','Expédiée',0,'8'),
+(6,'2025-01-20','FAC0006',1151.97,1382.37,0.00,1382.37,'Carte Bancaire','En cours',0,'2'),
+(7,'2025-01-21','FAC0007',850.96,1021.15,48.63,970.09,'Virement Bancaire','En cours',0,'4'),
+(8,'2025-01-22','FAC0008',599.99,719.99,0.00,719.99,'Carte Bancaire','En cours',0,'6'),
+(9,'2025-01-22','FAC0009',7199.99,8639.99,0.00,8639.99,'Carte Bancaire','En cours',0,'1'),
+(10,'2025-01-23','FAC0010',353.98,424.78,119.18,259.12,'PayPal','En cours',0,'8'),
+(11,'2025-01-23','FAC0011',599.98,719.98,0.00,719.98,'Carte Bancaire','En cours',0,'12'),
+(12,'2025-01-23','FAC0012',719.99,863.99,0.00,863.99,'Virement Bancaire','En cours',0,'7'),
+(13,'2025-01-23','FAC0013',479.96,575.95,0.00,575.95,'Carte Bancaire','En cours',0,'9'),
+(14,'2025-01-23','FAC0014',800.00,960.00,NULL,100.00,'Carte Bancaire','En cours',0,'11'),
+(15,'2025-01-23','FAC0015',99.99,119.99,NULL,0.00,'PayPal','En cours',0,'5'),
+(16,'2024-02-15','FAC0016',1079.99,1295.99,0.00,1295.99,'Carte Bancaire','Terminée',0,'3'),
+(17,'2024-03-10','FAC0017',71.98,86.38,0.00,86.38,'Virement Bancaire','Terminée',0,'5'),
+(18,'2024-04-22','FAC0018',155.99,187.19,0.00,187.19,'Carte Bancaire','Terminée',0,'7'),
+(19,'2024-05-05','FAC0019',402.49,482.99,23.00,458.84,'Carte Bancaire','Terminée',0,'4'),
+(20,'2024-06-15','FAC0020',599.99,719.99,0.00,719.99,'PayPal','Terminée',0,'9'),
+(21,'2024-07-20','FAC0021',6839.99,8207.99,2302.96,5006.87,'Carte Bancaire','Terminée',0,'10'),
+(22,'2024-08-25','FAC0022',359.98,431.98,0.00,431.98,'Virement Bancaire','Terminée',0,'6'),
+(23,'2024-09-30','FAC0023',589.98,707.98,198.64,431.87,'Carte Bancaire','Terminée',0,'8'),
+(24,'2024-10-15','FAC0024',719.99,863.99,0.00,863.99,'Carte Bancaire','Terminée',0,'12'),
+(25,'2024-11-25','FAC0025',479.96,575.95,0.00,575.95,'PayPal','Terminée',0,'2');
 /*!40000 ALTER TABLE `commande` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -205,7 +228,9 @@ CREATE TABLE `contient` (
   `idProduit` varchar(5) NOT NULL,
   `idCommande` int(11) NOT NULL,
   `quantite` int(11) DEFAULT NULL,
+  `prixUnitaireHt` decimal(8,2) DEFAULT NULL,
   `articleTotalHt` decimal(8,2) DEFAULT NULL,
+  `tva` decimal(8,2) DEFAULT NULL,
   `articleTotalTtc` decimal(8,2) DEFAULT NULL,
   PRIMARY KEY (`idProduit`,`idCommande`),
   KEY `idCommande` (`idCommande`),
@@ -221,13 +246,33 @@ CREATE TABLE `contient` (
 LOCK TABLES `contient` WRITE;
 /*!40000 ALTER TABLE `contient` DISABLE KEYS */;
 INSERT INTO `contient` VALUES
-('BAT01',1,1,999.99,1199.99),
-('BAT01',5,2,1999.98,2359.98),
-('GIT01',1,2,999.98,1199.98),
-('PIA01',3,1,799.99,959.99),
-('PIA02',4,1,129.99,155.99),
-('TAB01',2,2,699.98,804.98),
-('VIO01',2,1,399.99,459.99);
+('AMP02',7,1,402.49,402.49,80.50,482.99),
+('AMP02',19,1,402.49,402.49,80.50,482.99),
+('BAT01',1,1,1199.99,1199.99,240.00,1439.99),
+('BAT01',5,2,1179.99,2359.98,472.00,2831.98),
+('BAT02',10,2,176.99,353.98,70.80,424.78),
+('BAT02',22,2,179.99,359.98,72.00,431.98),
+('CAS02',13,4,119.99,479.96,95.99,575.95),
+('CAS02',25,4,119.99,479.96,95.99,575.95),
+('DRU02',6,2,35.99,71.98,14.40,86.38),
+('DRU02',17,2,35.99,71.98,14.40,86.38),
+('GIT01',1,2,599.99,1199.98,240.00,1439.98),
+('GIT02',11,2,299.99,599.98,120.00,719.98),
+('GIT02',23,2,294.99,589.98,118.00,707.98),
+('MIC02',7,3,149.49,448.47,89.69,538.16),
+('MIC02',18,1,155.99,155.99,31.20,187.19),
+('PIA01',3,1,959.99,959.99,192.00,1151.99),
+('PIA02',4,1,155.99,155.99,31.20,187.19),
+('PIA03',9,1,7199.99,7199.99,1440.00,8639.99),
+('PIA03',21,1,6839.99,6839.99,1368.00,8207.99),
+('SAX01',6,1,1079.99,1079.99,216.00,1295.99),
+('SAX01',16,1,1079.99,1079.99,216.00,1295.99),
+('TAB01',2,2,402.49,804.98,161.00,965.98),
+('TAB02',12,1,719.99,719.99,144.00,863.99),
+('TAB02',24,1,719.99,719.99,144.00,863.99),
+('VIO01',2,1,459.99,459.99,92.00,551.99),
+('VIO02',8,1,599.99,599.99,120.00,719.99),
+('VIO02',20,1,599.99,599.99,120.00,719.99);
 /*!40000 ALTER TABLE `contient` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
@@ -243,19 +288,37 @@ DELIMITER ;;
     FOR EACH ROW 
     BEGIN
 
+-- 	declaration des variable 
+	
+	DECLARE PrixUnitaireHt DECIMAL(8,2);
+	DECLARE articleTotalTtc DECIMAL(8,2);
+	DECLARE tva DECIMAL(8,2);
 	DECLARE articleTotalHt DECIMAL(8,2);
-	DECLARE articleTotalTtC DECIMAL(8,2);
 	DECLARE numCommande INT;
 	
-	SET articleTotalHt = NEW.quantite * (SELECT prixProduit FROM produit p WHERE p.idProduit = NEW.idProduit);
-		
-	SET articleTotalTtc = articleTotalHt * (1 + ((SELECT coefficientTaxe FROM commande c LEFT JOIN utilisateur u ON c.refClient = u.refClient where c.idCommande = NEW.idCommande) / 100));
+-- 	calcule le prix unitaire du produit (prix d'achat * le coefficient client)
+	SET PrixUnitaireHt = (SELECT prixAchatProduit FROM produit p WHERE p.idProduit = NEW.idProduit) * (1 + ((SELECT coefficientVente FROM commande c 
+																											LEFT JOIN utilisateur u ON c.refClient = u.refClient 
+																											WHERE c.idCommande = NEW.idCommande) / 100));
+
+-- 	calcule le prix hors taxe (quatite * prix unitaire)																											
+	SET articleTotalHt =  NEW.quantite * PrixUnitaireHt;										
 	
+-- 	calcule la tva a rajouter au prix final 
+	SET tva = articleTotalHt * 0.20;
+	
+-- 	additionne le prix hors taxe et le montant de la tva 
+	SET articleTotalTtC = articleTotalHt + tva;
+	
+-- 	renvoie une erreur si le prix est de 0 ou inferieur  
 		IF articleTotalTtc  < 0 
             THEN SIGNAL SQLSTATE '40000' SET MESSAGE_TEXT = 'Un problème est survenu. Prix total inferieur a 0 !';
 		END IF;
 		
-    SET NEW.articleTotalHt = articleTotalHt ;
+-- 	rentre tout les prix finaux dans la table 
+    SET NEW.prixUnitaireHt = PrixUnitaireHt;
+    SET NEW.articleTotalHt = articleTotalHt;
+    SET NEW.tva = tva;
 	SET NEW.articleTotalTtC = articleTotalTtC;
     END */;;
 DELIMITER ;
@@ -277,32 +340,40 @@ AFTER INSERT ON contient
     FOR EACH ROW 
     BEGIN
 
+-- 	declaration des variable  
 	DECLARE commandeTotalHt DECIMAL(8,2);
-	DECLARE commandeTotalTtC DECIMAL(8,2);
+	DECLARE commandeTotalTtc DECIMAL(8,2);
 	DECLARE commandeTotalReduction DECIMAL(8,2);
+	DECLARE reduction DECIMAL(8,2);
 	DECLARE coefficientReduction INT;
+	
+-- 	recupere le coefficient de la reduction
 	SET coefficientReduction = (SELECT u.coefficientReduction FROM commande c 
 								LEFT JOIN utilisateur u ON c.refClient = u.refClient 
 									where c.idCommande = NEW.idCommande);
 	
-	
-	 -- Calculer le total HT et TTC pour cette commande
+-- 	Calculer le total HT et TTC pour cette commande
     SELECT SUM(articleTotalHt), SUM(articleTotalTtc)
     INTO commandeTotalHt, commandeTotalTtC
     FROM contient
     WHERE idCommande = NEW.idCommande
 	GROUP BY idCommande;
-	 
+
+-- 	calcule le montant de la reduction
+	SET reduction = commandeTotalTtC - (commandeTotalTtC / (1 + (coefficientReduction / 100)));
+	 	
+-- 	applique la reduction si elle est superieur a 0 
 	 	IF coefficientReduction > 0 THEN
-			SET commandeTotalReduction = commandeTotalTtC * (1 - coefficientReduction / 100);
+			SET commandeTotalReduction = commandeTotalTtc * (1 - coefficientReduction / 100);
 	 	Else 
-	 		SET commandeTotalReduction = commandeTotalTtC;
+	 		SET commandeTotalReduction = commandeTotalTtc;
 		END IF;
 
-    -- Mettre à jour la commande avec les nouveaux totaux
+--  Mettre à jour la commande avec les nouveaux totaux
     UPDATE commande
     SET commandeTotalHt = commandeTotalHt,
-        commandeTotalTtc = commandeTotalTtC,
+    	reduction = reduction,
+        commandeTotalTtc = commandeTotalTtc,
         commandeTotalReduction = commandeTotalReduction
     WHERE idCommande = NEW.idCommande;
    
@@ -338,14 +409,34 @@ CREATE TABLE `detailLiv` (
 LOCK TABLES `detailLiv` WRITE;
 /*!40000 ALTER TABLE `detailLiv` DISABLE KEYS */;
 INSERT INTO `detailLiv` VALUES
+('AMP02',9,1),
+('AMP02',19,1),
 ('BAT01',1,1),
 ('BAT01',5,1),
 ('BAT01',6,1),
+('BAT02',12,2),
+('BAT02',22,2),
+('CAS02',15,4),
+('CAS02',25,4),
+('DRU02',8,2),
+('DRU02',17,2),
 ('GIT01',1,2),
+('GIT02',13,2),
+('GIT02',23,2),
+('MIC02',9,3),
+('MIC02',18,1),
 ('PIA01',3,1),
 ('PIA02',4,1),
+('PIA03',11,1),
+('PIA03',21,1),
+('SAX01',8,1),
+('SAX01',16,1),
 ('TAB01',2,2),
-('VIO01',2,1);
+('TAB02',14,1),
+('TAB02',24,1),
+('VIO01',2,1),
+('VIO02',10,1),
+('VIO02',20,1);
 /*!40000 ALTER TABLE `detailLiv` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -398,7 +489,7 @@ CREATE TABLE `livraison` (
   PRIMARY KEY (`idLivraison`),
   KEY `idCommande` (`idCommande`),
   CONSTRAINT `livraison_ibfk_1` FOREIGN KEY (`idCommande`) REFERENCES `commande` (`idCommande`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -413,7 +504,27 @@ INSERT INTO `livraison` VALUES
 (3,'2025-01-17','UPS','https://track.ups.com/13579',3),
 (4,'2025-01-18','Chronopost','https://track.chronopost.com/24680',4),
 (5,'2025-01-19','La Poste','https://track.laposte.com/11223',5),
-(6,'2025-01-21','La Poste','https://track.laposte.com/11240',5);
+(6,'2025-01-21','La Poste','https://track.laposte.com/11240',5),
+(7,'2025-01-21','FedEx','https://track.fedex.com/12346',6),
+(8,'2025-01-22','UPS','https://track.ups.com/12347',7),
+(9,'2025-01-23','DHL','https://track.dhl.com/12348',8),
+(10,'2025-01-23','La Poste','https://track.laposte.com/12349',9),
+(11,'2025-01-24','Chronopost','https://track.chronopost.com/12350',10),
+(12,'2025-01-24','DHL','https://track.dhl.com/12351',11),
+(13,'2025-01-25','FedEx','https://track.fedex.com/12352',12),
+(14,'2025-01-25','La Poste','https://track.laposte.com/12353',13),
+(15,'2025-01-26','UPS','https://track.ups.com/12354',14),
+(16,'2025-01-26','DHL','https://track.dhl.com/12355',15),
+(17,'2024-02-20','FedEx','https://track.fedex.com/2024_12346',16),
+(18,'2024-03-15','UPS','https://track.ups.com/2024_12347',17),
+(19,'2024-04-25','DHL','https://track.dhl.com/2024_12348',18),
+(20,'2024-05-10','La Poste','https://track.laposte.com/2024_12349',19),
+(21,'2024-06-20','Chronopost','https://track.chronopost.com/2024_12350',20),
+(22,'2024-07-25','DHL','https://track.dhl.com/2024_12351',21),
+(23,'2024-08-30','FedEx','https://track.fedex.com/2024_12352',22),
+(24,'2024-10-05','La Poste','https://track.laposte.com/2024_12353',23),
+(25,'2024-10-20','UPS','https://track.ups.com/2024_12354',24),
+(26,'2024-11-30','DHL','https://track.dhl.com/2024_12355',25);
 /*!40000 ALTER TABLE `livraison` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -427,12 +538,13 @@ DROP TABLE IF EXISTS `produit`;
 CREATE TABLE `produit` (
   `idProduit` varchar(5) NOT NULL,
   `nomProduit` varchar(50) NOT NULL,
-  `prixProduit` decimal(7,2) NOT NULL,
+  `prixAchatProduit` decimal(7,2) NOT NULL,
   `descriptionCourtProduit` varchar(50) DEFAULT NULL,
   `descriptionLongProduit` varchar(250) DEFAULT NULL,
   `nomImage` varchar(50) DEFAULT NULL,
   `stock` int(11) DEFAULT NULL,
   `idFournisseur` int(11) NOT NULL,
+  `actif` tinyint(1) DEFAULT 1,
   PRIMARY KEY (`idProduit`),
   KEY `idFournisseur` (`idFournisseur`),
   CONSTRAINT `produit_ibfk_1` FOREIGN KEY (`idFournisseur`) REFERENCES `fournisseur` (`idFournisseur`)
@@ -446,16 +558,26 @@ CREATE TABLE `produit` (
 LOCK TABLES `produit` WRITE;
 /*!40000 ALTER TABLE `produit` DISABLE KEYS */;
 INSERT INTO `produit` VALUES
-('AMP01','Amplificateur Guitare',249.99,'Ampli 50W','Amplificateur pour guitare électrique avec une puissance de 50 watts.','ampli_guitare.jpg',20,3),
-('BAT01','Batterie Acoustique',999.99,'Kit complet de batterie','Batterie acoustique comprenant 5 fûts et 3 cymbales, idéale pour les concerts en live.','batterie_acoustique.jpg',8,2),
-('CAS01','Casque Audio',149.99,'Casque isolant','Casque audio avec isolation phonique pour une écoute immersive.','casque_audio.jpg',30,4),
-('GIT01','Guitare Électrique',499.99,'Guitare 6 cordes','Guitare électrique avec un son riche et dynamique, idéale pour le rock et le blues.','guitare_electrique.jpg',25,2),
-('HAU01','Haut-parleurs de Monitoring',299.99,'Paire de haut-parleurs','Haut-parleurs de monitoring avec une réponse en fréquence plate pour le mixage audio.','haut_parleurs.jpg',18,3),
-('MIC01','Microphone Studio',199.99,'Micro condensateur','Microphone de studio à condensateur pour une qualité sonore exceptionnelle.','microphone_studio.jpg',50,4),
-('PIA01','Piano Numérique',799.99,'Piano 88 touches','Piano numérique avec 88 touches pondérées, parfait pour les débutants et professionnels.','piano_numerique.jpg',10,1),
-('PIA02','Clavier MIDI',129.99,'Clavier 49 touches','Clavier MIDI avec 49 touches sensibles à la vélocité pour la production musicale.','clavier_midi.jpg',40,1),
-('TAB01','Table de Mixage',349.99,'Table 12 canaux','Table de mixage professionnelle avec 12 canaux pour DJ et enregistrement en studio.','table_mixage.jpg',15,4),
-('VIO01','Violon',399.99,'Violon 4/4','Violon 4/4 avec un son clair et profond, parfait pour les musiciens avancés.','violon.jpg',12,3);
+('AMP01','Amplificateur Guitare',249.99,'Ampli 50W','Amplificateur pour guitare électrique avec une puissance de 50 watts.','ampli_guitare.jpg',20,3,1),
+('AMP02','Amplificateur Basse',349.99,'Ampli basse 100W','Amplificateur basse puissant avec 100W pour les concerts.','ampli_basse.jpg',10,3,1),
+('BAT01','Batterie Acoustique',999.99,'Kit complet de batterie','Batterie acoustique comprenant 5 fûts et 3 cymbales, idéale pour les concerts en live.','batterie_acoustique.jpg',8,2,1),
+('BAT02','Cajón',149.99,'Instrument de percussion','Cajón en bois, idéal pour le flamenco et la musique acoustique.','cajon.jpg',30,2,1),
+('CAS01','Casque Audio',149.99,'Casque isolant','Casque audio avec isolation phonique pour une écoute immersive.','casque_audio.jpg',30,4,1),
+('CAS02','Enceinte Portable Bluetooth',99.99,'Enceinte Bluetooth','Enceinte portable avec une autonomie de 10 heures.','enceinte_bluetooth.jpg',40,4,1),
+('DRU02','Tambourin',29.99,'Petit tambourin','Tambourin léger et robuste, parfait pour accompagner divers styles de musique.','tambourin.jpg',50,2,1),
+('GIT01','Guitare Électrique',499.99,'Guitare 6 cordes','Guitare électrique avec un son riche et dynamique, idéale pour le rock et le blues.','guitare_electrique.jpg',25,2,1),
+('GIT02','Guitare Classique',249.99,'Guitare 6 cordes','Guitare classique en bois massif, idéale pour les débutants et intermédiaires.','guitare_classique.jpg',20,2,1),
+('HAU01','Haut-parleurs de Monitoring',299.99,'Paire de haut-parleurs','Haut-parleurs de monitoring avec une réponse en fréquence plate pour le mixage audio.','haut_parleurs.jpg',18,3,1),
+('MIC01','Microphone Studio',199.99,'Micro condensateur','Microphone de studio à condensateur pour une qualité sonore exceptionnelle.','microphone_studio.jpg',50,4,1),
+('MIC02','Micro Sans Fil',129.99,'Micro sans fil','Microphone sans fil avec une portée de 30 mètres, parfait pour la scène.','micro_sans_fil.jpg',25,4,1),
+('PIA01','Piano Numérique',799.99,'Piano 88 touches','Piano numérique avec 88 touches pondérées, parfait pour les débutants et professionnels.','piano_numerique.jpg',10,1,1),
+('PIA02','Clavier MIDI',129.99,'Clavier 49 touches','Clavier MIDI avec 49 touches sensibles à la vélocité pour la production musicale.','clavier_midi.jpg',40,1,1),
+('PIA03','Piano à Queue',5999.99,'Piano à queue classique','Piano à queue pour professionnels, avec un son d’excellence.','piano_queue.jpg',2,1,1),
+('SAX01','Saxophone Alto',899.99,'Saxophone pour débutants','Saxophone alto avec un son chaleureux, idéal pour l’apprentissage et les concerts.','saxophone_alto.jpg',15,1,1),
+('TAB01','Table de Mixage',349.99,'Table 12 canaux','Table de mixage professionnelle avec 12 canaux pour DJ et enregistrement en studio.','table_mixage.jpg',15,4,1),
+('TAB02','Table de Mixage 24 Canaux',599.99,'Table DJ avancée','Table de mixage professionnelle pour DJ avec 24 canaux.','table_mixage_24.jpg',5,4,1),
+('VIO01','Violon',399.99,'Violon 4/4','Violon 4/4 avec un son clair et profond, parfait pour les musiciens avancés.','violon.jpg',12,3,1),
+('VIO02','Violon Électrique',499.99,'Violon électrique 4/4','Violon électrique avec un son amplifié et riche, idéal pour les concerts modernes.','violon_electrique.jpg',8,3,1);
 /*!40000 ALTER TABLE `produit` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -540,7 +662,7 @@ CREATE TABLE `utilisateur` (
   `prenom` varchar(50) DEFAULT NULL,
   `password` varchar(50) NOT NULL,
   `email` varchar(50) NOT NULL,
-  `coefficientTaxe` int(11) DEFAULT NULL,
+  `coefficientVente` int(11) DEFAULT NULL,
   `type` varchar(30) DEFAULT NULL,
   `telephone` varchar(10) DEFAULT NULL,
   `titreRole` varchar(50) DEFAULT NULL,
@@ -579,6 +701,77 @@ UNLOCK TABLES;
 --
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'IGNORE_SPACE,STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `BeneficeFournisseur` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_general_ci */ ;
+DELIMITER ;;
+CREATE DEFINER=`admin`@`localhost` PROCEDURE `BeneficeFournisseur`(IN idFour INT)
+BEGIN
+SELECT nomFournisseur,SUM(commandeTotalTtc) as Benefice,SUM(commandeTotalReduction) as BeneficeAvecReduction
+FROM fournisseur f
+LEFT JOIN produit p on p.idFournisseur = f.idFournisseur
+JOIN contient c on c.idProduit = p.idProduit
+JOIN commande c2 on c2.idCommande = c.idCommande
+WHERE f.idFournisseur = idFour
+GROUP BY f.idFournisseur;
+
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'IGNORE_SPACE,STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `BeneficeMonth` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_general_ci */ ;
+DELIMITER ;;
+CREATE DEFINER=`admin`@`localhost` PROCEDURE `BeneficeMonth`(IN dateCompare INT)
+BEGIN
+   SELECT DATE_FORMAT(dateCommande, "%M"),SUM(commandeTotalTtc) as Benefice,SUM(commandeTotalReduction) as BeneficeAvecReduction 
+   FROM commande
+	WHERE YEAR(dateCommande) = dateCompare 
+	Group BY MONTH(dateCommande);
+
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'IGNORE_SPACE,STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `commandeStatut` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_general_ci */ ;
+DELIMITER ;;
+CREATE DEFINER=`admin`@`localhost` PROCEDURE `commandeStatut`(IN statut VARCHAR(50))
+BEGIN
+	
+	SELECT * FROM commande c
+	WHERE c.statut = statut;
+	
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'IGNORE_SPACE,STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `DetailCommande` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -587,7 +780,7 @@ UNLOCK TABLES;
 /*!50003 SET character_set_results = utf8mb4 */ ;
 /*!50003 SET collation_connection  = utf8mb4_general_ci */ ;
 DELIMITER ;;
-CREATE DEFINER=`admin`@`localhost` PROCEDURE `DetailCommande`(In commandeNum INT)
+CREATE DEFINER=`admin`@`localhost` PROCEDURE `DetailCommande`(IN commandeNum INT)
 BEGIN
    SELECT c.idCommande,p.idProduit,c2.quantite,nomProduit,l.dateLivraison,d.idProduit, d.idLivraison, d.quantiteLiv
 	FROM commande c  left join contient c2 on c.idCommande = c2.idCommande 
@@ -595,6 +788,120 @@ BEGIN
 	join livraison l on l.idCommande = c.idCommande
 	join detailLiv d on d.idLivraison = l.idLivraison
 	WHERE c.idCommande = commandeNum AND d.idProduit = p.idProduit;
+
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'IGNORE_SPACE,STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `repartitionTypeClient` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_general_ci */ ;
+DELIMITER ;;
+CREATE DEFINER=`admin`@`localhost` PROCEDURE `repartitionTypeClient`()
+BEGIN
+
+	SELECT u.type,SUM(prixUnitaireHt) as chiffreAffaire
+	FROM utilisateur u 
+	LEFT JOIN commande c on c.refClient = u.refClient
+	JOIN contient c2 on c.idCommande = c2.idCommande
+	JOIN produit p on p.idProduit = c2.idProduit
+	GROUP by u.type
+	ORDER BY chiffreAffaire DESC
+	LIMIT 10;
+ 
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'IGNORE_SPACE,STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `top10ClientCA` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_general_ci */ ;
+DELIMITER ;;
+CREATE DEFINER=`admin`@`localhost` PROCEDURE `top10ClientCA`()
+BEGIN
+	
+	SELECT u.refClient,u.nom,SUM(prixUnitaireHt) as chiffreAffaire,COUNT(c.idCommande) as nombreCommande
+	FROM utilisateur u 
+	LEFT JOIN commande c on c.refClient = u.refClient
+	JOIN contient c2 on c.idCommande = c2.idCommande
+	JOIN produit p on p.idProduit = c2.idProduit
+	GROUP by u.refClient
+	ORDER BY chiffreAffaire DESC , nombreCommande ASC
+	LIMIT 10;
+
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'IGNORE_SPACE,STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `top10ProduitCommander` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_general_ci */ ;
+DELIMITER ;;
+CREATE DEFINER=`admin`@`localhost` PROCEDURE `top10ProduitCommander`(IN dateCompare INT)
+BEGIN
+	
+	SELECT p.idProduit,p.nomProduit,Sum(c.quantite) as quantiteCommander,f.nomFournisseur,SUM(commandeTotalTtc) as Benefice,SUM(commandeTotalReduction) as BeneficeAvecReduction
+	FROM fournisseur f
+	LEFT JOIN produit p on p.idFournisseur = f.idFournisseur
+	JOIN contient c on c.idProduit = p.idProduit
+	JOIN commande c2 on c2.idCommande = c.idCommande
+	WHERE YEAR(c2.dateCommande) = dateCompare
+	GROUP BY p.idProduit
+	ORDER BY quantiteCommander DESC
+	LIMIT 10;
+
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'IGNORE_SPACE,STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `top10ProduitMarge` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_general_ci */ ;
+DELIMITER ;;
+CREATE DEFINER=`admin`@`localhost` PROCEDURE `top10ProduitMarge`(IN dateCompare INT)
+BEGIN
+	
+	SELECT p.idProduit,p.nomProduit,f.nomFournisseur,AVG(prixUnitaireHt) - p.prixAchatProduit Marge
+	FROM fournisseur f
+	LEFT JOIN produit p on p.idFournisseur = f.idFournisseur
+	JOIN contient c on c.idProduit = p.idProduit
+	JOIN commande c2 on c2.idCommande = c.idCommande
+	WHERE YEAR(c2.dateCommande) = dateCompare
+	GROUP BY p.idProduit
+	ORDER BY marge DESC 
+	LIMIT 10;
 
 END ;;
 DELIMITER ;
@@ -612,4 +919,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-01-21 11:21:53
+-- Dump completed on 2025-01-23 15:43:11
