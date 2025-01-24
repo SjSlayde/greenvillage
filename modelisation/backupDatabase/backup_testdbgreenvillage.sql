@@ -81,6 +81,7 @@ CREATE TABLE `adresse` (
   `ville` varchar(51) DEFAULT NULL,
   `codePostal` varchar(5) DEFAULT NULL,
   `nomRue` varchar(50) DEFAULT NULL,
+  `complement` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`idAdresse`)
 ) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -92,31 +93,31 @@ CREATE TABLE `adresse` (
 LOCK TABLES `adresse` WRITE;
 /*!40000 ALTER TABLE `adresse` DISABLE KEYS */;
 INSERT INTO `adresse` VALUES
-(1,'13627','Bradenton','34282','Bashford Road'),
-(2,'93','São Manuel','80000','Gerald Crossing'),
-(3,'1433','Nueva Cajamarca','56123','Mcguire Terrace'),
-(4,'3790','Horizonte','62880','John Wall Crossing'),
-(5,'36','Portelândia','75835','Westend Parkway'),
-(6,'625','Bungu','98561','Namekagon Court'),
-(7,'3355','Revava','75123','Fair Oaks Center'),
-(8,'5055','Novogireyevo','43324','Monterey Parkway'),
-(9,'648','Johanneshov','12136','Maple Plaza'),
-(10,'1996','Guam Government House','96928','Prentice Center'),
-(11,'19917','Wien','12001','Brickson Park Way'),
-(12,'149','Hino','91954','Cambridge Parkway'),
-(13,'69237','Kangalassy','67790','Oneill Avenue'),
-(14,'5795','Tianyi','87451','Huxley Point'),
-(15,'582','Repušnica','44320','Dapin Pass'),
-(16,'8964','Golcowa','36231','Fulton Pass'),
-(17,'77863','Banjar Yehsatang','19547','Kim Center'),
-(18,'358','Aktau','95780','Valley Edge Lane'),
-(19,'393','Koszyce Wielkie','33111','Northridge Trail'),
-(20,'0443','Chakaray','04587','Lakewood Drive'),
-(21,'842','Bunawan','85064','Golden Leaf Court'),
-(22,'4085','La Hacienda','17515','Lakeland Terrace'),
-(23,'764','Mangochi','65852','Carioca Hill'),
-(24,'78200','Figueira dos Cavaleiros','79004','Anthes Pass'),
-(25,'2424','Shatian','54123','Ridgeview Parkway');
+(1,'13627','Bradenton','34282','Bashford Road',NULL),
+(2,'93','São Manuel','80000','Gerald Crossing',NULL),
+(3,'1433','Nueva Cajamarca','56123','Mcguire Terrace',NULL),
+(4,'3790','Horizonte','62880','John Wall Crossing',NULL),
+(5,'36','Portelândia','75835','Westend Parkway',NULL),
+(6,'625','Bungu','98561','Namekagon Court',NULL),
+(7,'3355','Revava','75123','Fair Oaks Center',NULL),
+(8,'5055','Novogireyevo','43324','Monterey Parkway',NULL),
+(9,'648','Johanneshov','12136','Maple Plaza',NULL),
+(10,'1996','Guam Government House','96928','Prentice Center',NULL),
+(11,'19917','Wien','12001','Brickson Park Way',NULL),
+(12,'149','Hino','91954','Cambridge Parkway',NULL),
+(13,'69237','Kangalassy','67790','Oneill Avenue',NULL),
+(14,'5795','Tianyi','87451','Huxley Point',NULL),
+(15,'582','Repušnica','44320','Dapin Pass',NULL),
+(16,'8964','Golcowa','36231','Fulton Pass',NULL),
+(17,'77863','Banjar Yehsatang','19547','Kim Center',NULL),
+(18,'358','Aktau','95780','Valley Edge Lane',NULL),
+(19,'393','Koszyce Wielkie','33111','Northridge Trail',NULL),
+(20,'0443','Chakaray','04587','Lakewood Drive',NULL),
+(21,'842','Bunawan','85064','Golden Leaf Court',NULL),
+(22,'4085','La Hacienda','17515','Lakeland Terrace',NULL),
+(23,'764','Mangochi','65852','Carioca Hill',NULL),
+(24,'78200','Figueira dos Cavaleiros','79004','Anthes Pass',NULL),
+(25,'2424','Shatian','54123','Ridgeview Parkway',NULL);
 /*!40000 ALTER TABLE `adresse` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -145,15 +146,25 @@ LOCK TABLES `avoir` WRITE;
 /*!40000 ALTER TABLE `avoir` DISABLE KEYS */;
 INSERT INTO `avoir` VALUES
 ('AMP01',8),
+('AMP02',8),
 ('BAT01',5),
+('BAT02',3),
 ('CAS01',6),
+('CAS02',10),
+('DRU02',5),
 ('GIT01',1),
+('GIT02',1),
 ('HAU01',10),
 ('MIC01',7),
+('MIC02',7),
 ('PIA01',3),
 ('PIA02',4),
+('PIA03',12),
+('SAX01',1),
 ('TAB01',9),
-('VIO01',2);
+('TAB02',9),
+('VIO01',2),
+('VIO02',2);
 /*!40000 ALTER TABLE `avoir` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -204,16 +215,16 @@ INSERT INTO `commande` VALUES
 (13,'2025-01-23','FAC0013',479.96,575.95,0.00,575.95,'Carte Bancaire','En cours',0,'9'),
 (14,'2025-01-23','FAC0014',800.00,960.00,NULL,100.00,'Carte Bancaire','En cours',0,'11'),
 (15,'2025-01-23','FAC0015',99.99,119.99,NULL,0.00,'PayPal','En cours',0,'5'),
-(16,'2024-02-15','FAC0016',1079.99,1295.99,0.00,1295.99,'Carte Bancaire','Terminée',0,'3'),
-(17,'2024-03-10','FAC0017',71.98,86.38,0.00,86.38,'Virement Bancaire','Terminée',0,'5'),
-(18,'2024-04-22','FAC0018',155.99,187.19,0.00,187.19,'Carte Bancaire','Terminée',0,'7'),
-(19,'2024-05-05','FAC0019',402.49,482.99,23.00,458.84,'Carte Bancaire','Terminée',0,'4'),
-(20,'2024-06-15','FAC0020',599.99,719.99,0.00,719.99,'PayPal','Terminée',0,'9'),
-(21,'2024-07-20','FAC0021',6839.99,8207.99,2302.96,5006.87,'Carte Bancaire','Terminée',0,'10'),
-(22,'2024-08-25','FAC0022',359.98,431.98,0.00,431.98,'Virement Bancaire','Terminée',0,'6'),
-(23,'2024-09-30','FAC0023',589.98,707.98,198.64,431.87,'Carte Bancaire','Terminée',0,'8'),
-(24,'2024-10-15','FAC0024',719.99,863.99,0.00,863.99,'Carte Bancaire','Terminée',0,'12'),
-(25,'2024-11-25','FAC0025',479.96,575.95,0.00,575.95,'PayPal','Terminée',0,'2');
+(16,'2024-02-15','FAC0016',1079.99,1295.99,0.00,1295.99,'Carte Bancaire','Terminée',1,'3'),
+(17,'2024-03-10','FAC0017',71.98,86.38,0.00,86.38,'Virement Bancaire','Terminée',1,'5'),
+(18,'2024-04-22','FAC0018',155.99,187.19,0.00,187.19,'Carte Bancaire','Terminée',1,'7'),
+(19,'2024-05-05','FAC0019',402.49,482.99,23.00,458.84,'Carte Bancaire','Terminée',1,'4'),
+(20,'2024-06-15','FAC0020',599.99,719.99,0.00,719.99,'PayPal','Terminée',1,'9'),
+(21,'2024-07-20','FAC0021',6839.99,8207.99,2302.96,5006.87,'Carte Bancaire','Terminée',1,'10'),
+(22,'2024-08-25','FAC0022',359.98,431.98,0.00,431.98,'Virement Bancaire','Terminée',1,'6'),
+(23,'2024-09-30','FAC0023',589.98,707.98,198.64,431.87,'Carte Bancaire','Terminée',1,'8'),
+(24,'2024-10-15','FAC0024',719.99,863.99,0.00,863.99,'Carte Bancaire','Terminée',1,'12'),
+(25,'2024-11-25','FAC0025',479.96,575.95,0.00,575.95,'PayPal','Terminée',1,'2');
 /*!40000 ALTER TABLE `commande` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -499,11 +510,11 @@ CREATE TABLE `livraison` (
 LOCK TABLES `livraison` WRITE;
 /*!40000 ALTER TABLE `livraison` DISABLE KEYS */;
 INSERT INTO `livraison` VALUES
-(1,'2025-01-15','DHL','https://track.dhl.com/12345',1),
-(2,'2025-01-16','FedEx','https://track.fedex.com/67890',2),
-(3,'2025-01-17','UPS','https://track.ups.com/13579',3),
-(4,'2025-01-18','Chronopost','https://track.chronopost.com/24680',4),
-(5,'2025-01-19','La Poste','https://track.laposte.com/11223',5),
+(1,'2025-01-18','DHL','https://track.dhl.com/12345',1),
+(2,'2025-01-19','FedEx','https://track.fedex.com/67890',2),
+(3,'2025-01-20','UPS','https://track.ups.com/13579',3),
+(4,'2025-01-21','Chronopost','https://track.chronopost.com/24680',4),
+(5,'2025-01-22','La Poste','https://track.laposte.com/11223',5),
 (6,'2025-01-21','La Poste','https://track.laposte.com/11240',5),
 (7,'2025-01-21','FedEx','https://track.fedex.com/12346',6),
 (8,'2025-01-22','UPS','https://track.ups.com/12347',7),
@@ -626,7 +637,7 @@ CREATE TABLE `sousRubrique` (
   PRIMARY KEY (`idSousRubrique`),
   KEY `idRubrique` (`idRubrique`),
   CONSTRAINT `sousRubrique_ibfk_1` FOREIGN KEY (`idRubrique`) REFERENCES `rubrique` (`idRubrique`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -645,7 +656,9 @@ INSERT INTO `sousRubrique` VALUES
 (7,'Microphones','microphones.jpg',4),
 (8,'Amplificateurs','amplificateurs.jpg',4),
 (9,'Tables de Mixage','tables_mixage.jpg',5),
-(10,'Haut-parleurs','haut_parleurs.jpg',4);
+(10,'Haut-parleurs','haut_parleurs.jpg',4),
+(11,'Saxophones','',1),
+(12,'Pianos Classiques','',2);
 /*!40000 ALTER TABLE `sousRubrique` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -695,6 +708,50 @@ INSERT INTO `utilisateur` VALUES
 ('9','Trixy','Jest','hR3!KDb\'n','tjest8@illinois.edu',20,'personnel','0732089390','Gestion',0,'3');
 /*!40000 ALTER TABLE `utilisateur` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Temporary table structure for view `v_fournisseurProduit`
+--
+
+DROP TABLE IF EXISTS `v_fournisseurProduit`;
+/*!50001 DROP VIEW IF EXISTS `v_fournisseurProduit`*/;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+/*!50001 CREATE VIEW `v_fournisseurProduit` AS SELECT
+ 1 AS `idProduit`,
+  1 AS `nomProduit`,
+  1 AS `prixAchatProduit`,
+  1 AS `descriptionCourtProduit`,
+  1 AS `descriptionLongProduit`,
+  1 AS `nomImage`,
+  1 AS `stock`,
+  1 AS `actif`,
+  1 AS `idFournisseur`,
+  1 AS `nomFournisseur`,
+  1 AS `emailFournisseur`,
+  1 AS `telephoneFournisseur` */;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Temporary table structure for view `v_produitRubrique`
+--
+
+DROP TABLE IF EXISTS `v_produitRubrique`;
+/*!50001 DROP VIEW IF EXISTS `v_produitRubrique`*/;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+/*!50001 CREATE VIEW `v_produitRubrique` AS SELECT
+ 1 AS `idProduit`,
+  1 AS `nomProduit`,
+  1 AS `prixAchatProduit`,
+  1 AS `descriptionCourtProduit`,
+  1 AS `descriptionLongProduit`,
+  1 AS `nomImage`,
+  1 AS `stock`,
+  1 AS `actif`,
+  1 AS `nomSousRubrique`,
+  1 AS `nomRubrique` */;
+SET character_set_client = @saved_cs_client;
 
 --
 -- Dumping routines for database 'testdbgreenvillage'
@@ -750,6 +807,28 @@ DELIMITER ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'IGNORE_SPACE,STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `commandePaiementValide` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_general_ci */ ;
+DELIMITER ;;
+CREATE DEFINER=`admin`@`localhost` PROCEDURE `commandePaiementValide`()
+BEGIN
+	-- Sélectionne toutes les commandes dont le paiement n'est pas validé
+	SELECT * FROM commande c
+	WHERE c.paiementValide = 0;
+	
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'IGNORE_SPACE,STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `commandeStatut` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -761,8 +840,33 @@ DELIMITER ;;
 CREATE DEFINER=`admin`@`localhost` PROCEDURE `commandeStatut`(IN statut VARCHAR(50))
 BEGIN
 	
+	-- Sélectionne toutes les commandes avec le statut donné
 	SELECT * FROM commande c
 	WHERE c.statut = statut;
+	
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'IGNORE_SPACE,STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `DelaiMoyenLivraison` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_general_ci */ ;
+DELIMITER ;;
+CREATE DEFINER=`admin`@`localhost` PROCEDURE `DelaiMoyenLivraison`()
+BEGIN
+	-- Calcule le délai moyen entre la commande et la livraison ainsi que le nombre de livraisons
+	SELECT 	AVG(DATEDIFF(dateLivraison, dateCommande)) as delaiMoyen,
+			COUNT(l.idLivraison) as nombreLivraison 
+	FROM commande c 
+	LEFT JOIN livraison l on l.idCommande = c.idCommande;
 	
 END ;;
 DELIMITER ;
@@ -808,6 +912,7 @@ DELIMITER ;;
 CREATE DEFINER=`admin`@`localhost` PROCEDURE `repartitionTypeClient`()
 BEGIN
 
+	-- Sélectionne le type de client et le chiffre d'affaires total associé
 	SELECT u.type,SUM(prixUnitaireHt) as chiffreAffaire
 	FROM utilisateur u 
 	LEFT JOIN commande c on c.refClient = u.refClient
@@ -815,7 +920,7 @@ BEGIN
 	JOIN produit p on p.idProduit = c2.idProduit
 	GROUP by u.type
 	ORDER BY chiffreAffaire DESC
-	LIMIT 10;
+	LIMIT 10; -- Limite les résultats aux 10 premiers
  
 END ;;
 DELIMITER ;
@@ -909,6 +1014,42 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+
+--
+-- Final view structure for view `v_fournisseurProduit`
+--
+
+/*!50001 DROP VIEW IF EXISTS `v_fournisseurProduit`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8mb4 */;
+/*!50001 SET character_set_results     = utf8mb4 */;
+/*!50001 SET collation_connection      = utf8mb4_general_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`admin`@`localhost` SQL SECURITY DEFINER */
+/*!50001 VIEW `v_fournisseurProduit` AS select `p`.`idProduit` AS `idProduit`,`p`.`nomProduit` AS `nomProduit`,`p`.`prixAchatProduit` AS `prixAchatProduit`,`p`.`descriptionCourtProduit` AS `descriptionCourtProduit`,`p`.`descriptionLongProduit` AS `descriptionLongProduit`,`p`.`nomImage` AS `nomImage`,`p`.`stock` AS `stock`,`p`.`actif` AS `actif`,`f`.`idFournisseur` AS `idFournisseur`,`f`.`nomFournisseur` AS `nomFournisseur`,`f`.`emailFournisseur` AS `emailFournisseur`,`f`.`telephoneFournisseur` AS `telephoneFournisseur` from (`produit` `p` left join `fournisseur` `f` on(`f`.`idFournisseur` = `p`.`idFournisseur`)) group by `p`.`idProduit` */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `v_produitRubrique`
+--
+
+/*!50001 DROP VIEW IF EXISTS `v_produitRubrique`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8mb4 */;
+/*!50001 SET character_set_results     = utf8mb4 */;
+/*!50001 SET collation_connection      = utf8mb4_general_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`admin`@`localhost` SQL SECURITY DEFINER */
+/*!50001 VIEW `v_produitRubrique` AS select `p`.`idProduit` AS `idProduit`,`p`.`nomProduit` AS `nomProduit`,`p`.`prixAchatProduit` AS `prixAchatProduit`,`p`.`descriptionCourtProduit` AS `descriptionCourtProduit`,`p`.`descriptionLongProduit` AS `descriptionLongProduit`,`p`.`nomImage` AS `nomImage`,`p`.`stock` AS `stock`,`p`.`actif` AS `actif`,`s`.`nomSousRubrique` AS `nomSousRubrique`,`r`.`nomRubrique` AS `nomRubrique` from (((`produit` `p` left join `avoir` `a` on(`a`.`idProduit` = `p`.`idProduit`)) join `sousRubrique` `s` on(`s`.`idSousRubrique` = `a`.`idSousRubrique`)) join `rubrique` `r` on(`r`.`idRubrique` = `s`.`idRubrique`)) group by `p`.`idProduit` */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -919,4 +1060,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-01-23 15:43:11
+-- Dump completed on 2025-01-24  9:58:56
