@@ -1,0 +1,49 @@
+@startuml
+left to right direction
+
+actor user
+actor commercial
+actor Gestionnaire
+actor Directeur
+actor Systeme
+
+package "Site e-commerce" {
+    usecase "Consulter le catalogue"
+    usecase "statut commande"
+    usecase "S'inscrire"
+    usecase "Se connecter / Se déconnecter"
+    usecase "gestion panier"
+    usecase "Visualiser les anciennes commandes"
+    usecase "fiche profil"
+    usecase "création d’une commande"
+}
+
+package "Gestion Commerciale" {
+    usecase "gestion des stocks produit"
+    usecase "gestion des rubrique"
+    usecase "Générer bon de livraison et factures" as facture
+    usecase "Gérer les clients et affecter un commercial"
+    usecase "Appliquer réduction client professionnel"
+    usecase "gestion personnel"
+}
+
+
+user --> (Visualiser les anciennes commandes)
+user --> (fiche profil)
+user --> (statut commande)
+user --> (création d’une commande)
+user --> (Consulter le catalogue)
+user --> (gestion panier)
+user --> (Se connecter / Se déconnecter)
+user --> (S'inscrire)
+
+commercial --> (Appliquer réduction client professionnel)
+commercial --> (Gérer les clients et affecter un commercial)
+
+Gestionnaire --> (gestion des stocks produit)
+Gestionnaire --> (gestion des rubrique)
+
+Directeur --> (gestion personnel)
+
+Systeme --> (facture)
+@enduml

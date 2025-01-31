@@ -1,0 +1,29 @@
+Flux nominal : Happy day Cas d'utilisation "Creation d'une commande"
+
+    L'utilisateur clique sur "ajouter au panier" dans la page produit < Le système affiche le panier avec le produit ajouté 
+
+    L'utilisateur augmente la quantité du produit dans le panier < Le système met à jour la quantité du produit dans le panier et réaffiche le panier
+
+    L'utilisateur clique sur commander < Le système verifie si l'utilisateur est connecté ou non 
+
+    L'utilisateur est connecté < Le système affiche la page pour la creation d'une commande avec les adresse de livraison et facturation lié au compte client
+
+    L'utilisateur selectionner l'adresse de livraison et facturation < Le système met à jour les informations de livraison et facturation, verifie si le client et un professionnel ou un particulier et affiche la page de payement
+
+    L'utilisateur est un particulier < Le système affiche la page de payement immédiat avec les informations de commande
+    
+    L'utilisateur saisie c'est information de payement < Le système verifie si les informations de payement sont correctes , valide la commande et affiche la page de statut des commande
+
+
+
+Scénario alternatif 1: L'utilisateur ajoute une quantité plus elever que le stock disponible --> Le systeme affiche un message d'erreur et ne permet pas l'ajout au panier
+
+Scénario alternatif 2: L'utilisateur n'est  pas connécté --> Déclencher le Scenario de Connection
+
+Scénario alternatif 3: L'utilisateur n'as pas d'adresse de livraison ou facturation !!! --> Le systeme le redige vers le formulaire de creation d'adresse
+
+Scénario alternatif 4: L'utilisateur est un professionnel --> Le systeme affiche la page de payement différe avec les informations de commande
+
+Scénario alternatif 5: L'utilisateur rentre des information de payement incorrectes --> Le systeme affiche un message d'erreur et demande à l'utilisateur de réessayer avec des informations correctes
+
+Scénario alternatif 6: L'utilisateur annule la commande --> Le systeme annule la commande et affiche la page du panier 
