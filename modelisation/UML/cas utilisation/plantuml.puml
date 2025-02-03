@@ -1,4 +1,4 @@
-@startuml
+@startuml VillageGreen
 left to right direction
 
 actor user

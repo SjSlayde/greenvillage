@@ -1,0 +1,39 @@
+@startuml Commande
+actor Utilisateur
+participant "Système" as Systeme
+
+Utilisateur -> Systeme: Clique sur "ajouter au panier" dans la page produit.
+Systeme -> Utilisateur: Affiche le panier avec les produits ajouté au panier.
+
+Utilisateur -> Systeme: Augmente la quantité du produit.
+Systeme -> Systeme: Met à jour la quantité souhaiter.
+Systeme -> Utilisateur: Affiche le panier avec les produits ajouté au panier et le quantite actualiser.
+
+Utilisateur -> Systeme: Clique sur "Commander"
+Systeme -> Systeme: Vérifie si l'utilisateur est connecté.
+note right of Systeme
+ le client est connecté.
+end note
+
+Systeme -> Utilisateur: Affiche la page de création de commande avec les adresses.
+
+Utilisateur -> Systeme: Sélectionne l'adresse de livraison et facturation.
+Systeme -> Systeme: Met à jour les infos et vérifie si client est pro ou particulier.
+
+note right of Systeme
+ le client est un particulier dans ce cas.
+end note
+
+Systeme -> Utilisateur: le client est un particulier.
+Systeme -> Utilisateur: Affiche la page de paiement avec les informations de la commande en cours.
+
+Utilisateur -> Systeme: Saisit la methode de paiement et les informations necessaire au paiement.
+
+alt check paiement
+Systeme -> Systeme: Vérifie la validité des informations.
+
+    Systeme -> Systeme: Valide la commande.
+end
+
+Systeme -> Utilisateur: affiche la page de statut des commandes.
+@enduml

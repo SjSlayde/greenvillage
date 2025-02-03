@@ -1,0 +1,47 @@
+@startuml test
+
+start 
+
+:Utilisateur clique sur "ajouter au panier";
+repeat
+:Système affiche le panier avec le produit ajouté;
+
+:Utilisateur augmente la quantité du produit;
+
+backward :Système affiche un message d'erreur;
+repeat while (stock suffisant?) is (non) not (oui)
+
+:Système réaffiche le panier mis à jour;
+
+:Utilisateur clique sur "Commander";
+:Système vérifie si l'utilisateur est connecté;
+
+if (Utilisateur connecté ?) then (Oui)
+    if (Système affiche la page de création de commande avec les adresses) then ()
+    :Utilisateur valide l'adresse de livraison et facturation;
+    else ()
+    :Utilisateur modifie l'adresse de livraison et facturation;
+    endif
+else (Non)
+    :Redirige vers la page de connexion.;
+    stop
+endif
+
+:Système met à jour les infos et vérifie si client est particulier ou pro;
+
+if (Client particulier ?) then (Oui)
+    :Système affiche la page de paiement;
+endif
+
+:Utilisateur saisit la méthode et les infos de paiement;
+:Système vérifie la validité du paiement;
+
+if (Paiement valide ?) then (Oui)
+    :Système valide la commande;
+    :Système affiche la page de statut des commandes;
+else (Non)
+    :Afficher une erreur et demander de ressaisir les infos;
+endif
+
+stop
+@enduml
