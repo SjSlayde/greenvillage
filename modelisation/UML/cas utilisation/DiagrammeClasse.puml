@@ -1,0 +1,125 @@
+@startuml DBVillageGreen
+class Rubrique {
+  idRubrique : INT
+  nomRubrique : VARCHAR(50)
+  imageRubrique : VARCHAR(50)
+}
+
+class SousRubrique {
+  idSousRubrique : INT
+  nomSousRubrique : VARCHAR(50)
+  imageSousRubrique : VARCHAR(50)
+  idRubrique : INT
+}
+
+class Utilisateur {
+  refClient : VARCHAR(50)
+  nom : VARCHAR(50)
+  prenom : VARCHAR(50)
+  password : VARCHAR(50)
+  email : VARCHAR(50)
+  coefficientVente : INT
+  type : VARCHAR(30)
+  telephone : VARCHAR(10)
+  titreRole : VARCHAR(50)
+  coefficientReduction : INT
+  refClient_1 : VARCHAR(50)
+}
+
+class Adresse {
+  idAdresse : INT
+  numeroDeRue : VARCHAR(5)
+  ville : VARCHAR(51)
+  codePostal : VARCHAR(5)
+  nomRue : VARCHAR(50)
+  complement : VARCHAR(50)
+}
+
+class Commande {
+  idCommande : INT
+  dateCommande : DATE
+  numFacturation : VARCHAR(10)
+  commandeTotalHt : DECIMAL(8,2)
+  commandeTotalTtc : DECIMAL(8,2)
+  reduction : DECIMAL(8,2)
+  CommandeTotalReduction : DECIMAL(8,2)
+  moyenPaiement : VARCHAR(50)
+  statut : ENUM
+  paiementValide : BOOLEAN
+  refClient : VARCHAR(50)
+}
+
+class Livraison {
+  idLivraison : INT
+  dateLivraison : DATE
+  transporteur : VARCHAR(50)
+  url_suivi : VARCHAR(50)
+  idCommande : INT
+}
+
+class Fournisseur {
+  idFournisseur : INT
+  nomFournisseur : VARCHAR(50)
+  emailFournisseur : VARCHAR(50)
+  telephoneFournisseur : VARCHAR(50)
+  idAdresse : INT
+}
+
+class Produit {
+  idProduit : VARCHAR(5)
+  nomProduit : VARCHAR(50)
+  prixAchatProduit : DECIMAL(7,2)
+  descriptionCourtProduit : VARCHAR(50)
+  descriptionLongProduit : VARCHAR(250)
+  nomImage : VARCHAR(50)
+  stock : INT
+  idFournisseur : INT
+  actif : BOOLEAN
+}
+
+class Avoir {
+  idProduit : VARCHAR(5)
+  idSousRubrique : INT
+}
+
+class Contient {
+  idProduit : VARCHAR(5)
+  idCommande : INT
+  quantite : INT
+  prixUnitaireHt : DECIMAL(8,2)
+  articleTotalHt : DECIMAL(8,2)
+  tva : DECIMAL(8,2)
+  articleTotalTtc : DECIMAL(8,2)
+}
+
+class A2 {
+  refClient : VARCHAR(50)
+  idAdresse : INT
+  Type : VARCHAR(20)
+}
+
+class DetailLiv {
+  idProduit : VARCHAR(5)
+  idLivraison : INT
+  quantiteLiv : INT
+}
+
+Rubrique "1" -- "*" SousRubrique : contient
+SousRubrique "1" -- "*" Avoir : a
+Avoir "*" -- "1" Produit
+
+Utilisateur "1" -- "*" Commande : passe
+Utilisateur "1" -- "*" A2 : possède
+A2 "*" -- "1" Adresse
+
+Commande "1" -- "*" Contient : contient
+Contient "*" -- "1" Produit
+
+Commande "1" -- "1" Livraison : est liée à
+Livraison "*" -- "*" DetailLiv : inclut
+DetailLiv "*" -- "1" Produit
+
+Produit "1" -- "*" Fournisseur : est fourni par
+Fournisseur "1" -- "1" Adresse : localisé à
+
+@enduml
