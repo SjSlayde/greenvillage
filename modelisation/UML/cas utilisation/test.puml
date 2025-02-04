@@ -14,10 +14,9 @@ repeat while (stock suffisant?) is (non) not (oui)
 :Système réaffiche le panier mis à jour;
 
 :Utilisateur clique sur "Commander";
-:Système vérifie si l'utilisateur est connecté;
 
 if (Utilisateur connecté ?) then (Oui)
-    if (Système affiche la page de création de commande avec les adresses) then ()
+    if (Système affiche la page de création de commande avec les adresses)
     :Utilisateur valide l'adresse de livraison et facturation;
     else ()
     :Utilisateur modifie l'adresse de livraison et facturation;
@@ -29,19 +28,19 @@ endif
 
 :Système met à jour les infos et vérifie si client est particulier ou pro;
 
-if (Client particulier ?) then (Oui)
+if (Type de Client ?) then (particulier)
     :Système affiche la page de paiement;
+    else(professionnel)
+    :Système affiche la page de paiement + mode de paiement differe;
 endif
 
-:Utilisateur saisit la méthode et les infos de paiement;
+repeat :Utilisateur saisit la méthode et les infos de paiement;
 :Système vérifie la validité du paiement;
 
-if (Paiement valide ?) then (Oui)
+backward :Afficher une erreur et demander de ressaisir les infos;
+repeat while (Paiement Valide ?) is (non) not (oui)
     :Système valide la commande;
     :Système affiche la page de statut des commandes;
-else (Non)
-    :Afficher une erreur et demander de ressaisir les infos;
-endif
 
 stop
 @enduml
