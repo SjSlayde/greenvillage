@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\RubriqueRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: RubriqueRepository::class)]
@@ -18,6 +20,19 @@ class Rubrique
 
     #[ORM\Column(length: 50)]
     private ?string $imageRubrique = null;
+
+    /**
+     * @var Collection<int, SousRubrique>
+     */
+    #[ORM\OneToMany(targetEntity: SousRubrique::class, mappedBy: 'Rubrique')]
+    private Collection $sousRubriques;
+
+
+    public function __construct()
+    {
+        $this->sousRubriques = new ArrayCollection();
+    }
+
 
     public function getId(): ?int
     {
@@ -47,4 +62,38 @@ class Rubrique
 
         return $this;
     }
+
+    /**
+     * @return Collection<int, SousRubrique>
+     */
+    public function getSousRubriques(): Collection
+    {
+        return $this->sousRubriques;
+    }
+
+    public function addSousRubrique(SousRubrique $sousRubrique): static
+    {
+        if (!$this->sousRubriques->contains($sousRubrique)) {
+            $this->sousRubriques->add($sousRubrique);
+            $sousRubrique->setRubrique($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSousRubrique(SousRubrique $sousRubrique): static
+    {
+        if ($this->sousRubriques->removeElement($sousRubrique)) {
+            // set the owning side to null (unless already changed)
+            if ($sousRubrique->getRubrique() === $this) {
+                $sousRubrique->setRubrique(null);
+            }
+        }
+
+        return $this;
+    }
+
+
+
+
 }
