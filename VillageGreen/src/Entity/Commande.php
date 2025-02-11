@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\CommandeRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -40,6 +42,27 @@ class Commande
 
     #[ORM\Column]
     private ?bool $paiementValide = null;
+
+    /**
+     * @var Collection<int, Contient>
+     */
+    #[ORM\OneToMany(targetEntity: Contient::class, mappedBy: 'commande')]
+    private Collection $contients;
+
+    #[ORM\ManyToOne(inversedBy: 'commandes')]
+    private ?Utilisateur $refClient = null;
+
+    /**
+     * @var Collection<int, Livraison>
+     */
+    #[ORM\OneToMany(targetEntity: Livraison::class, mappedBy: 'commande')]
+    private Collection $livraisons;
+
+    public function __construct()
+    {
+        $this->contients = new ArrayCollection();
+        $this->livraisons = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -150,6 +173,78 @@ class Commande
     public function setPaiementValide(bool $paiementValide): static
     {
         $this->paiementValide = $paiementValide;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Contient>
+     */
+    public function getContients(): Collection
+    {
+        return $this->contients;
+    }
+
+    public function addContient(Contient $contient): static
+    {
+        if (!$this->contients->contains($contient)) {
+            $this->contients->add($contient);
+            $contient->setCommande($this);
+        }
+
+        return $this;
+    }
+
+    public function removeContient(Contient $contient): static
+    {
+        if ($this->contients->removeElement($contient)) {
+            // set the owning side to null (unless already changed)
+            if ($contient->getCommande() === $this) {
+                $contient->setCommande(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getRefClient(): ?Utilisateur
+    {
+        return $this->refClient;
+    }
+
+    public function setRefClient(?Utilisateur $refClient): static
+    {
+        $this->refClient = $refClient;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Livraison>
+     */
+    public function getLivraisons(): Collection
+    {
+        return $this->livraisons;
+    }
+
+    public function addLivraison(Livraison $livraison): static
+    {
+        if (!$this->livraisons->contains($livraison)) {
+            $this->livraisons->add($livraison);
+            $livraison->setCommande($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLivraison(Livraison $livraison): static
+    {
+        if ($this->livraisons->removeElement($livraison)) {
+            // set the owning side to null (unless already changed)
+            if ($livraison->getCommande() === $this) {
+                $livraison->setCommande(null);
+            }
+        }
 
         return $this;
     }

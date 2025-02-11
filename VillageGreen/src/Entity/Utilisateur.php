@@ -61,9 +61,23 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: self::class, mappedBy: 'idCommercial')]
     private Collection $utilisateurs;
 
+    /**
+     * @var Collection<int, AffiliationAdresse>
+     */
+    #[ORM\OneToMany(targetEntity: AffiliationAdresse::class, mappedBy: 'client')]
+    private Collection $affiliationAdresses;
+
+    /**
+     * @var Collection<int, Commande>
+     */
+    #[ORM\OneToMany(targetEntity: Commande::class, mappedBy: 'refClient')]
+    private Collection $commandes;
+
     public function __construct()
     {
         $this->utilisateurs = new ArrayCollection();
+        $this->affiliationAdresses = new ArrayCollection();
+        $this->commandes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -249,6 +263,66 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($utilisateur->getIdCommercial() === $this) {
                 $utilisateur->setIdCommercial(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, AffiliationAdresse>
+     */
+    public function getAffiliationAdresses(): Collection
+    {
+        return $this->affiliationAdresses;
+    }
+
+    public function addAffiliationAdress(AffiliationAdresse $affiliationAdress): static
+    {
+        if (!$this->affiliationAdresses->contains($affiliationAdress)) {
+            $this->affiliationAdresses->add($affiliationAdress);
+            $affiliationAdress->setClient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAffiliationAdress(AffiliationAdresse $affiliationAdress): static
+    {
+        if ($this->affiliationAdresses->removeElement($affiliationAdress)) {
+            // set the owning side to null (unless already changed)
+            if ($affiliationAdress->getClient() === $this) {
+                $affiliationAdress->setClient(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Commande>
+     */
+    public function getCommandes(): Collection
+    {
+        return $this->commandes;
+    }
+
+    public function addCommande(Commande $commande): static
+    {
+        if (!$this->commandes->contains($commande)) {
+            $this->commandes->add($commande);
+            $commande->setRefClient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCommande(Commande $commande): static
+    {
+        if ($this->commandes->removeElement($commande)) {
+            // set the owning side to null (unless already changed)
+            if ($commande->getRefClient() === $this) {
+                $commande->setRefClient(null);
             }
         }
 

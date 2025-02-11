@@ -24,11 +24,18 @@ class SousRubrique
     #[ORM\ManyToOne(inversedBy: 'sousRubriques')]
     private ?Rubrique $Rubrique = null;
 
+    /**
+     * @var Collection<int, Avoir>
+     */
+    #[ORM\OneToMany(targetEntity: Avoir::class, mappedBy: 'sousProduit')]
+    private Collection $avoirs;
+
 
 
     public function __construct()
     {
         $this->idRubrique = new ArrayCollection();
+        $this->avoirs = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -68,6 +75,36 @@ class SousRubrique
     public function setRubrique(?Rubrique $Rubrique): static
     {
         $this->Rubrique = $Rubrique;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Avoir>
+     */
+    public function getAvoirs(): Collection
+    {
+        return $this->avoirs;
+    }
+
+    public function addAvoir(Avoir $avoir): static
+    {
+        if (!$this->avoirs->contains($avoir)) {
+            $this->avoirs->add($avoir);
+            $avoir->setSousProduit($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAvoir(Avoir $avoir): static
+    {
+        if ($this->avoirs->removeElement($avoir)) {
+            // set the owning side to null (unless already changed)
+            if ($avoir->getSousProduit() === $this) {
+                $avoir->setSousProduit(null);
+            }
+        }
 
         return $this;
     }
