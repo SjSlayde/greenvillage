@@ -76,7 +76,7 @@ class Commande
 
     public function setDateCommande(\DateTimeInterface $dateCommande): static
     {
-        $this->dateCommande = $dateCommande;
+        $this->dateCommande = date('Y-m-d H:i:s');
 
         return $this;
     }
@@ -98,9 +98,21 @@ class Commande
         return $this->commandeTotalHT;
     }
 
-    public function setCommandeTotalHT(string $commandeTotalHT): static
+    public function setCommandeTotalHT(): static
     {
-        $this->commandeTotalHT = $commandeTotalHT;
+
+        // recuperation des entités contient (details de la Commande)
+        $detailsCommandes = $this->getContients();
+
+        // setting de la variable total 
+        $total = 0.00;
+
+        // boucle sur les details de la commande pour calculer le total HT
+        foreach ($detailsCommandes as $detailCommande) {
+            $total += $detailCommande->getArticleTotalHt();
+        }
+
+        $this->commandeTotalHT = $total;
 
         return $this;
     }
@@ -110,9 +122,20 @@ class Commande
         return $this->commandeTotalTTC;
     }
 
-    public function setCommandeTotalTTC(string $commandeTotalTTC): static
+    public function setCommandeTotalTTC(): static
     {
-        $this->commandeTotalTTC = $commandeTotalTTC;
+        // recuperation des entités contient (details de la Commande)
+        $detailsCommande = $this->getContients();
+
+        // setting de la variable total 
+        $total = 0.00;
+
+        // boucle sur les details de la commande pour calculer le total TTC
+        foreach ($detailsCommande as $detailCommande) {
+            $total += $detailCommande->getArticleTotalTtc();
+        }
+
+        $this->commandeTotalTTC = $total;
 
         return $this;
     }
@@ -122,9 +145,10 @@ class Commande
         return $this->reduction;
     }
 
-    public function setReduction(string $reduction): static
+    public function setReduction(): static
     {
-        $this->reduction = $reduction;
+        // calcul du montant de la reduction
+        $this->reduction = $this->getCommandeTotalTTC() - $this->getCommandeTotalTTC() / (1 + $this->getRefClient()->getCoefficientReduction() / 100);
 
         return $this;
     }
@@ -134,9 +158,18 @@ class Commande
         return $this->commandeTotalReduction;
     }
 
-    public function setCommandeTotalReduction(string $commandeTotalReduction): static
+    public function setCommandeTotalReduction(): static
     {
-        $this->commandeTotalReduction = $commandeTotalReduction;
+
+        // Setting de la variable coefReduction grace au getter de la refClient
+        $coefReduction = $this->getRefClient()->getCoefficientReduction();
+
+        // Application de la reduction si elle est superieur a 0
+        if ($coefReduction > 0){
+            $this->commandeTotalReduction = $this->getCommandeTotalTTC() * (1 - $coefReduction / 100);
+        } else {
+            $this->commandeTotalReduction = $this->getCommandeTotalTTC();
+        }
 
         return $this;
     }
@@ -247,5 +280,13 @@ class Commande
         }
 
         return $this;
+    }
+
+    public function setTotalCommande(): void
+    {
+        $this->setCommandeTotalHT();
+        $this->setCommandeTotalTTC();
+        $this->setReduction();
+        $this->setCommandeTotalReduction();
     }
 }

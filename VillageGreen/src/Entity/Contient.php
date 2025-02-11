@@ -53,10 +53,10 @@ class Contient
         return $this->prixUnitaireHT;
     }
 
-    public function setPrixUnitaireHT(string $prixUnitaireHT): static
+    public function setPrixUnitaireHT(): static
     {
-        $this->prixUnitaireHT = $prixUnitaireHT;
-
+        // calcule du prix unitaire grace au prix d'achat du produit et le coefficient de vente du client
+        $this->prixUnitaireHT = $this->getProduit()->getPrixAchatProduit() * ( 1 + $this->getCommande()->getRefClient()->getCoefficientVente() / 100);
         return $this;
     }
 
@@ -65,9 +65,9 @@ class Contient
         return $this->articleTotalHt;
     }
 
-    public function setArticleTotalHt(string $articleTotalHt): static
+    public function setArticleTotalHt(): static
     {
-        $this->articleTotalHt = $articleTotalHt;
+        $this->articleTotalHt = $this->getQuantite() * $this->getPrixUnitaireHT();
 
         return $this;
     }
@@ -77,9 +77,9 @@ class Contient
         return $this->TVA;
     }
 
-    public function setTVA(string $TVA): static
+    public function setTVA(): static
     {
-        $this->TVA = $TVA;
+        $this->TVA = $this->getArticleTotalHt() * 0.20;
 
         return $this;
     }
@@ -89,9 +89,9 @@ class Contient
         return $this->articleTotalTtc;
     }
 
-    public function setArticleTotalTtc(string $articleTotalTtc): static
+    public function setArticleTotalTtc(): static
     {
-        $this->articleTotalTtc = $articleTotalTtc;
+        $this->articleTotalTtc = $this->getArticleTotalHt() + $this->getTVA();
 
         return $this;
     }
@@ -118,5 +118,14 @@ class Contient
         $this->commande = $commande;
 
         return $this;
+    }
+
+    public function setTotalContient(): void
+    {
+        $this->setPrixUnitaireHT();
+        $this->setArticleTotalHt();
+        $this->setTVA();
+        $this->setArticleTotalTtc();
+
     }
 }
