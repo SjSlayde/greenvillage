@@ -27,7 +27,7 @@ class Adresse
     #[ORM\Column(length: 50, nullable: true)]
     private ?string $nomRue = null;
 
-    #[ORM\Column(length: 50)]
+    #[ORM\Column(length: 50, nullable: true)]
     private ?string $complement = null;
 
     /**

@@ -58,6 +58,9 @@ class Produit
     #[ORM\ManyToOne(inversedBy: 'produits')]
     private ?Fournisseur $fournisseur = null;
 
+    #[ORM\Column(length: 5, nullable: true)]
+    private ?string $refProduit = null;
+
     public function __construct()
     {
         $this->avoirs = new ArrayCollection();
@@ -252,6 +255,18 @@ class Produit
     public function setFournisseur(?Fournisseur $fournisseur): static
     {
         $this->fournisseur = $fournisseur;
+
+        return $this;
+    }
+
+    public function getRefProduit(): ?string
+    {
+        return $this->refProduit;
+    }
+
+    public function setRefProduit(?string $refProduit): static
+    {
+        $this->refProduit = $refProduit;
 
         return $this;
     }

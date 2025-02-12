@@ -17,7 +17,7 @@ class Avoir
     #[ORM\Id]
     #[ORM\ManyToOne(targetEntity: SousRubrique::class, inversedBy: "avoirs")]
     #[ORM\JoinColumn(name: "sousRubrique_id", referencedColumnName: "id", nullable: false)]
-    private ?SousRubrique $sousProduit = null;
+    private ?SousRubrique $sousRubrique = null;
 
     public function getProduit(): ?Produit
     {
@@ -31,14 +31,14 @@ class Avoir
         return $this;
     }
 
-    public function getSousProduit(): ?SousRubrique
+    public function getSousRubrique(): ?SousRubrique
     {
-        return $this->sousProduit;
+        return $this->sousRubrique;
     }
 
-    public function setSousProduit(?SousRubrique $sousProduit): static
+    public function setSousRubrique(?SousRubrique $sousRubrique): static
     {
-        $this->sousProduit = $sousProduit;
+        $this->sousRubrique = $sousRubrique;
 
         return $this;
     }

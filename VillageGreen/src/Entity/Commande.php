@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 #[ORM\Entity(repositoryClass: CommandeRepository::class)]
 class Commande
@@ -17,6 +18,7 @@ class Commande
     private ?int $id = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[Gedmo\Timestampable(on: 'create')]
     private ?\DateTimeInterface $dateCommande = null;
 
     #[ORM\Column(length: 10)]
@@ -74,11 +76,9 @@ class Commande
         return $this->dateCommande;
     }
 
-    public function setDateCommande(\DateTimeInterface $dateCommande): static
+    public function setDateCommande(): void
     {
-        $this->dateCommande = date('Y-m-d H:i:s');
-
-        return $this;
+        $this->dateCommande = new \DateTimeImmutable();
     }
 
     public function getNumFacturation(): ?string

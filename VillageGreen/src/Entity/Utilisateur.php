@@ -52,7 +52,7 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
     private ?int $coefficientReduction = null;
 
     #[ORM\ManyToOne(targetEntity: self::class, inversedBy: 'utilisateurs')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     private ?self $idCommercial = null;
 
     /**

@@ -27,7 +27,7 @@ class SousRubrique
     /**
      * @var Collection<int, Avoir>
      */
-    #[ORM\OneToMany(targetEntity: Avoir::class, mappedBy: 'sousProduit')]
+    #[ORM\OneToMany(targetEntity: Avoir::class, mappedBy: 'sousRubrique')]
     private Collection $avoirs;
 
 
@@ -91,7 +91,7 @@ class SousRubrique
     {
         if (!$this->avoirs->contains($avoir)) {
             $this->avoirs->add($avoir);
-            $avoir->setSousProduit($this);
+            $avoir->setSousRubrique($this);
         }
 
         return $this;
@@ -101,8 +101,8 @@ class SousRubrique
     {
         if ($this->avoirs->removeElement($avoir)) {
             // set the owning side to null (unless already changed)
-            if ($avoir->getSousProduit() === $this) {
-                $avoir->setSousProduit(null);
+            if ($avoir->getSousRubrique() === $this) {
+                $avoir->setSousRubrique(null);
             }
         }
 
