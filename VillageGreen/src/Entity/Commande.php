@@ -24,16 +24,16 @@ class Commande
     #[ORM\Column(length: 10)]
     private ?string $numFacturation = null;
 
-    #[ORM\Column(type: Types::DECIMAL, precision: 8, scale: 2)]
+    #[ORM\Column(type: Types::DECIMAL, precision: 8, scale: 2, nullable: true)]
     private ?string $commandeTotalHT = null;
 
-    #[ORM\Column(type: Types::DECIMAL, precision: 8, scale: 2)]
+    #[ORM\Column(type: Types::DECIMAL, precision: 8, scale: 2, nullable: true)]
     private ?string $commandeTotalTTC = null;
 
-    #[ORM\Column(type: Types::DECIMAL, precision: 8, scale: 2)]
+    #[ORM\Column(type: Types::DECIMAL, precision: 8, scale: 2, nullable: true)]
     private ?string $reduction = null;
 
-    #[ORM\Column(type: Types::DECIMAL, precision: 8, scale: 2)]
+    #[ORM\Column(type: Types::DECIMAL, precision: 8, scale: 2, nullable: true)]
     private ?string $commandeTotalReduction = null;
 
     #[ORM\Column(length: 50)]
@@ -78,7 +78,7 @@ class Commande
 
     public function setDateCommande(): void
     {
-        $this->dateCommande = new \DateTimeImmutable();
+        $this->dateCommande = new \DateTime();
     }
 
     public function getNumFacturation(): ?string
@@ -105,14 +105,15 @@ class Commande
         $detailsCommandes = $this->getContients();
 
         // setting de la variable total 
-        $total = 0.00;
+        $total = 999;
 
         // boucle sur les details de la commande pour calculer le total HT
         foreach ($detailsCommandes as $detailCommande) {
-            $total += $detailCommande->getArticleTotalHt();
+
+            $this->commandeTotalHT = $total + $detailCommande->getArticleTotalHt();
         }
 
-        $this->commandeTotalHT = $total;
+        // $this->commandeTotalHT = $total;
 
         return $this;
     }
