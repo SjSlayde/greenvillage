@@ -1,3 +1,6 @@
 body {
-    background-color: skyblue;
-}
+    font-family: Arial, "Times New Roman", sans-serif;
+    width: 100vw;
+    background: rgba(31,31,31,1);
+    background: linear-gradient(90deg, rgba(85, 153, 63, 1) 0%, rgba(25,45,18,1) 15%, rgba(31,31,31,1) 50%, rgba(25,45,18,1)  85%, rgba(85, 153, 63, 1) 100%); 
+    }

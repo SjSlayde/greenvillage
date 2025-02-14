@@ -86,7 +86,7 @@ class Zzzz extends Fixture
              $count++;
              $manager->persist($livraison);
          }}
-
+         
         $manager->flush();
     }
 }
