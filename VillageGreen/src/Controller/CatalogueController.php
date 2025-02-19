@@ -30,10 +30,32 @@ class CatalogueController extends AbstractController
         // $sousRubriques = $this->produitRepo->all();
         $produits = $this->produitRepo->findAll();
 
+        $produitQuantite = [];
+
+        foreach($produits as $produit){
+            $quantite = $produit->getTotalQuantite();
+            $produitQuantite[] = [
+                'produit' => $produit,
+                'quantite' => $quantite
+            ];
+        }
+
+        arsort($produitQuantite);
+
+        $compteur = 0;
+
+        foreach($produitQuantite as $produit=>$quantite){
+            if ($compteur == 3 ){
+                unset($produitQuantite[$produit]);
+            }else{
+                $compteur++;
+            }
+        }
+
         return $this->render('catalogue/index.html.twig', [
             'controller_name' => 'CatalogueController',
             'rubriques' => $rubriques,
-            'produits' => $produits
+            'produitQuantite' => $produitQuantite
         ]);
     }
 }

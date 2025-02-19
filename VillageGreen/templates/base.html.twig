@@ -43,37 +43,6 @@
 					<li class="nav-item px-5">
 						<a class="textnav nav-link {{ app.current_route == 'app_contact' ? 'active' : ''}}" href="" title="contact">Contact</a>
 					</li>
-
-					{# {% if app.user %}
-
-						{% if is_granted('ROLE_CLIENT') %}
-							<li class="nav-item d-md-none d-block px-5">
-								<a class="textnav nav-link {{ app.current_route == 'app_utilisateur' ? 'active' : ''}}" href="{{ path ('app_utilisateur', {nom: app.user.nom,prenom: app.user.prenom}) }}" title="user">{{ app.user.nom }}</a>
-							</li>
-						{% endif %}
-
-						{% if is_granted('ROLE_CHEF') %}
-							<li class="nav-item d-md-none d-block px-5">
-								<a class="textnav nav-link {{ app.current_route == 'app_gestion' ? 'active' : ''}}" href="{{ path ('app_gestion') }}" title="gestion">Gestion</a>
-							</li>
-						{% endif %}
-
-						<li class="nav-item d-md-none d-block px-5">
-							<a class="textnav nav-link {{ app.current_route == 'app_logout' ? 'active' : ''}}" href="{{ path ('app_logout') }}" title="logout">Deconnexion</a>
-						</li>
-
-					{% else %} #}
-
-						{# <li class="nav-item d-md-none d-block ms-md-5 px-5">
-							<a class="textnav nav-link {{ app.current_route == 'app_login' ? 'active' : ''}}" href="{{ path ('app_login') }}" title="contact">Connexion</a>
-						</li>
-
-						<li class="nav-item d-md-none d-block px-5">
-							<a class="textnav nav-link {{ app.current_route == 'app_register' ? 'active' : ''}}" href="{{ path ('app_register') }}" title="contact">Nouvelle utilisateur</a>
-						</li> #}
-
-					{# {% endif %} #}
-
 					<li class="navbar-brand d-md-none d-block px-5">
 						<a href="" class="btn btn-success position-relative">
 							<i class="bi bi-cart"></i>
@@ -88,53 +57,10 @@
 
 			</div>
 		</div>
-		{# <div class="justify-content-end d-none d-md-block">
-			<ul class="navbar-nav">
-				{% if app.user %}
-
-					{% if is_granted('ROLE_CLIENT') %}
-						<li class="nav-item px-4">
-							<a class="textnav nav-link {{ app.current_route == 'app_utilisateur' ? 'active' : ''}}" href="{{ path ('app_utilisateur', {nom: app.user.nom,prenom: app.user.prenom}) }}" title="user">{{ app.user.nom }}</a>
-						</li>
-					{% endif %}
-
-					{% if is_granted('ROLE_CHEF') %}
-						<li class="nav-item px-4">
-							<a class="textnav nav-link {{ app.current_route == 'app_gestion' ? 'active' : ''}}" href="{{ path ('app_gestion') }}" title="gestion">Gestion</a>
-						</li>
-					{% endif %}
-
-					<li class="nav-item px-4">
-						<a class="textnav nav-link {{ app.current_route == 'app_logout' ? 'active' : ''}}" href="{{ path ('app_logout') }}" title="logout">Deconnexion</a>
-					</li>
-
-				{% else %}
-
-					<li class="nav-item ms-md-5 px-4">
-						<a class="textnav nav-link {{ app.current_route == 'app_login' ? 'active' : ''}}" href="{{ path ('app_login') }}" title="contact">Connexion</a>
-					</li>
-
-					<li class="nav-item px-4">
-						<a class="textnav nav-link {{ app.current_route == 'app_register' ? 'active' : ''}}" href="{{ path ('app_register') }}" title="contact">Nouvelle utilisateur</a>
-					</li>
-
-				{% endif %}
-
-				<li class="navbar-brand">
-					<a href="{{ path ("app_panier") }}" class="btn btn-success position-relative">
-						<i class="bi bi-cart"></i>
-						<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-							{{ panier.getQuantite }}
-							<span class="visually-hidden"></span>
-						</span>
-					</a>
-				</li>
-			</ul>
-		</div> #}
 	</nav>
 	<div id="parent">
 		<div id="banniere" class="row g-0">
-			<video id="video" class="col-12" src="{{ asset ('img/video/burger.mp4') }}" style="width: 100vmax; height: 25vmax;" playsinline autoplay loop muted></video>
+			<img class="col-12" src="{{ asset ('images/brand/banniereVG2.png') }}" style="width: 100vmax; height: 35vmax;" alt='banniere'>
 		</div>
 		<div id="recherche" class="d-none d-sm-flex position-relative">
 			<form class="col-12" action="" role="search" method="GET">
@@ -154,9 +80,9 @@
 		{% block footer %}
 
 			<footer class="p-0 g-0">
-				<nav id="navbot" class="navbar navbar-expand bg-dark navbar-dark mt-3 rounded-xs-none container-fluid">
-					<div class="collapse navbar-collapse justify-content-center row" id="collapsibleNavbar2">
-						<ul class="navbar-nav col-12 justify-content-center mx-xl-2">
+				<nav id="navbot" class="navbar navbar-expand bg-dark navbar-dark container-fluid">
+					<div class="collapse navbar-collapse justify-content-center" id="collapsibleNavbar2">
+						<ul class="navbar-nav justify-content-center">
 							<li class="nav-item">
 								<a class="nav-link active" href="https://www.facebook.com/" title="Accueil"><img src="{{ asset ('img/social_media/icons8-facebook-48.png')}}" class="img-fluid align-text-top" alt="navinsta"></a>
 							</li>

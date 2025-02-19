@@ -270,4 +270,14 @@ class Produit
 
         return $this;
     }
+
+    public function getTotalQuantite(): int
+    {
+        $quantite = 0;
+        foreach($this->contients as $contient){
+            $quantite += $contient->getQuantite();
+            };
+    
+        return $quantite;
+    }
 }
