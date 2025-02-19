@@ -30,4 +30,5 @@ body {
     .imageRubrique {
         width: auto;
         height: 30vh;
+        object-fit: cover;
     }
