@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}produits
+{% endblock %}
+
+{% block body %}
+	<div class="container g-md-0">
+
+		<div class="row mx-auto justify-content-center mb-4">
+			<h2 class="fs-1 col-12 ms-2 mb-3 mt-4 text-light">Nos produits :</h2>
+
+			{% set compteur = 0 %}
+
+			{% for produit in produits %}
+
+				<div class="card bg-dark" style="width: 100vw; height: 50vh;">
+					<div class="row g-0">
+						{% if compteur % 2 == 0 %}
+							<div class="col-6">
+								<img src="{{ asset ('images/produits/' ~ produit.nomImage ) }}" class="img-fluid rounded object-fit-cover" alt="{{ produit.nomProduit }}" style="width: 100vw; height: 50vh;">
+							</div>
+							<div class="col-6">
+								<div class="card-body text-light">
+									<h5 class="card-title">{{ produit.nomProduit | upper }}</h5>
+									<p class="card-text">{{ produit.descriptionLong }}</p>
+								</div>
+							</div>
+						{% else %}
+							<div class="col-6">
+								<div class="card-body text-light">
+									<h5 class="card-title">{{ produit.nomProduit | upper }}</h5>
+									<p class="card-text">{{ produit.descriptionLong }}</p>
+								</div>
+							</div>
+							<div class="col-6">
+								<img src="{{ asset ('images/produits/' ~ produit.nomImage ) }}" class="img-fluid rounded object-fit-cover" alt="{{ produit.nomProduit }}" style="width: 100vw; height: 50vh;">
+							</div>
+						{% endif %}
+					</div>
+				</div>
+
+				{% set compteur = compteur + 1 %}
+			{% endfor %}
+		</div>
+	</div>
+{% endblock %}
+

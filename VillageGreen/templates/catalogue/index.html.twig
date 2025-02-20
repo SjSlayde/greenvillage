@@ -6,67 +6,71 @@
 {% block body %}
 	<div class="container g-md-0">
 
-			<div class="row mx-auto">
-			    <h2 class="fs-1 col-12 ms-2 mt-4 text-light">Les Rubriques :</h2>
+		<div class="row mx-auto">
+			<h2 class="fs-1 col-12 ms-2 mt-4 text-light">Les Rubriques :</h2>
 
-				{% for rubrique in rubriques %}
-                    <div class='col-4 mb-3'>
-                        <div class="card text-bg-dark">
-                                <img src="{{ asset ('images/rubriques-sousRubriques/' ~ rubrique.imageRubrique ) }}" class="card-img-top img-fluid imageRubrique" alt="{{ rubrique.nomRubrique }}">
-                                <a class="link-body-emphasis link-offset-2 link-underline-opacity-0 link-underline-opacity-75-hover" href="">
-                                <div class="card-img-overlay"> 
-                                    <h5 class="card-title text-light">{{ rubrique.nomRubrique | upper }}</h5>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-				{% endfor %}
+			{% for rubrique in rubriques %}
+				<div class='col-4 mb-3'>
+					<div class="card text-bg-dark">
+						<img src="{{ asset ('images/rubriques-sousRubriques/' ~ rubrique.imageRubrique ) }}" class="card-img-top img-fluid imageRubrique" alt="{{ rubrique.nomRubrique }}">
+						<a class="link-body-emphasis link-offset-2 link-underline-opacity-0 link-underline-opacity-75-hover" href="{{ path ('app_selectSousRubrique' , {id: rubrique.id} ) }}">
+							<div class="card-img-overlay">
+								<h5 class="card-title text-light">{{ rubrique.nomRubrique | upper }}</h5>
+							</div>
+						</a>
+					</div>
+				</div>
+			{% endfor %}
+		</div>
 
-                <h2 class="fs-1 col-12 ms-2 mt-4 text-light justify-content-center">Nos meilleurs ventes :</h2>
+		<div class="row mx-auto justify-content-center">
+
+			<h2 class="fs-1 col-12 ms-2 mt-4 text-light justify-content-center">Nos meilleurs ventes :</h2>
 
 
-                <div id="carouselExampleAutoplaying" class="carousel slide my-3 col-12 col-md-8" data-bs-ride="carousel">
-                <div class="carousel-inner">
+			<div id="carouselExampleAutoplaying" class="carousel slide my-3 col-12 col-md-9" data-bs-ride="carousel">
+				<div class="carousel-inner">
 
-                {% set compteur = 0 %}
-                    	{% for TopProduit in produitQuantite %}
-                        {% if compteur == 0 %}
-                            <div class="carousel-item active">
-                            {% else %}
-                            <div class="carousel-item">
-                        {% endif %} 
-                        <div class="card bg-dark text-light" style="height: 250px;">
-                            <div class="row g-0">
-                                <div class="col-md-8">
-                                <div class="card-body position-relative">
-                                    <h5 class="card-title">{{ TopProduit.produit.nomProduit }}</h5>
-                                    <p class="card-text">{{ TopProduit.produit.descriptionLong }}</p>
-                                    {# <p class="card-text position-absolute bottom-0 end-0">Prix : {{ TopProduit.produit.prixAchatProduit}} €</p> #}
-                                </div>
-                                </div>
-                                <div class="col-md-4 position-relative">
-                                    <img src="{{ asset ('images/produits/' ~ TopProduit.produit.nomImage ) }}" class="img-fluid rounded object-fit-cover position-absolute end-0" alt="{{ TopProduit.produit.nomProduit }}" style="height: 248px;">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    {% set compteur = 1 %}
-                    {% endfor %}
+					{% set compteur = 0 %}
+					{% for TopProduit in produitQuantite %}
+						{% if compteur == 0 %}
+							<div class="carousel-item active">
+							{% else %}
+								<div class="carousel-item">
+								{% endif %}
+								<div class="card bg-dark text-light" style="height: 250px;">
+									<div class="row g-0">
+										<div class="col-md-8">
+											<div class="card-body position-relative">
+												<h5 class="card-title">{{ TopProduit.produit.nomProduit }}</h5>
+												<p class="card-text">{{ TopProduit.produit.descriptionLong }}</p>
+												{# <p class="card-text position-absolute bottom-0 end-0">Prix : {{ TopProduit.produit.prixAchatProduit}} €</p> #}
+											</div>
+										</div>
+										<div class="col-md-4 position-relative">
+											<img src="{{ asset ('images/produits/' ~ TopProduit.produit.nomImage ) }}" class="img-fluid rounded object-fit-cover position-absolute end-0" alt="{{ TopProduit.produit.nomProduit }}" style="height: 248px;">
+										</div>
+									</div>
+								</div>
+							</div>
 
-                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Previous</span>
-                </button>
+							{% set compteur = 1 %}
+						{% endfor %}
 
-                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Next</span>
-                </button>
-                </div>
+						<button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
+							<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+							<span class="visually-hidden">Previous</span>
+						</button>
+
+						<button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="next">
+							<span class="carousel-control-next-icon" aria-hidden="true"></span>
+							<span class="visually-hidden">Next</span>
+						</button>
+					</div>
+
+				</div>
 
 			</div>
+		</div>
+	{% endblock %}
 
-	</div>
-
-{% endblock %}
