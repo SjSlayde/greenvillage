@@ -7,7 +7,7 @@
 	<div class="container g-md-0">
 
 		<div class="row mx-auto">
-			<h2 class="fs-1 col-12 ms-2 mt-4 text-light">Les Rubriques :</h2>
+			<h2 class="fs-1 col-12 ms-2 mt-4 text-light text-center">Les Rubriques :</h2>
 
 			{% for rubrique in rubriques %}
 				<div class='col-4 mb-3'>
@@ -15,7 +15,7 @@
 						<img src="{{ asset ('images/rubriques-sousRubriques/' ~ rubrique.imageRubrique ) }}" class="card-img-top img-fluid imageRubrique" alt="{{ rubrique.nomRubrique }}">
 						<a class="link-body-emphasis link-offset-2 link-underline-opacity-0 link-underline-opacity-75-hover" href="{{ path ('app_selectSousRubrique' , {id: rubrique.id} ) }}">
 							<div class="card-img-overlay">
-								<h5 class="card-title text-light">{{ rubrique.nomRubrique | upper }}</h5>
+								<h5 class="card-title text-light text-center bg-dark rounded-2">{{ rubrique.nomRubrique | upper }}</h5>
 							</div>
 						</a>
 					</div>
@@ -25,7 +25,7 @@
 
 		<div class="row mx-auto justify-content-center">
 
-			<h2 class="fs-1 col-12 ms-2 mt-4 text-light justify-content-center">Nos meilleurs ventes :</h2>
+			<div class="fs-1 h-2 col-12 ms-2 mt-4 text-light text-center">Nos meilleurs ventes :</div>
 
 
 			<div id="carouselExampleAutoplaying" class="carousel slide my-3 col-12 col-md-9" data-bs-ride="carousel">
