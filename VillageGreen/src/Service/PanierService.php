@@ -8,16 +8,24 @@ use App\Entity\Utilisateur;
 use App\Repository\ProduitRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Bundle\SecurityBundle\Security;
 
 class PanierService
 {
     private $requestStack;
     private $ProduitRepo;
+    private $security;
 
-    public function __construct(RequestStack $requestStack,ProduitRepository $ProduitRepo)
+    public function __construct(RequestStack $requestStack,ProduitRepository $ProduitRepo,Security $security)
     {
         $this->requestStack = $requestStack; // Gère la requête HTTP, y compris la session
         $this->ProduitRepo= $ProduitRepo; // Repository pour accéder aux Produits
+        $this->security = $security;
+    }
+
+    public function getUser(): ?Utilisateur
+    {
+        return $this->security->getUser();
     }
    
         /**
@@ -66,11 +74,13 @@ class PanierService
 
             $panier = $this->ShowPanier();  // Récupère le panier actuel
             $total = 0;
+            $user = $this->getUser();
     
             // Parcourt chaque élément du panier et calcule le total en multipliant prix et quantité
             foreach($panier as $id => $quantite){
                 $Produit = $this->ProduitRepo->find($id); // Cherche le Produit par son ID
-                $total += $Produit->getPrixAchatProduit() * $quantite; // Additionne le total
+                $prixProduit = $Produit->getPrixAchatProduit() + ( ('0.' . $user->getCoefficientVente()) * $Produit->getPrixAchatProduit() );
+                $total += $prixProduit * $quantite; // Additionne le total
             }
 
             return $total;  // Retourne le total du panier

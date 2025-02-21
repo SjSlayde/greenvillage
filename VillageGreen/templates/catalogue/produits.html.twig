@@ -13,30 +13,32 @@
 
 			{% for produit in produits %}
 
-				<div class="card bg-dark" style="width: 100vw; height: 80vh;">
-					<div class="row g-0">
-						{% if compteur % 2 == 0 %}
-							<div class="col-6">
-								<img src="{{ asset ('images/produits/' ~ produit.nomImage ) }}" class="img-fluid rounded object-fit-cover" alt="{{ produit.nomProduit }}" style="width: 100vw; height: 80vh;">
-							</div>
-							<div class="col-6">
-								<div class="card-body text-light">
-									<h5 class="card-title text-center">{{ produit.nomProduit | upper }}</h5>
-									<p class="card-text text-center">{{ produit.descriptionLong }}</p>
+				<div class="card bg-dark g-0" style="width: 100vw; height: 70vh;">
+					<a class="link-body-emphasis link-offset-2 link-underline-opacity-0 link-underline-opacity-75-hover" href="{{ path ('app_detailProduit' , {id: produit.id} ) }}">
+						<div class="row g-0">
+							{% if compteur % 2 == 0 %}
+								<div class="col-6">
+									<img src="{{ asset ('images/produits/' ~ produit.nomImage ) }}" class="img-fluid rounded object-fit-cover" alt="{{ produit.nomProduit }}" style="width: 100vw; height: 70vh;">
 								</div>
-							</div>
-						{% else %}
-							<div class="col-6">
-								<div class="card-body text-light">
-									<h5 class="card-title text-center">{{ produit.nomProduit | upper }}</h5>
-									<p class="card-text text-center">{{ produit.descriptionLong }}</p>
+								<div class="col-6">
+									<div class="card-body text-light">
+										<h5 class="card-title text-center">{{ produit.nomProduit | upper }}</h5>
+										<p class="card-text text-center">{{ produit.descriptionLong }}</p>
+									</div>
 								</div>
-							</div>
-							<div class="col-6">
-								<img src="{{ asset ('images/produits/' ~ produit.nomImage ) }}" class="img-fluid rounded object-fit-cover" alt="{{ produit.nomProduit }}" style="width: 100vw; height: 80vh;">
-							</div>
-						{% endif %}
-					</div>
+							{% else %}
+								<div class="col-6">
+									<div class="card-body text-light">
+										<h5 class="card-title text-center">{{ produit.nomProduit | upper }}</h5>
+										<p class="card-text text-center">{{ produit.descriptionLong }}</p>
+									</div>
+								</div>
+								<div class="col-6">
+									<img src="{{ asset ('images/produits/' ~ produit.nomImage ) }}" class="img-fluid rounded object-fit-cover" alt="{{ produit.nomProduit }}" style="width: 100vw; height: 70vh;">
+								</div>
+							{% endif %}
+						</div>
+					</a>
 				</div>
 
 				{% set compteur = compteur + 1 %}

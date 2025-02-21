@@ -114,4 +114,14 @@ class CatalogueController extends AbstractController
             'produits' => $produits,
         ]);
     }
+
+    #[Route('/produit/{id}', name: 'app_detailProduit', requirements: ['id' => '\d+'])]
+    public function DetailProduits(int $id): Response
+    {
+        $produit = $this->produitRepo->find($id);
+
+        return $this->render('catalogue/detailproduit.html.twig', [
+            'produit' => $produit,
+        ]);
+    }
 }

@@ -18,7 +18,6 @@
 			<div class="col-md-9 col ">
 
 				<table class="table table-hover">
-
 					<thead>
 
 						<tr>
@@ -36,13 +35,15 @@
 
 						{% for element in dataPanier %}
 
+						{% set prixVente = (element.Produit.prixAchatProduit + ( ('0.' ~ app.user.coefficientVente) * element.Produit.prixAchatProduit) | number_format(2)) %}
+
 							<tr>
 								<td class="text-center align-middle"><img src="{{ asset ('images/produits/' ~ element.Produit.nomImage) }}" alt="{{ element.Produit.nomProduit }}-food" class="d-none d-md-block img-fluid rounded object-fit-cover" style="height: 200px;"></td>
 								<td class="text-center align-middle">{{ element.Produit.nomProduit }}</td>
-								<td class="text-center align-middle">{{ element.Produit.prixAchatProduit }}
+								<td class="text-center align-middle">{{ prixVente }}
 									€</td>
 								<td class="text-center align-middle">{{ element.quantite }}</td>
-								<td class="text-center align-middle">{{ element.Produit.prixAchatProduit * element.quantite }}
+								<td class="text-center align-middle">{{ prixVente * element.quantite }}
 									€</td>
 								<td class="text-md-center align-middle">
 
@@ -105,9 +106,10 @@
 					</thead>
 					<tbody>
 						{% for element in dataPanier %}
+						{% set prixVente = (element.Produit.prixAchatProduit + ( ('0.' ~ app.user.coefficientVente) * element.Produit.prixAchatProduit) | number_format(2)) %}
 
 							<tr>
-								<td class="text-center align-middle">{{ element.Produit.prixAchatProduit}}
+								<td class="text-center align-middle">{{ prixVente }}
 									€</td>
 								<td class="text-center align-middle">
 									x
@@ -127,7 +129,7 @@
 								article
 								{% if dataPanier | length > 1 %}s
 								{% endif %}) :
-								{{ total }}.00 €</td>
+								{{ total | number_format(2)}} €</td>
 						</tr>
 
 						<tr>

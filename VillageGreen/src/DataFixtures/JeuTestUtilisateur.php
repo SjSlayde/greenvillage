@@ -7,11 +7,20 @@ use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use app\Entity\Utilisateur;
 use app\Entity\AffiliationAdresse;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class JeuTestUtilisateur extends Fixture
 {
+
+    private $passwordHasher;
+
+    public function __construct(UserPasswordHasherInterface $passwordHasher){
+        $this->passwordHasher = $passwordHasher;
+    }
+
     public function load(ObjectManager $manager): void
     {
+        
         $utilisateurs = [
             [3, 'Denny', 'Plain', 'nY7!&_4dO,P7G', 'dplain2@google.pl', 20, 'personnel', '0727737577', 'ROLE_ADMIN', 0, 1],
             [12, 'Gale', 'Fulbrook', 'cX4\VGk@,OESGtk', 'gfulbrookb@behance.net', 20, 'personnel', '0737595866', 'ROLE_ADMIN', 0, 1],
@@ -29,7 +38,13 @@ class JeuTestUtilisateur extends Fixture
             $utilisateur = new Utilisateur();
             $utilisateur->setNom($nom);
             $utilisateur->setPrenom($prenom);
-            $utilisateur->setPassword($password);
+
+            $hashedPassword = $this->passwordHasher->hashPassword(
+                $utilisateur,
+                $password
+            );
+
+            $utilisateur->setPassword($hashedPassword);
             $utilisateur->setEmail($email);
             $utilisateur->setCoefficientVente($coefficientVente);
             $utilisateur->setType($type);

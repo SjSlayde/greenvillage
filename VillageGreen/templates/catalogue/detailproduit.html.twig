@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	{{ produit.nomProduit }}
+{% endblock %}
+
+{% block body %}
+	<div class="container-fluid g-md-0">
+
+		<div class="row mx-auto justify-content-center my-5">
+
+			<div class="card bg-dark g-0" style="width: 40vw; height: auto;">
+				<div class="row g-0">
+					<div class="col-6">
+						<img src="{{ asset ('images/produits/' ~ produit.nomImage ) }}" class="img-fluid rounded" alt="{{ produit.nomProduit }}" style="width: 40vw; height: auto;">
+					</div>
+					<div class="col-6">
+						<div class="card-body text-light">
+							<h5 class="card-title text-center">{{ produit.nomProduit | upper }}</h5>
+							<p class="card-text text-center">{{ produit.descriptionLong }}</p>
+							{% if app.user %}
+								<p class="card-text text-center">{{ produit.prixAchatProduit + ( ('0.' ~ app.user.coefficientVente) * produit.prixAchatProduit) | number_format(2) }}</p>
+							{% else %}
+								<p class="card-text text-center">{{ produit.prixAchatProduit + (0.20 * produit.prixAchatProduit) | number_format(2) }}</p>
+							{% endif %}
+						</div>
+					</div>
+                        <div class="d-flex justify-content-end">
+							<a href="{{ path ("app_ajout_panier" , {id: produit.id}) }}" class="d-none d-md-block btn btn-primary btn-lg position-absolute bottom-0 end-0">Ajouter</a>
+							<a href="{{ path ("app_ajout_panier" , {id: produit.id}) }}" class="d-block d-md-none btn btn-primary btn-lg position-absolute bottom-0 start-0">Ajouter</a>
+						</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+{% endblock %}
+
