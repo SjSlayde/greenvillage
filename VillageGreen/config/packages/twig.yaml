@@ -1,6 +1,9 @@
 twig:
     file_name_pattern: '*.twig'
 
+    globals:
+        panier: '@App\Service\PanierService'
+
 when@test:
     twig:
         strict_variables: true

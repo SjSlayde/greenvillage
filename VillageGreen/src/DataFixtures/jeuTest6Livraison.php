@@ -9,7 +9,7 @@ use App\Entity\Produit;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
-class Zzzz extends Fixture
+class jeuTest6Livraison extends Fixture
 {
     public function load(ObjectManager $manager): void
     {

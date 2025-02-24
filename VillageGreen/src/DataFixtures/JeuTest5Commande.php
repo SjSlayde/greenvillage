@@ -11,7 +11,7 @@ use App\Entity\Utilisateur;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
-class JeuTestzCommande extends Fixture
+class JeuTest5Commande extends Fixture
 {
     public function load(ObjectManager $manager): void
     {

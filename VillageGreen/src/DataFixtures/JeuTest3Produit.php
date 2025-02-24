@@ -10,7 +10,7 @@ use App\Entity\SousRubrique;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
-class JeuTestProduit extends Fixture
+class JeuTest3Produit extends Fixture
 {
     public function load(ObjectManager $manager): void
     {

@@ -6,7 +6,7 @@ use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use App\Entity\Adresse;
 
-class JeuTestAdresse extends Fixture
+class JeuTest1Adresse extends Fixture
 {
     public function load(ObjectManager $manager): void
     {

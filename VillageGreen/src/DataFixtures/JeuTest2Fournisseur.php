@@ -8,7 +8,7 @@ use App\Repository\AdresseRepository;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
-class JeuTestFournisseur extends Fixture
+class JeuTest2Fournisseur extends Fixture
 {
     public function load(ObjectManager $manager): void
     {

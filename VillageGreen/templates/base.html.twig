@@ -4,10 +4,10 @@
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<title>
-			{% block title %}Welcome!
+			{% block title %}VillageGreen
 			{% endblock %}
 		</title>
-		<link rel="shortcut icon" type="image/png" href="{{ asset ('img/the_district_brand/favicon.png')}}"/>
+		<link rel="shortcut icon" type="image/png" href=""/>
 		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.5.0/font/bootstrap-icons.min.css"> {% block stylesheets %}{% endblock %}
 
@@ -43,11 +43,13 @@
 					<li class="nav-item px-5">
 						<a class="textnav nav-link {{ app.current_route == 'app_contact' ? 'active' : ''}}" href="" title="contact">Contact</a>
 					</li>
+
+					
 					<li class="navbar-brand d-md-none d-block px-5">
 						<a href="" class="btn btn-success position-relative">
 							<i class="bi bi-cart"></i>
 							<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-								{# {{ panier.getQuantite }} #}
+								{{ panier.getQuantite }}
 								<span class="visually-hidden"></span>
 							</span>
 						</a>
@@ -57,6 +59,52 @@
 
 			</div>
 		</div>
+
+	<div class="justify-content-end d-none d-md-block">
+			<ul class="navbar-nav">
+				{% if app.user %}
+
+					{% if is_granted('ROLE_CLIENT') %}
+						<li class="nav-item px-4">
+							<a class="textnav nav-link {{ app.current_route == 'app_utilisateur' ? 'active' : ''}}" href="{{ path ('app_utilisateur', {nom: app.user.nom,prenom: app.user.prenom}) }}" title="user">{{ app.user.nom }}</a>
+						</li>
+					{% endif %}
+
+					{% if is_granted('ROLE_GESTION') %}
+						<li class="nav-item px-4">
+							<a class="textnav nav-link {{ app.current_route == 'app_gestion' ? 'active' : ''}}" href="{{ path ('app_gestion') }}" title="gestion">Gestion</a>
+						</li>
+					{% endif %}
+
+					<li class="nav-item px-4">
+						<a class="textnav nav-link {{ app.current_route == 'app_logout' ? 'active' : ''}}" href="{{ path ('app_logout') }}" title="logout">Deconnexion</a>
+					</li>
+
+				{% else %}
+
+					<li class="nav-item ms-md-5 px-4">
+						<a class="textnav nav-link {{ app.current_route == 'app_login' ? 'active' : ''}}" href="{{ path ('app_login') }}" title="contact">Connexion</a>
+					</li>
+
+					<li class="nav-item px-4">
+						<a class="textnav nav-link {{ app.current_route == 'app_register' ? 'active' : ''}}" href="{{ path ('app_register') }}" title="contact">Nouvelle utilisateur</a>
+					</li>
+
+				{% endif %}
+
+				<li class="navbar-brand">
+					<a href="{{ path ("app_panier") }}" class="btn btn-success position-relative">
+						<i class="bi bi-cart"></i>
+						<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+							{{ panier.getQuantite }}
+							<span class="visually-hidden"></span>
+						</span>
+					</a>
+				</li>
+			</ul>
+		</div>
+	</nav>
+
 	</nav>
 	<div id="parent">
 		<div id="banniere" class="row g-0">
@@ -75,7 +123,12 @@
 		<div class="d-flex">
 			{# {% include 'partiales/flash.html.twig' %} #}
 		</div>
+
+		
 		{% block body %}{% endblock %}
+
+
+
 
 		{% block footer %}
 
