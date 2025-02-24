@@ -70,7 +70,7 @@ class PanierService
      *
      * @return int
      */
-    public function getTotal(): int {
+    public function getTotal(): float {
 
             $panier = $this->ShowPanier();  // Récupère le panier actuel
             $total = 0;
@@ -79,8 +79,13 @@ class PanierService
             // Parcourt chaque élément du panier et calcule le total en multipliant prix et quantité
             foreach($panier as $id => $quantite){
                 $Produit = $this->ProduitRepo->find($id); // Cherche le Produit par son ID
-                $prixProduit = $Produit->getPrixAchatProduit() + ( ('0.' . $user->getCoefficientVente()) * $Produit->getPrixAchatProduit() );
-                $total += $prixProduit * $quantite; // Additionne le total
+                if ($user != null){
+                    $coefficientVente = (float) ('0.' . $user->getCoefficientVente());
+                } else {
+                    $coefficientVente = 0.20;   // Valeur par défaut
+                }
+                $prixProduit = round($Produit->getPrixAchatProduit() + $coefficientVente * $Produit->getPrixAchatProduit(), 2 );
+                $total += round($prixProduit * $quantite, 2); // Additionne le total
             }
 
             return $total;  // Retourne le total du panier
