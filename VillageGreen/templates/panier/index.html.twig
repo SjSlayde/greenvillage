@@ -50,7 +50,7 @@
 							<tr>
 								<td class="text-center align-middle"><img src="{{ asset ('images/produits/' ~ element.Produit.nomImage) }}" alt="{{ element.Produit.nomProduit }}-food" class="d-none d-md-block img-fluid rounded object-fit-cover" style="height: 135px;"></td>
 								<td class="text-center align-middle">{{ element.Produit.nomProduit }}</td>
-								<td class="text-center align-middle">{{ prixVente }}
+								<td class="text-center align-middle">{{ prixVente | number_format(2, '.',' ') }}
 									€</td>
 								<td class="text-center align-middle">{{ element.quantite }}</td>
 								<td class="text-center align-middle">{{ (prixVente * element.quantite) | number_format(2 , '.', ' ') }}
@@ -129,7 +129,7 @@
 						
 							{% set prixVente = (element.Produit.prixAchatProduit + ( coefficient * element.Produit.prixAchatProduit)) | number_format(2, '.',' ') %}
 							<tr>
-								<td class="text-center align-middle">{{ prixVente }}
+								<td class="text-center align-middle">{{ prixVente | number_format(2, '.',' ') }}
 									€</td>
 								<td class="text-center align-middle">
 									x

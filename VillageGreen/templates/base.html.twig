@@ -111,18 +111,15 @@
 			<img class="col-12 img-fluid object-fit-cover" src="{{ asset ('images/brand/banniereVG2.png') }}" style="width: 100vw; height: 50vh;" alt='banniere'>
 		</div>
 		<div id="recherche" class="d-none d-sm-flex position-relative">
-			<form class="col-12" action="" role="search" method="GET">
+			<form class="col-12" action="{{ path ('app_recherche') }}" role="search" method="GET">
 				<input class="form-control me-2" type="search" name="recherche" placeholder="Recherche..." aria-label="Search">
 			</form>
-			<div class="position-absolute bottom-0 col-12">
-				{# {% include 'partiales/flash.html.twig' %} #}
+			<div class="position-absolute bottom-0 text-center col-12">
+				{% include 'partiales/flash.html.twig' %}
 			</div>
 		</div>
 	</div>
 	<body>
-		<div class="d-flex">
-			{# {% include 'partiales/flash.html.twig' %} #}
-		</div>
 
 		
 		{% block body %}{% endblock %}
