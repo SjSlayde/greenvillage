@@ -26,16 +26,23 @@ final class ProfilController extends AbstractController
         /** @var \App\Entity\Utilisateur $user */
         $user = $this->getUser();
         $affilLivs = $this->affiliationAdressesrepo->findBy( ['client' => $user, 'type' => 'adLivraison']);
+        $adressesFacs = $this->affiliationAdressesrepo->findBy( ['client' => $user, 'type' => 'adFacturation']);
         
         $adressesLiv = [];
+        $adressesFac = [];
 
         foreach ($affilLivs  as $adresseLiv) {
             array_push($adressesLiv,$adresseLiv->getAdresse());
         }
 
+        foreach ($adressesFacs  as $adresseFac) {
+            array_push($adressesFac,$adresseFac->getAdresse());
+        }
+
         return $this->render('profil/index.html.twig', [
             'user' => $user,
-            'adresses' => $adressesLiv
+            'adressesLiv' => $adressesLiv,
+            'adressesFac' => $adressesFac
         ]);
 }
 }
