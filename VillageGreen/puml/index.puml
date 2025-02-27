@@ -1,0 +1,152 @@
+@startuml
+class DetailLiv {
+	**id : int**
+	<color:#0000dd>produit : Produit</color>
+	<color:#0000dd>livraison : Livraison</color>
+	quantiteLiv : int
+}
+
+class Contact {
+	**id : int**
+	<color:#0000dd>utilisateur : Utilisateur</color>
+	Message : string
+	date : DateTimeInterface
+}
+
+class Commande {
+	**id : int**
+	dateCommande : DateTimeInterface
+	numFacturation : string
+	commandeTotalHT : string
+	commandeTotalTTC : string
+	reduction : string
+	commandeTotalReduction : string
+	moyenPaiement : string
+	statut : string
+	paiementValide : bool
+	<color:#0000dd>contients : Contient[]</color>
+	<color:#0000dd>refClient : Utilisateur</color>
+	<color:#0000dd>livraisons : Livraison[]</color>
+}
+
+class Avoir {
+	<color:#0000dd>produit : Produit</color>
+	<color:#0000dd>sousRubrique : SousRubrique</color>
+}
+
+class Produit {
+	**id : int**
+	nomProduit : string
+	prixAchatProduit : string
+	descriptionCourt : string
+	descriptionLong : string
+	nomImage : string
+	stock : int
+	actif : bool
+	<color:#0000dd>avoirs : Avoir[]</color>
+	<color:#0000dd>contients : Contient[]</color>
+	<color:#0000dd>detailLivs : DetailLiv[]</color>
+	<color:#0000dd>fournisseur : Fournisseur</color>
+	refProduit : string
+}
+
+class Livraison {
+	**id : int**
+	dateLivraison : DateTimeInterface
+	transporteur : string
+	urlSuivi : string
+	<color:#0000dd>detailLivs : DetailLiv[]</color>
+	<color:#0000dd>commande : Commande</color>
+}
+
+class AffiliationAdresse {
+	<color:#0000dd>client : Utilisateur</color>
+	<color:#0000dd>adresse : Adresse</color>
+	type : string
+}
+
+class SousRubrique {
+	**id : int**
+	nomSousRubrique : string
+	imageSousRubrique : string
+	<color:#0000dd>Rubrique : Rubrique</color>
+	<color:#0000dd>avoirs : Avoir[]</color>
+}
+
+class Rubrique {
+	**id : int**
+	nomRubrique : string
+	imageRubrique : string
+	<color:#0000dd>sousRubriques : SousRubrique[]</color>
+}
+
+class Fournisseur {
+	**id : int**
+	nomFournisseur : string
+	emailFournisseur : string
+	telephone : string
+	<color:#0000dd>produits : Produit[]</color>
+	<color:#0000dd>adresse : Adresse</color>
+}
+
+class Adresse {
+	**id : int**
+	numeroDeRue : string
+	ville : string
+	codePostal : string
+	nomRue : string
+	complement : string
+	<color:#0000dd>affiliationAdresses : AffiliationAdresse[]</color>
+	<color:#0000dd>fournisseurs : Fournisseur[]</color>
+}
+
+class Contient {
+	<color:#0000dd>produit : Produit</color>
+	<color:#0000dd>commande : Commande</color>
+	quantite : int
+	prixUnitaireHT : string
+	articleTotalHt : string
+	TVA : string
+	articleTotalTtc : string
+}
+
+class Utilisateur {
+	**id : int**
+	email : string
+	roles : array
+	password : string
+	nom : string
+	prenom : string
+	coefficientVente : int
+	type : string
+	telephone : string
+	coefficientReduction : int
+	<color:#0000dd>idCommercial : self</color>
+	<color:#0000dd>utilisateurs : Utilisateur[]</color>
+	<color:#0000dd>affiliationAdresses : AffiliationAdresse[]</color>
+	<color:#0000dd>commandes : Commande[]</color>
+	<color:#0000dd>contacts : Contact[]</color>
+}
+
+DetailLiv "*"--"1" Produit
+DetailLiv "*"--"1" Livraison
+Contact "*"--"1" Utilisateur
+Commande "1"--"*" Contient
+Commande "*"--"1" Utilisateur
+Commande "1"--"*" Livraison
+Avoir "*"--"1" Produit
+Avoir "*"--"1" SousRubrique
+Produit "1"--"*" Contient
+Produit "*"--"1" Fournisseur
+AffiliationAdresse "*"--"1" Utilisateur
+AffiliationAdresse "*"--"1" Adresse
+SousRubrique "*"--"1" Rubrique
+Fournisseur "*"--"1" Adresse
+Utilisateur "*"--"1" Utilisateur
+
+
+hide methods
+
+hide circle
+
+@enduml

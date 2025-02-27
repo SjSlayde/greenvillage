@@ -37,6 +37,16 @@ RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" &&
 # Configure Apache
 COPY apache.conf /etc/apache2/sites-enabled/000-default.conf
 
+# Installer Java, Graphviz et autres dépendances
+RUN apt-get update && apt-get install -y \
+    openjdk-17-jre \
+    graphviz \
+    plantuml \
+    && rm -rf /var/lib/apt/lists/*
+
+# Vérifier l'installation
+RUN java -version && plantuml -version
+
 # Set working directory and permissions
 WORKDIR /var/www
 RUN chmod -R 755 /var/www && \
