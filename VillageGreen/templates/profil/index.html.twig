@@ -12,7 +12,7 @@
 				<button class="btn btn-primary">Ajouter une adresse</button>
 			</a>
 
-			{# <a class="link-body-emphasis link-offset-2 link-underline-opacity-0 link-underline-opacity-75-hover justify-content-center col-4" href="{{ path ('app_newadresse', {nom: app.user.nom,prenom: app.user.prenom}) }}">
+			{# <a class="link-body-emphasis link-offset-2 link-underline-opacity-0 link-underline-opacity-75-hover justify-content-end col-4" href="{{ path ('app_newadresse', {nom: app.user.nom,prenom: app.user.prenom}) }}">
 						        <button class="btn btn-primary">Ajouter un adresse de livraison</button></a> #}
 			<div class="col-12"></div>
 
@@ -27,7 +27,7 @@
 						{{ user.email }}</p>
 					<p class="card-text">Télèphone :
 						{{ user.telephone }}</p>
-					{# <a class="link-body-emphasis link-offset-2 link-underline-opacity-0 link-underline-opacity-75-hover justify-content-center position-absolute top-0 end-0" href="{{ path ('app_editprofil', {nom: app.user.nom,prenom: app.user.prenom}) }}"> #}
+					{# <a class="link-body-emphasis link-offset-2 link-underline-opacity-0 link-underline-opacity-75-hover justify-content-end position-absolute top-0 end-0" href="{{ path ('app_editprofil', {nom: app.user.nom,prenom: app.user.prenom}) }}"> #}
 					<button class="btn btn-primary">Modifier</button>
 					{# </a> #}
 				</div>
@@ -65,7 +65,7 @@
 					</div>
 						{% set compteur = compteur + 1 %}
 				{% else %}
-					<p class='h3 text-center text-light col-11 col-md-4 text-bg-primary my-3'>aucune adresse de livraison enregistrer</p>
+					<p class='h3 text-end text-light col-11 col-md-4 text-bg-primary my-3'>aucune adresse de livraison enregistrer</p>
 				{% endfor %}
 
 {% set compteur = 1 %}
@@ -100,14 +100,14 @@
 					</div>
 						{% set compteur = compteur + 1 %}
 					{% else %}
-						<p class='h3 text-center text-light col-11 col-md-4 text-bg-primary my-3'>aucune adresse de facturation enregistrer</p>
+						<p class='h3 text-end text-light col-11 col-md-4 text-bg-primary my-3'>aucune adresse de facturation enregistrer</p>
 					{% endfor %}
 
 				</div>
 
 				{# <div class="row justify-content-around">
 							<h2 class="col-12">mon Moyen de paiement</h2> #}
-				{# <a class="link-body-emphasis link-offset-2 link-underline-opacity-0 link-underline-opacity-75-hover justify-content-center col-4" href="{{ path ('app_newmoyenpaiement', {nom: app.user.nom,prenom: app.user.prenom}) }}">
+				{# <a class="link-body-emphasis link-offset-2 link-underline-opacity-0 link-underline-opacity-75-hover justify-content-end col-4" href="{{ path ('app_newmoyenpaiement', {nom: app.user.nom,prenom: app.user.prenom}) }}">
 							        <button class="btn btn-primary">Ajouter une carte bancaire</button></a> #}
 
 				{# {% for paiement in user.moyenPaiements %}
@@ -123,17 +123,17 @@
 										<p class="card-text">expiration :
 											{{ paiement.expiration }}</p>
 										<div class="position-absolute top-0 end-0">
-											<a class="link-body-emphasis link-offset-2 link-underline-opacity-0 link-underline-opacity-75-hover justify-content-center" href=" {{ path ('app_editmoyenpaiement', {nom: app.user.nom,prenom: app.user.prenom,id: paiement.id}) }}">
+											<a class="link-body-emphasis link-offset-2 link-underline-opacity-0 link-underline-opacity-75-hover justify-content-end" href=" {{ path ('app_editmoyenpaiement', {nom: app.user.nom,prenom: app.user.prenom,id: paiement.id}) }}">
 												<button class="btn btn-primary">Modifier</button>
 											</a>
-											<a class="link-body-emphasis link-offset-2 link-underline-opacity-0 link-underline-opacity-75-hover justify-content-center" href=" {{ path ('app_suppmoyenpaiement', {nom: app.user.nom,prenom: app.user.prenom,id: paiement.id}) }}">
+											<a class="link-body-emphasis link-offset-2 link-underline-opacity-0 link-underline-opacity-75-hover justify-content-end" href=" {{ path ('app_suppmoyenpaiement', {nom: app.user.nom,prenom: app.user.prenom,id: paiement.id}) }}">
 												<button class="btn btn-danger">Supprimer</button>
 											</a>
 										</div>
 									</div>
 								</div>
 							{% else %}
-								<a class="link-body-emphasis link-offset-2 link-underline-opacity-0 link-underline-opacity-75-hover justify-content-center col-4" href="{{ path ('app_newmoyenpaiement', {nom: app.user.nom,prenom: app.user.prenom}) }}">
+								<a class="link-body-emphasis link-offset-2 link-underline-opacity-0 link-underline-opacity-75-hover justify-content-end col-4" href="{{ path ('app_newmoyenpaiement', {nom: app.user.nom,prenom: app.user.prenom}) }}">
 									<button class="btn btn-primary">Ajouter une carte bancaire</button>
 								</a>
 				
@@ -148,7 +148,7 @@
 							<tr>
 								<th class='text-center'>date de la commande</th>
 								<th class='text-center'>statut</th>
-								<th class='text-center d-none d-md-block'>detail commande</th>
+								<th class='text-center d-none d-md-block'>detail de la commande</th>
 								<th class='text-center'>total</th>
 							</tr>
 						</thead>
@@ -161,22 +161,22 @@
 										{{ commande.statut }}
 									</th>
 
-									<th class='text-start d-none d-md-block'>
+									<th class='d-none d-md-block'>
 										<table class="table">
 											<thead>
 												<tr>
-													<th>Nom</th>
-													<th>Prix</th>
-													<th>quantite</th>
+													<th class='text-start col-7'>Nom</th>
+													<th class='text-center col-3'>Prix</th>
+													<th class='text-end col-2'>quantite</th>
 												</tr>
 											</thead>
 											<tbody>
 												{% for contient in commande.contients  %}
 
 													<tr>
-														<td>{{ contient.produit.nomProduit }}</td>
-														<td>{{ contient.produit.prixAchatProduit }}</td>
-														<td>{{ contient.quantite }}</td>
+														<td class='text-start'>{{ contient.produit.nomProduit }}</td>
+														<td class='text-center'>{{ contient.produit.prixAchatProduit }}</td>
+														<td class='text-end'>{{ contient.quantite }}</td>
 													</tr>
 
 												{% endfor %}
