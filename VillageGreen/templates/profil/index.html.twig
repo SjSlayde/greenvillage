@@ -8,7 +8,7 @@
 		<div class="row justify-content-around">
 			<h2 class="col-8 text-light">Mes informations personnel :</h2>
 
-			<a class="link-body-emphasis link-offset-2 link-underline-opacity-0 link-underline-opacity-75-hover justify-content-end col-4" href="">
+			<a class="link-body-emphasis link-offset-2 link-underline-opacity-0 link-underline-opacity-75-hover justify-content-end col-4" href="{{ path('app_newadresse' , {type: 'livraison',nom:app.user.nom, prenom: app.user.prenom} )}}">
 				<button class="btn btn-primary">Ajouter une adresse</button>
 			</a>
 
