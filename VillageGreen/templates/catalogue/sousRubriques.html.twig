@@ -10,7 +10,7 @@
 			<h2 class="fs-1 col-12 ms-2 mt-4 text-light text-center">Les Sous-Rubriques :</h2>
 
 			{% for sousRubrique in sousRubriques %}
-				<div class='col-4 mb-3'>
+				<div class='col-12 col-sm-6 col-md-4 mb-3'>
 					<div class="card text-bg-dark">
 						<img src="{{ asset ('images/rubriques-sousRubriques/' ~ sousRubrique.imageSousRubrique ) }}" class="card-img-top img-fluid imageRubrique" alt="{{ sousRubrique.nomSousRubrique }}">
 						<a class="link-body-emphasis link-offset-2 link-underline-opacity-0 link-underline-opacity-75-hover" href="{{ path ('app_selectProduits' , {id: sousRubrique.id} ) }}">

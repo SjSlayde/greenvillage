@@ -5,19 +5,23 @@
 {% block body %}
 	<div class="container">
 		<h1 class="my-2 text-light">detail du compte</h1>
-		<div class="row justify-content-around">
-			<h2 class="col-8 text-light">Mes informations personnel :</h2>
+		<div class="row justify-content-start">
 
-			<a class="link-body-emphasis link-offset-2 link-underline-opacity-0 link-underline-opacity-75-hover justify-content-end col-4" href="{{ path('app_newadresse' , {type: 'livraison',nom:app.user.nom, prenom: app.user.prenom} )}}">
-				<button class="btn btn-primary">Ajouter une adresse</button>
-			</a>
+						<div class='my-4 row'>
 
-			{# <a class="link-body-emphasis link-offset-2 link-underline-opacity-0 link-underline-opacity-75-hover justify-content-end col-4" href="{{ path ('app_newadresse', {nom: app.user.nom,prenom: app.user.prenom}) }}">
-						        <button class="btn btn-primary">Ajouter un adresse de livraison</button></a> #}
+				<h2 class="col-8 text-light">Mes informations personnel :</h2>
+
+
+				<a class="link-body-emphasis link-offset-2 link-underline-opacity-0 link-underline-opacity-75-hover justify-content-end col-4" href="{{ path('app_modifier_password')}}">
+					<button class="btn btn-primary">Modifier mot de passe</button>
+				</a>
+
+			</div>
+
 			<div class="col-12"></div>
 
 
-			<div class="card col-11 col-md-4 text-bg-primary my-3">
+			<div class="card col-11 col-md-4 text-bg-primary my-3 mx-md-4">
 				<div class="card-header">Information de contact</div>
 				<div class="card-body">
 					<h5 class="card-title">Nom :
@@ -27,170 +31,198 @@
 						{{ user.email }}</p>
 					<p class="card-text">Télèphone :
 						{{ user.telephone }}</p>
-					{# <a class="link-body-emphasis link-offset-2 link-underline-opacity-0 link-underline-opacity-75-hover justify-content-end position-absolute top-0 end-0" href="{{ path ('app_editprofil', {nom: app.user.nom,prenom: app.user.prenom}) }}"> #}
+					<a class="link-body-emphasis link-offset-2 link-underline-opacity-0 link-underline-opacity-75-hover justify-content-end position-absolute top-0 end-0" href="{{ path ('app_modifier_info') }}">
 					<button class="btn btn-primary">Modifier</button>
-					{# </a> #}
+					</a>
 				</div>
 			</div>
-			
-{% set compteur = 1 %}
+			<div class="col-12"></div>
+
+			<div class='my-4 row'>
+
+				<h2 class='col-8 text-light'>Adresses de livraisons :
+				</h2>
+
+				<a class="link-body-emphasis link-offset-2 link-underline-opacity-0 link-underline-opacity-75-hover justify-content-end col-4" href="{{ path('app_newadresse' , {type: 'livraison'} )}}">
+					<button class="btn btn-primary">Ajouter une adresse de livraison</button>
+				</a>
+
+			</div>
+
+			{% set compteur = 1 %}
 			{% for adresse in adressesLiv %}
 
-					<div class="card" style="width: 18rem;">
-						<div class="card-body">
-							<h5 class="card-title">Adresse de livraison {{ compteur }}</h5>
-						</div>
-						<ul class="list-group list-group-flush">
-							<li class="list-group-item">Numéro de rue :
-									{{ adresse.numeroDeRue }}</li>
-							<li class="list-group-item">Adresse :
-									{{ adresse.nomRue }}</li>
-							<li class="list-group-item">Ville :
-								{{ adresse.ville }}</li>
-							<li class="list-group-item">Code postal :
-								{{ adresse.codePostal }}</li>
-								<li class="list-group-item">
-									Information supplémentaire :
-							{% if adresse.complement != null %}
-									{{ adresse.complement }}
-									{% else %}
-										Aucune informations renseignées
-							{% endif %}
-								</li>
-						</ul>
-						<div class="card-body text-end">
-							<a href="#" class="card-link">Modifier</a>
-							<a href="#" class="card-link">Supprimer</a>
-						</div>
+				<div class="card col-12 col-sm-6 col-md-3 mx-md-4">
+					<div class="card-body">
+						<h5 class="card-title">Adresse de livraison
+							{{ compteur }}</h5>
 					</div>
-						{% set compteur = compteur + 1 %}
-				{% else %}
-					<p class='h3 text-end text-light col-11 col-md-4 text-bg-primary my-3'>aucune adresse de livraison enregistrer</p>
-				{% endfor %}
-
-{% set compteur = 1 %}
-				{% for adresse in adressesFac %}
-
-					<div class="card" style="width: 18rem;">
-						<div class="card-body">
-							<h5 class="card-title">Adresse de facturation {{ compteur }}</h5>
-						</div>
-						<ul class="list-group list-group-flush">
-							<li class="list-group-item">Numéro de rue :
-									{{ adresse.numeroDeRue }}</li>
-							<li class="list-group-item">Adresse :
-									{{ adresse.nomRue }}</li>
-							<li class="list-group-item">Ville :
-								{{ adresse.ville }}</li>
-							<li class="list-group-item">Code postal :
-								{{ adresse.codePostal }}</li>
-								<li class="list-group-item">
-									Information supplémentaire :
+					<ul class="list-group list-group-flush">
+						<li class="list-group-item">Numéro de rue :
+							{{ adresse.numeroDeRue }}</li>
+						<li class="list-group-item">Adresse :
+							{{ adresse.nomRue }}</li>
+						<li class="list-group-item">Ville :
+							{{ adresse.ville }}</li>
+						<li class="list-group-item">Code postal :
+							{{ adresse.codePostal }}</li>
+						<li class="list-group-item">
+							Information supplémentaire :
 							{% if adresse.complement != null %}
-									{{ adresse.complement }}
-									{% else %}
-										Aucune informations renseignées
-							{% endif %}
-								</li>
-						</ul>
-						<div class="card-body text-end">
-							<a href="#" class="card-link">Modifier</a>
-							<a href="#" class="card-link">Supprimer</a>
-						</div>
-					</div>
-						{% set compteur = compteur + 1 %}
-					{% else %}
-						<p class='h3 text-end text-light col-11 col-md-4 text-bg-primary my-3'>aucune adresse de facturation enregistrer</p>
-					{% endfor %}
-
-				</div>
-
-				{# <div class="row justify-content-around">
-							<h2 class="col-12">mon Moyen de paiement</h2> #}
-				{# <a class="link-body-emphasis link-offset-2 link-underline-opacity-0 link-underline-opacity-75-hover justify-content-end col-4" href="{{ path ('app_newmoyenpaiement', {nom: app.user.nom,prenom: app.user.prenom}) }}">
-							        <button class="btn btn-primary">Ajouter une carte bancaire</button></a> #}
-
-				{# {% for paiement in user.moyenPaiements %}
-				
-								<div class="card col-11 col-md-4 text-bg-primary my-3">
-									<div class="card-header">Moyen de paiement
-									</div>
-									<div class="card-body">
-										<h5 class="card-title">Titulaire :
-											{{ paiement.NomTitulaire | upper }}</h5>
-										<p class="card-text">Numeros :
-											{{ paiement.numerosdecarte }}</p>
-										<p class="card-text">expiration :
-											{{ paiement.expiration }}</p>
-										<div class="position-absolute top-0 end-0">
-											<a class="link-body-emphasis link-offset-2 link-underline-opacity-0 link-underline-opacity-75-hover justify-content-end" href=" {{ path ('app_editmoyenpaiement', {nom: app.user.nom,prenom: app.user.prenom,id: paiement.id}) }}">
-												<button class="btn btn-primary">Modifier</button>
-											</a>
-											<a class="link-body-emphasis link-offset-2 link-underline-opacity-0 link-underline-opacity-75-hover justify-content-end" href=" {{ path ('app_suppmoyenpaiement', {nom: app.user.nom,prenom: app.user.prenom,id: paiement.id}) }}">
-												<button class="btn btn-danger">Supprimer</button>
-											</a>
-										</div>
-									</div>
-								</div>
+								{{ adresse.complement }}
 							{% else %}
-								<a class="link-body-emphasis link-offset-2 link-underline-opacity-0 link-underline-opacity-75-hover justify-content-end col-4" href="{{ path ('app_newmoyenpaiement', {nom: app.user.nom,prenom: app.user.prenom}) }}">
-									<button class="btn btn-primary">Ajouter une carte bancaire</button>
-								</a>
-				
-							{% endfor %} #}
-
-				{# </div> #}
-
-					<div class="row"> <h2 class="col-12">Mes commandes</h2>
-
-					<table class="col-md-12 col-11 table table-striped-columns">
-						<thead>
-							<tr>
-								<th class='text-center'>date de la commande</th>
-								<th class='text-center'>statut</th>
-								<th class='text-center d-none d-md-block'>detail de la commande</th>
-								<th class='text-center'>total</th>
-							</tr>
-						</thead>
-						<tbody>
-							{% for commande in user.commandes  %}
-								<tr>
-									<th class='text-center align-middle'>{{ commande.DateCommande | date("d/m/Y") }}</th>
-
-									<th class='text-center align-middle'>
-										{{ commande.statut }}
-									</th>
-
-									<th class='d-none d-md-block'>
-										<table class="table">
-											<thead>
-												<tr>
-													<th class='text-start col-7'>Nom</th>
-													<th class='text-center col-3'>Prix</th>
-													<th class='text-end col-2'>quantite</th>
-												</tr>
-											</thead>
-											<tbody>
-												{% for contient in commande.contients  %}
-
-													<tr>
-														<td class='text-start'>{{ contient.produit.nomProduit }}</td>
-														<td class='text-center'>{{ contient.produit.prixAchatProduit }}</td>
-														<td class='text-end'>{{ contient.quantite }}</td>
-													</tr>
-
-												{% endfor %}
-											</tbody>
-										</table>
-									</th>
-
-									<th class='text-center align-middle'>{{ commande.commandeTotalReduction }}</th>
-
-								</tr>
-							{% endfor %}
-						</tbody>
-					</table>
-
+								Aucune informations renseignées
+							{% endif %}
+						</li>
+					</ul>
+					<div class="card-body text-end">
+						<a href="{{ path('app_modifieAdresse' , {id: adresse.id} )}}" class="card-link">Modifier</a>
+						<a href="{{ path('app_suppadresse' , {type: 'adLivraison',id: adresse.id} )}}" class="card-link">Supprimer</a>
+					</div>
 				</div>
+				{% set compteur = compteur + 1 %}
+			{% else %}
+				<p class='h3 text-end text-light col-11 col-md-4 text-bg-primary my-3'>aucune adresse de livraison enregistrer</p>
+			{% endfor %}
+
+			<div class="col-12"></div>
+			<div class='my-4 row'>
+
+				<h2 class='col-8 text-light'>Adresses de facturations :
+				</h2>
+
+				<a class="link-body-emphasis link-offset-2 link-underline-opacity-0 link-underline-opacity-75-hover justify-content-end col-4" href="{{ path('app_newadresse' , {type: 'livraison'} )}}">
+					<button class="btn btn-primary">Ajouter une adresse de facturation</button>
+				</a>
+
 			</div>
-		{% endblock %}
+
+
+			{% set compteur = 1 %}
+			{% for adresse in adressesFac %}
+
+				<div class="card col-12 col-sm-6 col-md-3 mx-md-4">
+					<div class="card-body">
+						<h5 class="card-title">Adresse de facturation
+							{{ compteur }}</h5>
+					</div>
+					<ul class="list-group list-group-flush">
+						<li class="list-group-item">Numéro de rue :
+							{{ adresse.numeroDeRue }}</li>
+						<li class="list-group-item">Adresse :
+							{{ adresse.nomRue }}</li>
+						<li class="list-group-item">Ville :
+							{{ adresse.ville }}</li>
+						<li class="list-group-item">Code postal :
+							{{ adresse.codePostal }}</li>
+						<li class="list-group-item">
+							Information supplémentaire :
+							{% if adresse.complement != null %}
+								{{ adresse.complement }}
+							{% else %}
+								Aucune informations renseignées
+							{% endif %}
+						</li>
+					</ul>
+					<div class="card-body text-end">
+						<a href="{{ path('app_modifieAdresse' , {id: adresse.id} )}}" class="card-link">Modifier</a>
+						<a href="{{ path('app_suppadresse' , {type: 'adFacturation',id: adresse.id} )}}" class="card-link">Supprimer</a>
+					</div>
+				</div>
+				{% set compteur = compteur + 1 %}
+			{% else %}
+				<p class='h3 text-end text-light col-11 col-md-4 text-bg-primary my-3'>aucune adresse de facturation enregistrer</p>
+			{% endfor %}
+
+		</div>
+
+		{# <div class="row justify-content-around">
+									<h2 class="col-12">mon Moyen de paiement</h2> #}
+		{# <a class="link-body-emphasis link-offset-2 link-underline-opacity-0 link-underline-opacity-75-hover justify-content-end col-4" href="{{ path ('app_newmoyenpaiement') }}">
+									        <button class="btn btn-primary">Ajouter une carte bancaire</button></a> #}
+
+		{# {% for paiement in user.moyenPaiements %}
+						
+										<div class="card col-11 col-md-4 text-bg-primary my-3">
+											<div class="card-header">Moyen de paiement
+											</div>
+											<div class="card-body">
+												<h5 class="card-title">Titulaire :
+													{{ paiement.NomTitulaire | upper }}</h5>
+												<p class="card-text">Numeros :
+													{{ paiement.numerosdecarte }}</p>
+												<p class="card-text">expiration :
+													{{ paiement.expiration }}</p>
+												<div class="position-absolute top-0 end-0">
+													<a class="link-body-emphasis link-offset-2 link-underline-opacity-0 link-underline-opacity-75-hover justify-content-end" href=" {{ path ('app_editmoyenpaiement', {nom: app.user.nom,prenom: app.user.prenom,id: paiement.id}) }}">
+														<button class="btn btn-primary">Modifier</button>
+													</a>
+													<a class="link-body-emphasis link-offset-2 link-underline-opacity-0 link-underline-opacity-75-hover justify-content-end" href=" {{ path ('app_suppmoyenpaiement', {nom: app.user.nom,prenom: app.user.prenom,id: paiement.id}) }}">
+														<button class="btn btn-danger">Supprimer</button>
+													</a>
+												</div>
+											</div>
+										</div>
+									{% else %}
+										<a class="link-body-emphasis link-offset-2 link-underline-opacity-0 link-underline-opacity-75-hover justify-content-end col-4" href="{{ path ('app_newmoyenpaiement') }}">
+											<button class="btn btn-primary">Ajouter une carte bancaire</button>
+										</a>
+						
+									{% endfor %} #}
+
+		{# </div> #}
+
+			<div class="row my-4"> <h2 class="col-12 text-light mb-3">Mes commandes :</h2>
+
+			<table class="col-md-12 col-11 table table-striped-columns">
+				<thead>
+					<tr>
+						<th class='text-center'>date de la commande</th>
+						<th class='text-center'>statut</th>
+						<th class='text-center d-none d-md-block'>detail de la commande</th>
+						<th class='text-center'>total</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for commande in user.commandes  %}
+						<tr>
+							<th class='text-center align-middle'>{{ commande.DateCommande | date("d/m/Y") }}</th>
+
+							<th class='text-center align-middle'>
+								{{ commande.statut }}
+							</th>
+
+							<th class='d-none d-md-block'>
+								<table class="table">
+									<thead>
+										<tr>
+											<th class='text-start col-7'>Nom</th>
+											<th class='text-center col-3'>Prix</th>
+											<th class='text-end col-2'>quantite</th>
+										</tr>
+									</thead>
+									<tbody>
+										{% for contient in commande.contients  %}
+
+											<tr>
+												<td class='text-start'>{{ contient.produit.nomProduit }}</td>
+												<td class='text-center'>{{ contient.produit.prixAchatProduit }}</td>
+												<td class='text-end'>{{ contient.quantite }}</td>
+											</tr>
+
+										{% endfor %}
+									</tbody>
+								</table>
+							</th>
+
+							<th class='text-center align-middle'>{{ commande.commandeTotalReduction }}</th>
+
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+
+		</div>
+	</div>
+{% endblock %}
+
