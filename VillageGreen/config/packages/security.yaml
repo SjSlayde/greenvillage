@@ -35,12 +35,18 @@ security:
 
             # https://symfony.com/doc/current/security/impersonating_user.html
             # switch_user: true
-
+    role_hierarchy:
+        ROLE_CLIENT: ROLE_USER   
+        ROLE_COMMER: ROLE_CLIENT
+        ROLE_GESTION: ROLE_COMMER
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        # - { path: ^/admin, roles: ROLE_ADMIN }
-        # - { path: ^/profile, roles: ROLE_USER }
+         - { route: "app_gestion", roles: ROLE_COMMER }
+         - { route: "app_gestion_rubriques", roles: ROLE_GESTION }
+         - { route: "app_gestion_sousrubriques", roles: ROLE_GESTION }
+         - { route: "app_gestion_produits", roles: ROLE_GESTION }
+         - { route: "app_gestion_utilisateurs", roles: ROLE_COMMER }
 
 when@test:
     security:
