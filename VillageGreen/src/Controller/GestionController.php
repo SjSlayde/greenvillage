@@ -2,11 +2,15 @@
 
 namespace App\Controller;
 
+use App\Entity\Produit;
+use App\Form\ProduitFormType;
 use App\Repository\ProduitRepository;
 use App\Repository\RubriqueRepository;
 use App\Repository\SousRubriqueRepository;
 use App\Repository\UtilisateurRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -33,7 +37,7 @@ final class GestionController extends AbstractController
 
 
     #[Route('/gestion', name: 'app_gestion')]
-    public function index(): Response
+    public function gestiopn(): Response
     {
         $produits = $this->produitRepo->findAll();
         $sousRubriques = $this->sousRubriqueRepo->findAll();
@@ -46,5 +50,25 @@ final class GestionController extends AbstractController
             'sousRubriques' => $sousRubriques,
             'utilisateurs' => $utilisateurs,
         ]);
+    }
+
+    #[Route('/gestion/produit/{id}', name: 'app_gestion_produit_modification')]
+    public function gestionProduitModification(Produit $produit, Request $request, EntityManagerInterface $em): Response
+    {   
+        $form = $this->createForm(ProduitFormType::class, $produit);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $em->persist($produit);
+            $em->flush();
+
+            $this->addFlash('success', 'modification effectuée');
+            return $this->redirectToRoute('app_gestion');
+        } else {
+            return $this->render('gestion/formProduit.html.twig', [
+                'form' => $form
+            ]);
+        }
     }
 }

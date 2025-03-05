@@ -67,9 +67,9 @@ final class ProfilController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $user = $this->getUser();
             $detailAdresse = new AffiliationAdresse();
-            if ($type = 'livraison') {
+            if ($type == 'livraison') {
                 $detailAdresse->setType('adLivraison');
-            } elseif ($type = 'facturation') {
+            } elseif ($type =='facturation') {
                 $detailAdresse->setType('adFacturation');
             } else {
                 $this->addFlash('warning', 'Votre adresse de livraison n\'a pas été ajoutée a cause d\'une erreur');
