@@ -9,7 +9,8 @@ services:
   web:
     build: .
     ports:
-      - 81:80
+      - 81:8000
+    # user: ${USER_ID}:${GROUP_ID}
     volumes:
       - .:/var/www
 

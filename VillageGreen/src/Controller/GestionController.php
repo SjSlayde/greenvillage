@@ -60,6 +60,11 @@ final class GestionController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
+            $file = $form->get('image')->getData();
+            // $file->getClientOriginalName();
+            $file->move($this->getParameter('kernel.project_dir') . '/assets/images/produits', $file->getClientOriginalName());
+            $produit->setNomImage($file->getClientOriginalName());
+
             $em->persist($produit);
             $em->flush();
 
