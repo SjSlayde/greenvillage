@@ -32,12 +32,21 @@ class ProduitFormType extends AbstractType
         $builder
             ->add('nomProduit', TextType::class, [
                 'label' => 'Nom du produit',
+                'attr' => [
+                    'class' => 'form-control'
+                    ]
             ])
             ->add('refProduit', TextType::class , [
-                'label' => 'reference du produit'
+                'label' => 'reference du produit',
+                'attr' => [
+                    'class' => 'form-control'
+                    ]
             ])
             ->add('prixAchatProduit', MoneyType::class , [
-                'label' => 'prix d\'achat du produit'
+                'label' => 'prix d\'achat du produit',
+                'attr' => [
+                    'class' => 'form-control'
+                    ]
             ])
             ->add('sousRubrique' , EntityType::class,[
                 'class' => SousRubrique::class,
@@ -54,10 +63,16 @@ class ProduitFormType extends AbstractType
                 ]
             ])
             ->add('descriptionCourt', TextareaType::class , [
-                'label' => 'description courte du produit'
+                'label' => 'description courte du produit',
+                'attr' => [
+                    'class' => 'form-control'
+                    ]
             ])
             ->add('descriptionLong', TextareaType::class , [
-                'label' => 'description longue du produit'
+                'label' => 'description longue du produit',
+                'attr' => [
+                    'class' => 'form-control'
+                    ]
             ])
             ->add('image', FileType::class , [
                 'label' => 'Image du produit',
@@ -72,13 +87,19 @@ class ProduitFormType extends AbstractType
                 ],
             ])
             ->add('stock', IntegerType::class , [
-                'label' => 'description courte du produit'
+                'label' => 'description courte du produit',
+                'attr' => [
+                    'class' => 'form-control'
+                    ]
             ])
             ->add('actif',CheckboxType::class)
             ->add('fournisseur', EntityType::class, [
                 'class' => Fournisseur::class,
                 'choice_label' => 'nomFournisseur',
                 'label' => 'Fournisseur',
+                'attr' => [
+                    'class' => 'form-control'
+                    ]
             ])
             ->add('save', SubmitType::class, [
                 'label' => 'Sauvegarder',

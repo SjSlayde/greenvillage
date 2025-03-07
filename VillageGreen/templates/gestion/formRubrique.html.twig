@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Information personnel
+{% endblock %}
+
+{% block body %}
+
+	{{ form_errors(form) }}
+
+	{{ form_start(form) }}
+	<div class="container">
+		<div class="row justify-content-center bg-dark rounded my-3">
+			<div class="row justify-content-center  col-12 col-md-6 mt-3 text-light">
+
+				<div class="col-12 mb-3 text-center">
+					{{ form_label(form.nomRubrique) }}
+					{{ form_widget(form.nomRubrique) }}
+				</div>
+
+
+				<div class="col-12  mb-3 text-center">
+					{{ form_label(form.image) }}
+					{{ form_widget(form.image) }}
+				</div>
+
+				{% if rubrique is defined %}
+					<div class="col-12 mb-3 text-center">
+						<p>Image actuelle :</p>
+						<img src="{{ asset ('images/rubriques-sousRubriques/' ~ rubrique.imageRubrique) }}" alt="Image du produit" width="150">
+					</div>
+				{% endif %}
+
+			</div>
+
+			<div class="row col-12 my-3">
+				{{ form_row(form.save) }}
+			</div>
+
+		</div>
+	</div>
+
+	{{ form_end(form) }}
+{% endblock %}
+

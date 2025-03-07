@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Information personnel
+{% endblock %}
+
+{% block body %}
+
+	{{ form_errors(form) }}
+
+	{{ form_start(form) }}
+	<div class="container">
+		<div class="row justify-content-center bg-dark rounded my-3">
+			<div class="row justify-content-center  col-12 col-md-6 mt-3 text-light">
+
+				<div class="col-12 mb-3 text-center">
+					{{ form_label(form.nomSousRubrique) }}
+					{{ form_widget(form.nomSousRubrique) }}
+				</div>
+
+
+				<div class="col-12  mb-3 text-center">
+					{{ form_label(form.image) }}
+					{{ form_widget(form.image) }}
+				</div>
+
+				{% if sousRubrique is defined %}
+					<div class="col-12 mb-3 text-center">
+						<p>Image actuelle :</p>
+						<img src="{{ asset ('images/rubriques-sousRubriques/' ~ sousRubrique.imageSousRubrique) }}" alt="Image du produit" width="150">
+					</div>
+				{% endif %}
+
+			</div>
+
+			<div class="row justify-content-center col-md-6 col-12 text-light">
+				<div class='col-12 text-center'>Rubrique :</div>
+				<ul class="list-group col">
+					{% for Rubrique in form.Rubrique %}
+						<li class="list-group-item">
+							{{ form_widget(Rubrique, {'attr': {'class': 'form-check-input me-1'}}) }}
+							{{ form_label(Rubrique, null, {'attr': {'class': 'form-check-label'}}) }}
+						</li>
+					{% endfor %}
+				</ul>
+			</div>
+
+			<div class="row col-12 my-3">
+				{{ form_row(form.save) }}
+			</div>
+
+		</div>
+	</div>
+
+	{{ form_end(form) }}
+{% endblock %}
+

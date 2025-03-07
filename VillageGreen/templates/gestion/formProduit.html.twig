@@ -4,63 +4,85 @@
 {% endblock %}
 
 {% block body %}
-		
-{{ form_errors(form) }}
 
-{{ form_start(form) }}
+	{{ form_errors(form) }}
+
+	{{ form_start(form) }}
 	<div class="container">
-		<div class="row justify-content-center text-light">
+		<div class="row justify-content-center bg-dark rounded my-3">
+			<div class="row justify-content-center  col-12 col-md-6 mt-3 text-light">
 
-			<div class="col-12 col-sm-6 mb-3">
-				{{ form_row(form.nomProduit) }}
-			</div>
-			<div class="col-12 col-sm-6 mb-3">
-				{{ form_row(form.refProduit) }}
-			</div>
-			<div class="col-12 col-sm-6 mb-3">
-				{{ form_row(form.prixAchatProduit) }}
+				<div class="col-12 col-md-6 mb-3 text-center">
+					{{ form_label(form.nomProduit) }}
+					{{ form_widget(form.nomProduit) }}
+				</div>
+
+				<div class="col-12 col-md-6 mb-3 text-center">
+					{{ form_label(form.refProduit) }}
+					{{ form_widget(form.refProduit) }}
+				</div>
+
+				<div class="col-12 col-md-6 mb-3 text-center">
+					{{ form_label(form.prixAchatProduit) }}
+					{{ form_widget(form.prixAchatProduit) }}
+				</div>
+
+				<div class="col-12 col-md-6 mb-3 text-center">
+					{{ form_label(form.stock) }}
+					{{ form_widget(form.stock) }}
+				</div>
+
+				<div class="col-12 col-md-6 mb-3 text-center">
+					{{ form_label(form.fournisseur) }}
+					{{ form_widget(form.fournisseur) }}
+				</div>
+
+				<div class="col-12 col-md-6 mb-3 text-center">
+					{{ form_label(form.actif) }}
+					{{ form_widget(form.actif) }}
+				</div>
+
+				<div class="col-12 mb-3 text-center">
+					{{ form_row(form.descriptionCourt) }}
+				</div>
+
+				<div class="col-12 mb-3 text-center">
+					{{ form_row(form.descriptionLong) }}
+				</div>
+
+				<div class="col-12 col-md-6 mb-3 text-center">
+					{{ form_label(form.image) }}
+					{{ form_widget(form.image) }}
+				</div>
+
+				{% if produit is defined %}
+					<div class="col-12 col-md-6 mb-3 text-center">
+						<p>Image actuelle :</p>
+						<img src="{{ asset ('images/produits/' ~ produit.nomImage) }}" alt="Image du produit" width="150">
+					</div>
+				{% endif %}
+
 			</div>
 
-			<div class="col-12 col-sm-6 mb-3">
-				{{ form_row(form.descriptionCourt) }}
-			</div>
-            
-			<ul class="list-group">
-				{% for sousRubrique in form.sousRubrique %}
-					<li class="list-group-item">
-						{{ form_widget(sousRubrique, {'attr': {'class': 'form-check-input me-1'}}) }}
-						{{ form_label(sousRubrique, null, {'attr': {'class': 'form-check-label'}}) }}
-					</li>
-				{% endfor %}
-			</ul>
-
-            
-    		<div class="col-12 mb-3">
-				{{ form_row(form.descriptionLong) }}
+			<div class="row justify-content-center col-12 col-md-6 text-light">
+				<div class='col-12 text-center'>Sous-rubrique affiliée :</div>
+				<ul class="list-group col">
+					{% for sousRubrique in form.sousRubrique %}
+						<li class="list-group-item">
+							{{ form_widget(sousRubrique, {'attr': {'class': 'form-check-input me-1'}}) }}
+							{{ form_label(sousRubrique, null, {'attr': {'class': 'form-check-label'}}) }}
+						</li>
+					{% endfor %}
+				</ul>
 			</div>
 
-    		<div class="col-12 mb-3">
-				{{ form_row(form.image) }}
-			</div>
-
-    		<div class="col-12 mb-3">
-				{{ form_row(form.stock) }}
-			</div>
-
-    		<div class="col-12 mb-3">
-				{{ form_row(form.actif) }}
-			</div>
-
-            <div class="col-12 mb-3">
-				{{ form_row(form.fournisseur) }}
-			</div>
-
-            <div class="col-12 mb-3">
+			<div class="row col-12 my-3">
 				{{ form_row(form.save) }}
 			</div>
 
 		</div>
 	</div>
-{{ form_end(form) }}
+
+	{{ form_end(form) }}
 {% endblock %}
 
