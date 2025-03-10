@@ -6,76 +6,120 @@
 {% block body %}
 
 	<div class='container'>
-		<div class='row justify-content-start bg-dark rounded mb-4'>
-			<h2 class='col-12 text-light text-center'>panneau de gestion produits</h2>
-			{% for produit in produits %}
-				<div class='col-12 col-sm-6 col-md-4 mb-3'>
-					<div class="card text-bg-dark">
-						<img src="{{ asset ('images/produits/' ~ produit.NomImage ) }}" class="card-img-top img-fluid imageRubrique" alt="{{ produit.nomProduit }}">
-						<a class="link-body-emphasis link-offset-2 link-underline-opacity-0 link-underline-opacity-75-hover" href="{{ path ('app_gestion_produit_modification', {'id': produit.id}) }}">
-							<div class="card-img-overlay">
-								<h5 class="card-title text-light text-center bg-dark rounded-2">{{ produit.nomProduit | upper }}</h5>
-							</div>
-						</a>
-					</div>
+		<div class='row justify-content-start bg-dark rounded my-4'>
+			<div class="row">
+				<div class='h2 col-12 col-md-6 text-light text-start'>panneau de gestion produits</div>
+				<div class='col-12 col-md-6 text-end'>
+					<button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseProduit" aria-expanded="false" aria-controls="collapseExample">
+						Montrer
+					</button>
 				</div>
-			{% endfor %}
+			</div>
+			<div class="collapse row" id="collapseProduit">
+				{% for produit in produits %}
+					<div class='col-12 col-sm-6 col-md-4 mb-3'>
+						<div class="card text-bg-dark">
+							<img src="{{ asset ('images/produits/' ~ produit.NomImage ) }}" class="card-img-top img-fluid imageRubrique" alt="{{ produit.nomProduit }}">
+							<a class="link-body-emphasis link-offset-2 link-underline-opacity-0 link-underline-opacity-75-hover" href="{{ path ('app_gestion_produit_modification', {'id': produit.id}) }}">
+								<div class="card-img-overlay">
+									<h5 class="card-title text-light text-center bg-dark rounded-2">{{ produit.nomProduit | upper }}</h5>
+								</div>
+							</a>
+						</div>
+					</div>
+				{% endfor %}
+			</div>
 		</div>
 
-		<div class='row justify-content-start bg-dark rounded mb-4'>
-			<h2 class='col-12 text-light text-center'>panneau de gestion sous-rubriques</h2>
-			{% for sousRubrique in sousRubriques %}
-				<div class='col-12 col-sm-6 col-md-4 mb-3'>
-					<div class="card text-bg-dark">
-						<img src="{{ asset ('images/rubriques-sousRubriques/' ~ sousRubrique.imageSousRubrique ) }}" class="card-img-top img-fluid imageRubrique" alt="{{ sousRubrique.nomSousRubrique }}">
-						<a class="link-body-emphasis link-offset-2 link-underline-opacity-0 link-underline-opacity-75-hover" href="{{ path ('app_gestion_sousRubrique_modification', {'id': sousRubrique.id}) }}">
-							<div class="card-img-overlay">
-								<h5 class="card-title text-light text-center bg-dark rounded-2">{{ sousRubrique.nomSousRubrique | upper }}</h5>
-							</div>
-						</a>
-					</div>
+		<div class='row justify-content-start bg-dark rounded my-4'>
+			<div class="row">
+				<div class='h2 col-12 col-md-6 text-light text-start'>panneau de gestion sous-rubriques</div>
+				<div class='col-12 col-md-6 text-end'>
+					<button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSousRubrique" aria-expanded="false" aria-controls="collapseExample">
+						Montrer
+					</button>
 				</div>
-			{% endfor %}
+			</div>
+			<div class="collapse row" id="collapseSousRubrique">
+				{% for sousRubrique in sousRubriques %}
+					<div class='col-12 col-sm-6 col-md-4 mb-3'>
+						<div class="card text-bg-dark">
+							<img src="{{ asset ('images/rubriques-sousRubriques/' ~ sousRubrique.imageSousRubrique ) }}" class="card-img-top img-fluid imageRubrique" alt="{{ sousRubrique.nomSousRubrique }}">
+							<a class="link-body-emphasis link-offset-2 link-underline-opacity-0 link-underline-opacity-75-hover" href="{{ path ('app_gestion_sousRubrique_modification', {'id': sousRubrique.id}) }}">
+								<div class="card-img-overlay">
+									<h5 class="card-title text-light text-center bg-dark rounded-2">{{ sousRubrique.nomSousRubrique | upper }}</h5>
+								</div>
+							</a>
+						</div>
+					</div>
+				{% endfor %}
+			</div>
 		</div>
 
-		<div class='row justify-content-start bg-dark rounded mb-4'>
-			<h2 class='col-12 text-light text-center'>panneau de gestion rubriques</h2>
-			{% for rubrique in rubriques %}
-				<div class='col-12 col-sm-6 col-md-4 mb-3'>
-					<div class="card text-bg-dark">
-						<img src="{{ asset ('images/rubriques-sousRubriques/' ~ rubrique.imageRubrique ) }}" class="card-img-top img-fluid imageRubrique" alt="{{ rubrique.nomRubrique }}">
-						<a class="link-body-emphasis link-offset-2 link-underline-opacity-0 link-underline-opacity-75-hover" href="{{ path ('app_gestion_rubrique_modification', {'id': rubrique.id}) }}">
-							<div class="card-img-overlay">
-								<h5 class="card-title text-light text-center bg-dark rounded-2">{{ rubrique.nomRubrique | upper }}</h5>
-							</div>
-						</a>
-					</div>
+		<div class='row justify-content-start bg-dark rounded my-4'>
+			<div class="row">
+				<div class='h2 col-12 col-md-6 text-light text-start'>panneau de gestion rubriques</div>
+				<div class='col-12 col-md-6 text-end'>
+					<button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseRubrique" aria-expanded="false" aria-controls="collapseExample">
+						Montrer
+					</button>
 				</div>
-			{% endfor %}
+			</div>
+			<div class="collapse row" id="collapseRubrique">
+				{% for rubrique in rubriques %}
+					<div class='col-12 col-sm-6 col-md-4 mb-3'>
+						<div class="card text-bg-dark">
+							<img src="{{ asset ('images/rubriques-sousRubriques/' ~ rubrique.imageRubrique ) }}" class="card-img-top img-fluid imageRubrique" alt="{{ rubrique.nomRubrique }}">
+							<a class="link-body-emphasis link-offset-2 link-underline-opacity-0 link-underline-opacity-75-hover" href="{{ path ('app_gestion_rubrique_modification', {'id': rubrique.id}) }}">
+								<div class="card-img-overlay">
+									<h5 class="card-title text-light text-center bg-dark rounded-2">{{ rubrique.nomRubrique | upper }}</h5>
+								</div>
+							</a>
+						</div>
+					</div>
+				{% endfor %}
+			</div>
 		</div>
 
+		{% set compteur = 1 %}
 
-		<div class='row justify-content-center bg-dark rounded mb-4'>
-			<h2 class='col-12 text-light text-center'>panneau de gestion utilisateurs</h2>
-			{% for utilisateur in utilisateurs %}
-				<div class="card col-11 col-md-4 text-bg-primary my-3 mx-md-4">
-					<div class="card-header">Information de contact</div>
-					<div class="card-body">
-						<h5 class="card-title">Nom :
-							{{ utilisateur.Nom | upper }}
-							{{ utilisateur.prenom }}</h5>
-						<p class="card-text">Email :
-							{{ utilisateur.email }}</p>
-						<p class="card-text">Télèphone :
-							{{ utilisateur.telephone }}</p>
-						<a class="link-body-emphasis link-offset-2 link-underline-opacity-0 link-underline-opacity-75-hover justify-content-end position-absolute top-0 end-0" href="{{ path ('app_gestion_utilisateur_modification', {'id': utilisateur.id}) }}">
-							<button class="btn btn-primary">Modifier</button>
-						</a>
-					</div>
+		<div class='row justify-content-start bg-dark rounded my-4'>
+			<div class="row">
+				<div class='h2 col-12 col-md-6 text-light text-start'>panneau de gestion utilisateurs</div>
+				<div class='col-12 col-md-6 text-end'>
+					<button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseUser" aria-expanded="false" aria-controls="collapseExample">
+						Montrer
+					</button>
 				</div>
-
-			{% endfor %}
+			</div>
+			<div class="collapse row" id="collapseUser">
+				{% for utilisateur in utilisateurs %}
+					<div class="card col-11 col-md-4 my-3 mx-md-4">
+						<div class="card-body">
+							<h5 class="card-title">Information de l'utilisateur
+								{{ compteur }}</h5>
+						</div>
+						<ul class="list-group list-group-flush">
+							<li class="list-group-item">Nom :
+								{{ utilisateur.Nom | upper }}
+								{{ utilisateur.prenom }}</li>
+							<li class="list-group-item">Email :
+								{{ utilisateur.email }}</li>
+							<li class="list-group-item">Télèphone :
+								{{ utilisateur.telephone }}</li>
+							<li class="list-group-item">type de client :
+								{{ utilisateur.type }}</li>
+						</ul>
+						<div class="card-body text-end">
+							<a class="" href="{{ path ('app_gestion_utilisateur_modification', {'id': utilisateur.id}) }}">
+								Modifier
+							</a>
+						</div>
+					</div>
+					{% set compteur = compteur + 1 %}
+				{% endfor %}
+			</div>
 		</div>
 	</div>
-</div>{% endblock %}
+{% endblock %}
 

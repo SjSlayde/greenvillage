@@ -9,6 +9,60 @@
 
 	{{ form_start(form) }}
 
+	<div class="container">
+		<div class="row justify-content-center bg-dark rounded my-3">
+			<div class="row justify-content-center  col-12 mt-3 text-light">
+				<div class="col-12 mb-3 text-center text-light">
+					{{ form_label(form.email) }}
+					{{ form_widget(form.email) }}
+				</div>
+				</div>
+			<div class="row justify-content-center  col-12 col-md-6 mt-3 text-light">
+
+
+
+				<div class="col-12  mb-3 text-center">
+					{{ form_label(form.coefficientVente) }}
+					{{ form_widget(form.coefficientVente) }}
+				</div>
+
+				<div class="col-12  mb-3 text-center">
+					{{ form_label(form.coefficientReduction) }}
+					{{ form_widget(form.coefficientReduction) }}
+				</div>
+
+
+				<div class="col-12  mb-3 text-center">
+					{{ form_label(form.idCommercial) }}
+					{{ form_widget(form.idCommercial) }}
+				</div>	
+
+			</div>
+
+			<div class="row justify-content-center col-md-6 col-12 text-light">
+				<div class='col-12 text-center'>Role :</div>
+				<ul class="list-group col">
+					{% for role in form.roles %}
+						<li class="list-group-item">
+							{{ form_widget(role, {'attr': {'class': 'form-check-input me-1'}}) }}
+							{{ form_label(role, null, {'attr': {'class': 'form-check-label'}}) }}
+						</li>
+					{% endfor %}
+				</ul>
+				<div class="col-12 text-center">
+					{{ form_label(form.type) }}
+					{{ form_widget(form.type) }}
+				</div>				
+			</div>
+
+			<div class="row col-12 my-3">
+				{{ form_row(form.save) }}
+			</div>
+
+		</div>
+	</div>
+
 	{{ form_end(form) }}
+
 {% endblock %}
 
