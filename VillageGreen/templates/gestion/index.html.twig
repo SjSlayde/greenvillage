@@ -7,7 +7,7 @@
 
 	<div class='container'>
 		<div class='row justify-content-start bg-dark rounded my-4'>
-			<div class="row">
+			<div class="row my-2">
 				<div class='h2 col-12 col-md-6 text-light text-start'>panneau de gestion produits</div>
 				<div class='col-12 col-md-6 text-end'>
 					<button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseProduit" aria-expanded="false" aria-controls="collapseExample">
@@ -15,7 +15,7 @@
 					</button>
 				</div>
 			</div>
-			<div class="collapse row" id="collapseProduit">
+			<div class="collapse row justify-content-start" id="collapseProduit">
 				{% for produit in produits %}
 					<div class='col-12 col-sm-6 col-md-4 mb-3'>
 						<div class="card text-bg-dark">
@@ -32,7 +32,7 @@
 		</div>
 
 		<div class='row justify-content-start bg-dark rounded my-4'>
-			<div class="row">
+			<div class="row my-2">
 				<div class='h2 col-12 col-md-6 text-light text-start'>panneau de gestion sous-rubriques</div>
 				<div class='col-12 col-md-6 text-end'>
 					<button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSousRubrique" aria-expanded="false" aria-controls="collapseExample">
@@ -40,7 +40,7 @@
 					</button>
 				</div>
 			</div>
-			<div class="collapse row" id="collapseSousRubrique">
+			<div class="collapse row justify-content-start" id="collapseSousRubrique">
 				{% for sousRubrique in sousRubriques %}
 					<div class='col-12 col-sm-6 col-md-4 mb-3'>
 						<div class="card text-bg-dark">
@@ -57,7 +57,7 @@
 		</div>
 
 		<div class='row justify-content-start bg-dark rounded my-4'>
-			<div class="row">
+			<div class="row my-2">
 				<div class='h2 col-12 col-md-6 text-light text-start'>panneau de gestion rubriques</div>
 				<div class='col-12 col-md-6 text-end'>
 					<button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseRubrique" aria-expanded="false" aria-controls="collapseExample">
@@ -65,7 +65,8 @@
 					</button>
 				</div>
 			</div>
-			<div class="collapse row" id="collapseRubrique">
+            
+			<div class="collapse row justify-content-start" id="collapseRubrique">
 				{% for rubrique in rubriques %}
 					<div class='col-12 col-sm-6 col-md-4 mb-3'>
 						<div class="card text-bg-dark">
@@ -84,7 +85,7 @@
 		{% set compteur = 1 %}
 
 		<div class='row justify-content-start bg-dark rounded my-4'>
-			<div class="row">
+			<div class="row my-2">
 				<div class='h2 col-12 col-md-6 text-light text-start'>panneau de gestion utilisateurs</div>
 				<div class='col-12 col-md-6 text-end'>
 					<button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseUser" aria-expanded="false" aria-controls="collapseExample">
@@ -92,7 +93,7 @@
 					</button>
 				</div>
 			</div>
-			<div class="collapse row" id="collapseUser">
+			<div class="collapse row justify-content-center" id="collapseUser">
 				{% for utilisateur in utilisateurs %}
 					<div class="card col-11 col-md-4 my-3 mx-md-4">
 						<div class="card-body">
