@@ -89,6 +89,7 @@ final class ProfilController extends AbstractController
             $this->addFlash('success', 'Votre adresse de livraison a été ajoutée');
 
             return $this->redirectToRoute('app_profil', [
+                //les lignes en dessous ne sert plus a rien(a verifier); 
                 'nomuser' => $user->getNom(),
                 'prenomuser' => $user->getPrenom()
             ]);
