@@ -46,8 +46,19 @@ final class CommandeController extends AbstractController
         if (!empty($panier)) {
             $user = $this->getUser();
 
-            $adresseLivs = $this->affiliationAdresseRepo->findBy(['client' => $user, 'type' => 'adLivraison']);
-            $adresseFacs = $this->affiliationAdresseRepo->findBy(['client' => $user, 'type' => 'adFacturation']);
+            $affadresseLivs = $this->affiliationAdresseRepo->findBy(['client' => $user, 'type' => 'adLivraison']);
+            $affadresseFacs = $this->affiliationAdresseRepo->findBy(['client' => $user, 'type' => 'adFacturation']);
+            $adresseLivs = [];
+            $adresseFacs = [];
+    
+            foreach ($affadresseLivs as $affadresseLiv) {
+                $adresseLiv = $affadresseLiv->getAdresse();
+                array_push($adresseLivs,$adresseLiv);
+            }
+            foreach ($affadresseFacs as $affadresseFac) {
+                $adresseFac = $affadresseFac->getAdresse();
+                array_push($adresseFacs,$adresseFac);
+            }
 
             if (empty($adresseLivs)) {
                 $this->addFlash('warning', 'aucun adresse de livraison trouver');
@@ -75,6 +86,8 @@ final class CommandeController extends AbstractController
             } else {
                 return $this->render('commande/index.html.twig', [
                     'form' => $form,
+                    'adresseLivs' => $adresseLivs,
+                    'adresseFacs' => $adresseFacs,
                 ]);
             }
 

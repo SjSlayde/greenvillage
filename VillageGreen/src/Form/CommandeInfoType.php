@@ -9,6 +9,7 @@ use App\Repository\AdresseRepository;
 use App\Repository\AffiliationAdresseRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -44,12 +45,12 @@ class CommandeInfoType extends AbstractType
 
 
         $builder
-        ->add('adresseLiv',EntityType::class, [
+        ->add('adresseLivraison',EntityType::class, [
             'mapped' => false,
             'class' => Adresse::class,
             'choice_label' => 'nomRue',
-            'expanded' => false,
-            'multiple' => true,
+            'expanded' => true,
+            'multiple' => false,
             'choices' => $adresseLivs,
             'attr' => [
                 'class' => 'list-group'
@@ -58,12 +59,12 @@ class CommandeInfoType extends AbstractType
                 'class' => 'align-item text-light'
             ]
         ])
-        ->add('adresseFac',EntityType::class, [
+        ->add('adresseFacturation',EntityType::class, [
             'mapped' => false,
             'class' => Adresse::class,
             'choice_label' => 'nomRue',
-            'expanded' => false,
-            'multiple' => true,
+            'expanded' => true,
+            'multiple' => false,
             'choices' => $adresseFacs,
             'attr' => [
                 'class' => 'list-group'
@@ -72,6 +73,15 @@ class CommandeInfoType extends AbstractType
                 'class' => 'align-item text-light'
             ]
         ])
+        ->add('save', SubmitType::class, [
+            'label' => 'Sauvegarder',
+            'attr' => [
+                'class' => 'btn btn-success color-315F72 rounded-pill '
+            ],
+            'row_attr' => [
+                'class' => 'd-flex justify-content-end'
+            ]
+            ])
         ;
     }
 
