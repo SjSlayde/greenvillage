@@ -45,7 +45,6 @@
 							</ul>
 							<div class="card-body text-end">
 								<a href="{{ path('app_modifieAdresse' , {id: adresse.id} )}}" class="card-link">Modifier</a>
-								<a href="{{ path('app_suppadresse' , {type: 'adLivraison',id: adresse.id} )}}" class="card-link">Supprimer</a>
 							</div>
 						</div>
 						{% set compteur = compteur + 1 %}
@@ -90,7 +89,6 @@
 							</ul>
 							<div class="card-body text-end">
 								<a href="{{ path('app_modifieAdresse' , {id: adresse.id} )}}" class="card-link">Modifier</a>
-								<a href="{{ path('app_suppadresse' , {type: 'adLivraison',id: adresse.id} )}}" class="card-link">Supprimer</a>
 							</div>
 						</div>
 						{% set compteur = compteur + 1 %}

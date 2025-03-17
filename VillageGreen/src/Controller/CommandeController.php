@@ -13,6 +13,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 final class CommandeController extends AbstractController
 {
@@ -40,7 +41,7 @@ final class CommandeController extends AbstractController
     }
 
     #[Route('/commandeAd', name: 'app_commandeAd')]
-    public function index(Request $request): Response
+    public function commandeAd(Request $request,SessionInterface $session): Response
     {
         $panier = $this->panierService->ShowPanier();
         if (!empty($panier)) {
@@ -76,24 +77,38 @@ final class CommandeController extends AbstractController
             $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
 
-                $adresseLiv = $form->get('adresseLiv')->getData();
-                $adresseFac = $form->get('adresseFac')->getData();
+                $adresseLiv = $form->get('adresseLivraison')->getData();
+                $adresseFac = $form->get('adresseFacturation')->getData();
 
-                return $this->redirectToRoute('app_commandePay', [
-                    'adLiv' => $adresseLiv->getId(),
-                    'adFac' => $adresseFac->getId(),
-                ]);
+                $session->set('mon_adLiv', $adresseLiv);
+                $session->set('mon_adFac', $adresseFac);
+
+                return $this->redirectToRoute('app_commandePay');
+
             } else {
+
                 return $this->render('commande/index.html.twig', [
                     'form' => $form,
                     'adresseLivs' => $adresseLivs,
                     'adresseFacs' => $adresseFacs,
                 ]);
+
             }
 
         } else {
             $this->addFlash('warning', 'aucun article présent de le panier');
             return $this->redirectToRoute('app_panier');
         }
+    }
+
+    #[Route('/paiement', name: 'app_commandePay')]
+    public function commandePay(Request $request,SessionInterface $session): Response
+    {
+
+        $adresseLiv = $session->get('mon_adLiv');
+        $adresseFac = $session->get('mon_adFac');
+        dd($adresseLiv);
+        return $this->redirectToRoute('app_index');
+        
     }
 }
