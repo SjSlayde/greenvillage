@@ -1,24 +1,16 @@
 @startuml
-class Adresse {
+class DetailLiv {
 	**id : int**
-	numeroDeRue : string
-	ville : string
-	codePostal : string
-	nomRue : string
-	complement : string
-	<color:#0000dd>affiliationAdresses : AffiliationAdresse[]</color>
-	<color:#0000dd>fournisseurs : Fournisseur[]</color>
-}
-
-class AffiliationAdresse {
-	<color:#0000dd>client : Utilisateur</color>
-	<color:#0000dd>adresse : Adresse</color>
-	type : string
-}
-
-class Avoir {
 	<color:#0000dd>produit : Produit</color>
-	<color:#0000dd>sousRubrique : SousRubrique</color>
+	<color:#0000dd>livraison : Livraison</color>
+	quantiteLiv : int
+}
+
+class Contact {
+	**id : int**
+	<color:#0000dd>utilisateur : Utilisateur</color>
+	Message : string
+	date : DateTimeInterface
 }
 
 class Commande {
@@ -37,46 +29,9 @@ class Commande {
 	<color:#0000dd>livraisons : Livraison[]</color>
 }
 
-class Contact {
-	**id : int**
-	<color:#0000dd>utilisateur : Utilisateur</color>
-	Message : string
-	date : DateTimeInterface
-}
-
-class Contient {
+class Avoir {
 	<color:#0000dd>produit : Produit</color>
-	<color:#0000dd>commande : Commande</color>
-	quantite : int
-	prixUnitaireHT : string
-	articleTotalHt : string
-	TVA : string
-	articleTotalTtc : string
-}
-
-class DetailLiv {
-	**id : int**
-	<color:#0000dd>produit : Produit</color>
-	<color:#0000dd>livraison : Livraison</color>
-	quantiteLiv : int
-}
-
-class Fournisseur {
-	**id : int**
-	nomFournisseur : string
-	emailFournisseur : string
-	telephone : string
-	<color:#0000dd>produits : Produit[]</color>
-	<color:#0000dd>adresse : Adresse</color>
-}
-
-class Livraison {
-	**id : int**
-	dateLivraison : DateTimeInterface
-	transporteur : string
-	urlSuivi : string
-	<color:#0000dd>detailLivs : DetailLiv[]</color>
-	<color:#0000dd>commande : Commande</color>
+	<color:#0000dd>sousRubrique : SousRubrique</color>
 }
 
 class Produit {
@@ -95,11 +50,21 @@ class Produit {
 	refProduit : string
 }
 
-class Rubrique {
+class Livraison {
 	**id : int**
-	nomRubrique : string
-	imageRubrique : string
-	<color:#0000dd>sousRubriques : SousRubrique[]</color>
+	dateLivraison : DateTimeInterface
+	transporteur : string
+	urlSuivi : string
+	<color:#0000dd>detailLivs : DetailLiv[]</color>
+	<color:#0000dd>commande : Commande</color>
+	<color:#0000dd>adresseLivraison : Adresse</color>
+	<color:#0000dd>AdresseFacturation : Adresse</color>
+}
+
+class AffiliationAdresse {
+	<color:#0000dd>client : Utilisateur</color>
+	<color:#0000dd>adresse : Adresse</color>
+	type : string
 }
 
 class SousRubrique {
@@ -108,6 +73,43 @@ class SousRubrique {
 	imageSousRubrique : string
 	<color:#0000dd>Rubrique : Rubrique</color>
 	<color:#0000dd>avoirs : Avoir[]</color>
+}
+
+class Rubrique {
+	**id : int**
+	nomRubrique : string
+	imageRubrique : string
+	<color:#0000dd>sousRubriques : SousRubrique[]</color>
+}
+
+class Fournisseur {
+	**id : int**
+	nomFournisseur : string
+	emailFournisseur : string
+	telephone : string
+	<color:#0000dd>produits : Produit[]</color>
+	<color:#0000dd>adresse : Adresse</color>
+}
+
+class Adresse {
+	**id : int**
+	numeroDeRue : string
+	ville : string
+	codePostal : string
+	nomRue : string
+	complement : string
+	<color:#0000dd>affiliationAdresses : AffiliationAdresse[]</color>
+	<color:#0000dd>fournisseurs : Fournisseur[]</color>
+}
+
+class Contient {
+	<color:#0000dd>produit : Produit</color>
+	<color:#0000dd>commande : Commande</color>
+	quantite : int
+	prixUnitaireHT : string
+	articleTotalHt : string
+	TVA : string
+	articleTotalTtc : string
 }
 
 class Utilisateur {
@@ -128,20 +130,22 @@ class Utilisateur {
 	<color:#0000dd>contacts : Contact[]</color>
 }
 
-Adresse "1"--"*" AffiliationAdresse
-Adresse "1"--"*" Fournisseur
-AffiliationAdresse "*"--"1" Utilisateur
-Avoir "*"--"1" Produit
-Avoir "*"--"1" SousRubrique
+DetailLiv "*"--"1" Produit
+DetailLiv "*"--"1" Livraison
+Contact "*"--"1" Utilisateur
 Commande "1"--"*" Contient
 Commande "*"--"1" Utilisateur
 Commande "1"--"*" Livraison
-Contact "*"--"1" Utilisateur
-Contient "*"--"1" Produit
-DetailLiv "*"--"1" Produit
-DetailLiv "*"--"1" Livraison
-Fournisseur "1"--"*" Produit
-Rubrique "1"--"*" SousRubrique
+Avoir "*"--"1" Produit
+Avoir "*"--"1" SousRubrique
+Produit "1"--"*" Contient
+Produit "*"--"1" Fournisseur
+Livraison "*"--"1" Adresse
+Livraison "*"--"1" Adresse
+AffiliationAdresse "*"--"1" Utilisateur
+AffiliationAdresse "*"--"1" Adresse
+SousRubrique "*"--"1" Rubrique
+Fournisseur "*"--"1" Adresse
 Utilisateur "*"--"1" Utilisateur
 
 

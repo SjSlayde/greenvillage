@@ -13,13 +13,13 @@ use Symfony\Bundle\SecurityBundle\Security;
 class PanierService
 {
     private $requestStack;
-    private $ProduitRepo;
+    private $produitRepo;
     private $security;
 
     public function __construct(RequestStack $requestStack, ProduitRepository $ProduitRepo, Security $security)
     {
         $this->requestStack = $requestStack; // Gère la requête HTTP, y compris la session
-        $this->ProduitRepo = $ProduitRepo; // Repository pour accéder aux Produits
+        $this->produitRepo = $ProduitRepo; // Repository pour accéder aux Produits
         $this->security = $security;
     }
 
@@ -56,7 +56,7 @@ class PanierService
         $dataPanier = [];
 
         foreach ($panier as $id => $quantite) {
-            $Produit = $this->ProduitRepo->find($id);  // Cherche le Produit par son ID
+            $Produit = $this->produitRepo->find($id);  // Cherche le Produit par son ID
             $dataPanier[] = [
                 "Produit" => $Produit,   // Ajoute l'objet Produit dans le tableau
                 "quantite" => $quantite  // Ajoute la quantité associée au Produit
@@ -80,7 +80,7 @@ class PanierService
 
         // Parcourt chaque élément du panier et calcule le total en multipliant prix et quantité
         foreach ($panier as $id => $quantite) {
-            $Produit = $this->ProduitRepo->find($id); // Cherche le Produit par son ID
+            $Produit = $this->produitRepo->find($id); // Cherche le Produit par son ID
             if ($user != null) {
                 $coefficientVente = (float) ('0.' . $user->getCoefficientVente());
             } else {

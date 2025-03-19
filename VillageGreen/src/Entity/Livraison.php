@@ -34,6 +34,14 @@ class Livraison
     #[ORM\ManyToOne(inversedBy: 'livraisons')]
     private ?Commande $commande = null;
 
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Adresse $adresseLivraison = null;
+
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Adresse $AdresseFacturation = null;
+
     public function __construct()
     {
         $this->detailLivs = new ArrayCollection();
@@ -118,6 +126,30 @@ class Livraison
     public function setCommande(?Commande $commande): static
     {
         $this->commande = $commande;
+
+        return $this;
+    }
+
+    public function getAdresseLivraison(): ?Adresse
+    {
+        return $this->adresseLivraison;
+    }
+
+    public function setAdresseLivraison(?Adresse $adresseLivraison): static
+    {
+        $this->adresseLivraison = $adresseLivraison;
+
+        return $this;
+    }
+
+    public function getAdresseFacturation(): ?Adresse
+    {
+        return $this->AdresseFacturation;
+    }
+
+    public function setAdresseFacturation(?Adresse $AdresseFacturation): static
+    {
+        $this->AdresseFacturation = $AdresseFacturation;
 
         return $this;
     }

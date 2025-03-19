@@ -2,6 +2,7 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\AffiliationAdresse;
 use App\Entity\Commande;
 use App\Entity\DetailLiv;
 use App\Entity\Livraison;
@@ -58,6 +59,9 @@ class jeuTest6Livraison extends Fixture
         foreach($commandes as $command){
             $command->setTotalCommande();
             $manager->persist($command);
+            if($command->getCommandeTotalTTC() == 0){
+                $manager->remove($command);
+            }
         }
 
         $count = 1;
@@ -72,6 +76,10 @@ class jeuTest6Livraison extends Fixture
              $livraison->setTransporteur($transporteur);
              $livraison->setUrlSuivi($url_suivi);
              $livraison->setCommande($commande);
+             $adresseLiv = $manager->getRepository(AffiliationAdresse::class)->findOneBy(['client' => $commande->getRefClient(),'type' => 'adLivraison']);
+             $adresseFac = $manager->getRepository(AffiliationAdresse::class)->findOneBy(['client' => $commande->getRefClient(),'type' => 'adFacturation']);
+             $livraison->setAdresseLivraison($adresseLiv->getAdresse());
+             $livraison->setAdresseFacturation($adresseFac->getAdresse());
 
              foreach($detailLivs as [$idProduit, $idLivraison, $quantiteLiv]){
                  if ($idLivraison == $count){

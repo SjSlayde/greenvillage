@@ -88,7 +88,7 @@
 							<td class="text-md-end">{{ total | number_format(2 , '.',' ') }}
 								€</td>
 							<td colspan="2">
-								<a class="link-body-emphasis link-offset-2 link-underline-opacity-0 link-underline-opacity-75-hover justify-content-center" href="">
+								<a class="link-body-emphasis link-offset-2 link-underline-opacity-0 link-underline-opacity-75-hover justify-content-center" href="{{ path ('app_commandeAd')}}">
 									<button class="btn btn-primary">Commander</button>
 								</a>
 							</td>
@@ -127,7 +127,7 @@
 						
 						{% endif %}
 						
-							{% set prixVente = (element.Produit.prixAchatProduit + ( coefficient * element.Produit.prixAchatProduit)) | number_format(2, '.',' ') %}
+						{% set prixVente = (element.Produit.prixAchatProduit +  coefficient * element.Produit.prixAchatProduit) | round(2) %}
 							<tr>
 								<td class="text-center align-middle">{{ prixVente | number_format(2, '.',' ') }}
 									€</td>
@@ -154,7 +154,7 @@
 
 						<tr>
 							<td colspan="3" class="text-end">
-								<a class="link-body-emphasis link-offset-2 link-underline-opacity-0 link-underline-opacity-75-hover justify-content-center" href="">
+								<a class="link-body-emphasis link-offset-2 link-underline-opacity-0 link-underline-opacity-75-hover justify-content-center" href="{{ path ('app_commandeAd') }}">
 									<button class="btn btn-primary">Commander</button>
 								</a>
 							</td>
