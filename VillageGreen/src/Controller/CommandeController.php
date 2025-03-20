@@ -154,11 +154,11 @@ final class CommandeController extends AbstractController
 
         $this->entityManager->flush();
         $session->set('idcommande', $commande->getId());
-        return $this->redirectToRoute('app_commandeSleep');
+        return $this->redirectToRoute('app_commandeLivraison');
 
     }
 
-    #[Route('/commande/confirmation', name: 'app_commandeSleep')]
+    #[Route('/commande/confirmation', name: 'app_commandeLivraison')]
     public function commandeSleep(Request $request, SessionInterface $session, AdresseRepository $adresseRepo): Response
     {
         $commande = $this->commandeRepo->find($session->get('idcommande'));
@@ -179,6 +179,7 @@ final class CommandeController extends AbstractController
         $this->entityManager->persist($livraison);
 
         $this->entityManager->flush();
+        $this->panierService->DeleteAllDish();
         return $this->redirectToRoute('app_profil');
     }
 }

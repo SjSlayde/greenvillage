@@ -9,6 +9,7 @@ use App\Form\PasswordFormType;
 use App\Form\UtilisateurFormType;
 use App\Repository\AdresseRepository;
 use App\Repository\AffiliationAdresseRepository;
+use App\Repository\LivraisonRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,11 +21,17 @@ final class ProfilController extends AbstractController
 {
     private $adresserepo;
     private $affiliationAdressesrepo;
+    private $livraisonRepo;
 
-    public function __construct(AdresseRepository $adresserepo, AffiliationAdresseRepository $affiliationAdresseRepo)
-    {
+    public function __construct(
+        AdresseRepository $adresserepo,
+        AffiliationAdresseRepository $affiliationAdresseRepo
+        ,
+        LivraisonRepository $livraisonRepo
+    ) {
         $this->adresserepo = $adresserepo;
         $this->affiliationAdressesrepo = $affiliationAdresseRepo;
+        $this->livraisonRepo = $livraisonRepo;
     }
     #[Route('/profil', name: 'app_profil')]
     public function profil(): Response
@@ -69,7 +76,7 @@ final class ProfilController extends AbstractController
             $detailAdresse = new AffiliationAdresse();
             if ($type == 'livraison') {
                 $detailAdresse->setType('adLivraison');
-            } elseif ($type =='facturation') {
+            } elseif ($type == 'facturation') {
                 $detailAdresse->setType('adFacturation');
             } else {
                 $this->addFlash('warning', 'Votre adresse de livraison n\'a pas été ajoutée a cause d\'une erreur');
@@ -109,21 +116,21 @@ final class ProfilController extends AbstractController
         $form = $this->createForm(UtilisateurFormType::class, $user);
         $form->handleRequest($request);
 
-            if ($form->isSubmitted() && $form->isValid()) {
-                $em->persist($user);
-                $em->flush();
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em->persist($user);
+            $em->flush();
 
-                $this->addFlash('success', 'Vos informations personnelles ont été changées');
+            $this->addFlash('success', 'Vos informations personnelles ont été changées');
 
-                return $this->redirectToRoute('app_profil', [
-                    'nomuser' => $user->getNom(),
-                    'prenomuser' => $user->getPrenom()
-                ]);
-            }
-
-            return $this->render('profil/modifInfoProfil.html.twig', [
-                'form' => $form
+            return $this->redirectToRoute('app_profil', [
+                'nomuser' => $user->getNom(),
+                'prenomuser' => $user->getPrenom()
             ]);
+        }
+
+        return $this->render('profil/modifInfoProfil.html.twig', [
+            'form' => $form
+        ]);
     }
 
     #[Route('/profil/modifier_password', name: 'app_modifier_password')]
@@ -135,38 +142,37 @@ final class ProfilController extends AbstractController
         $form = $this->createForm(PasswordFormType::class, $user);
         $form->handleRequest($request);
 
-            if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
 
-                $plainPasswordActuel = $form->get('plainPasswordActuel')->getData();
-                $plainPasswordNew1 = $form->get('plainPasswordNew1')->getData();
-                $plainPasswordNew2 = $form->get('plainPasswordNew2')->getData();
+            $plainPasswordActuel = $form->get('plainPasswordActuel')->getData();
+            $plainPasswordNew1 = $form->get('plainPasswordNew1')->getData();
+            $plainPasswordNew2 = $form->get('plainPasswordNew2')->getData();
 
-                if ($userPasswordHasher->isPasswordValid($user , $plainPasswordActuel) && $plainPasswordNew1 == $plainPasswordNew2) {
-                    $user->setPassword($userPasswordHasher->hashPassword($user, $plainPasswordNew1));
+            if ($userPasswordHasher->isPasswordValid($user, $plainPasswordActuel) && $plainPasswordNew1 == $plainPasswordNew2) {
+                $user->setPassword($userPasswordHasher->hashPassword($user, $plainPasswordNew1));
 
-                    $em->persist($user);
-                    $em->flush();
-    
-                    $this->addFlash('success', 'Vos informations personnelles ont été changées');
-    
-                    return $this->redirectToRoute('app_profil', [
-                        'nomuser' => $user->getNom(),
-                        'prenomuser' => $user->getPrenom()
-                    ]);
-                }
-                else {
-                    $this->addFlash('danger', 'Information incorrect');
+                $em->persist($user);
+                $em->flush();
 
-                    return $this->redirectToRoute('app_modifier_password', [
-                        'nomuser' => $user->getNom(),
-                        'prenomuser' => $user->getPrenom()
-                    ]);
-                }
+                $this->addFlash('success', 'Vos informations personnelles ont été changées');
+
+                return $this->redirectToRoute('app_profil', [
+                    'nomuser' => $user->getNom(),
+                    'prenomuser' => $user->getPrenom()
+                ]);
+            } else {
+                $this->addFlash('danger', 'Information incorrect');
+
+                return $this->redirectToRoute('app_modifier_password', [
+                    'nomuser' => $user->getNom(),
+                    'prenomuser' => $user->getPrenom()
+                ]);
             }
+        }
 
-            return $this->render('profil/modifPassword.html.twig', [
-                'form' => $form
-            ]);
+        return $this->render('profil/modifPassword.html.twig', [
+            'form' => $form
+        ]);
     }
 
     #[Route('/profil/modifier_adresse_{id}', name: 'app_modifieAdresse', requirements: ['id' => '\d+'])]
@@ -204,31 +210,31 @@ final class ProfilController extends AbstractController
     }
 
     #[Route('/profil/remove_adresse-{id}-{type}', name: 'app_suppadresse', requirements: ['id' => '\d+'])]
-    public function removeAdresse(Request $request, EntityManagerInterface $em, int $id,string $type): Response
+    public function removeAdresse(Request $request, EntityManagerInterface $em, int $id, string $type): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
         $adresse = $this->adresserepo->find($id);
         $user = $this->getUser();
-        $affilAd = $this->affiliationAdressesrepo->findOneBy(['client' => $user,'type'=>$type, 'adresse' => $adresse]);
+        $affilAd = $this->affiliationAdressesrepo->findOneBy(['client' => $user, 'type' => $type, 'adresse' => $adresse]);
 
         if ($affilAd != null) {
-        $em->remove($affilAd);
-        $em->flush();
-        if ($this->affiliationAdressesrepo->findBy(['adresse' => $adresse]) == null){
-        $em->remove($adresse);
+            $em->remove($affilAd);
+            $em->flush();
+            if ($this->affiliationAdressesrepo->findBy(['adresse' => $adresse]) == null && $this->livraisonRepo->findBy(['dateLivraison' => $adresse]) == null && $this->livraisonRepo->findBy(['AdresseFacturation' => $adresse]) == null) {
+                $em->remove($adresse);
+            }
+            $em->flush();
+
+            $this->addFlash('success', 'Votre adresse de livraison a été supprimée');
+
+            return $this->redirectToRoute('app_profil', [
+                'nomuser' => $user->getNom(),
+                'prenomuser' => $user->getPrenom()
+            ]);
+        } else {
+            $this->addFlash('warning', 'adresse introuvable');
+            return $this->redirectToRoute('app_index');
         }
-        $em->flush();
-
-        $this->addFlash('success', 'Votre adresse de livraison a été supprimée');
-
-        return $this->redirectToRoute('app_profil', [
-            'nomuser' => $user->getNom(),
-            'prenomuser' => $user->getPrenom()
-        ]);
-    } else {
-        $this->addFlash('warning', 'adresse introuvable');
-        return $this->redirectToRoute('app_index');
-    }
     }
 }
