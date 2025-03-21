@@ -124,18 +124,14 @@ final class CommandeController extends AbstractController
     public function commandePay(Request $request, SessionInterface $session): Response
     {
         $panier = $this->panierService->ShowPanier();
-        $adresseLiv = $session->get('idAdLiv');
-        $adresseFac = $session->get('idAdFac');
 
         $commande = new Commande();
         $commande->setDateCommande();
         $numFacturation = 'FAC' . $commande->getId();
-        $id = $commande->getId();
         $commande->setNumFacturation($numFacturation);
         $commande->setMoyenPaiement('cart');
 
-        $user = $this->getUser();
-        $commande->setRefClient($user);
+        $commande->setRefClient($this->getUser());
 
         foreach ($panier as $id => $quantite) {
             $produit = $this->produitRepo->find($id);
@@ -147,15 +143,17 @@ final class CommandeController extends AbstractController
             $this->entityManager->persist($contient);
         }
 
-        $commande->setTotalCommande();
-        $commande->setStatut('En préparation');
-        $commande->setPaiementValide(1);
+        $commande->setStatut('En attente de paiement');
+        $commande->setPaiementValide(0);
+
         $this->entityManager->persist($commande);
 
         $this->entityManager->flush();
         $session->set('idcommande', $commande->getId());
-        return $this->redirectToRoute('app_commandeLivraison');
 
+        return $this->redirectToRoute('app_stripeCheckout', [
+            'id' => $commande->getId()
+        ]);
     }
 
     #[Route('/commande/confirmation', name: 'app_commandeLivraison')]
@@ -165,6 +163,8 @@ final class CommandeController extends AbstractController
         $adresseLiv = $adresseRepo->find($session->get('idAdLiv'));
         $adresseFac = $adresseRepo->find($session->get('idAdFac'));
         $commande->setTotalCommande();
+        $commande->setStatut('En préparation');
+        $commande->setPaiementValide(1);
         $this->entityManager->persist($commande);
         $this->entityManager->flush();
         $livraison = new Livraison();

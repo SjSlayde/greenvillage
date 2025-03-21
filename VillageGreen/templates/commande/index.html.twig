@@ -10,31 +10,8 @@
 
 		{{ form_start(form) }}
 
-		<div class="row justify-content-center col-12 text-light">
-			<div class='col-5 bg-light text-dark rounded'>
-			<div class='h3 col-12 text-center my-2'>Donnée carte bancaire :</div>
-
-				<div class="col-12 my-3">
-					{{ form_row(form.numeros_de_carte) }}
-				</div>
-
-				<div class="col-12 mb-3">
-					{{ form_row(form.nom_titulaire) }}
-				</div>
-
-				<div class="col-12 mb-3">
-					{{ form_row(form.expiration) }}
-				</div>
-
-				<div class="col-12 mb-3">
-					{{ form_row(form.code_securite) }}
-				</div>
-			</div>
-
-		</div>
-
 		<div class="row justify-content-start bg-dark rounded col-12 text-light p-3">
-			<div class='h3 col-12 text-center my-2'>Adresses de livraison enregistrer :</div>
+			<div class='h5 col-12 text-start my-2'>1 : Choisir l'adresse de livraison :</div>
 			{% for adresseLiv in form.adresseLivraison %}
 				{% set compteur = 1 %}
 				{% for adresse in adresseLivs %}
@@ -78,7 +55,7 @@
 		</div>
 
 		<div class="row justify-content-start bg-dark rounded col-12 text-light p-3 mt-3">
-			<div class='h3 col-12 text-center my-2'>Adresses de facturation enregistrer :</div>
+			<div class='h5 col-12 text-start my-2'>2 : Choisir l'adresses de facturation :</div>
 			{% for adresseFac in form.adresseFacturation %}
 				{% set compteur = 1 %}
 				{% for adresse in adresseFacs %}
