@@ -20,6 +20,13 @@ RUN apt install php8.4 php8.4-dom php8.4-mysql php8.4-mbstring php8.4-intl php8.
 RUN apt install git -y
 RUN git config --global --add safe.directory /var/www
 
+# Install Node.js using NVM
+RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.0/install.sh | bash && \
+    export NVM_DIR="/root/.nvm" && \
+    . "$NVM_DIR/nvm.sh" && \
+    nvm install 22 && \
+    nvm cache clear
+
 # install symfony-cli
 RUN curl -sS https://get.symfony.com/cli/installer | bash
 RUN cp /root/.symfony5/bin/symfony /usr/local/bin/
