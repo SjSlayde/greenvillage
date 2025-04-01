@@ -72,7 +72,7 @@ class JeuTest3Produit extends Fixture
             ['AMP01', 8], 
             ['TAB01', 9],
             ['HAU01', 10],
-            ['SAX01', 1],
+            ['SAX01', 11],
             ['DRU02', 5],
             ['MIC02', 7],
             ['AMP02', 8],

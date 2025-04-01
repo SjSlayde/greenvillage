@@ -152,10 +152,10 @@ final class CommandeController extends AbstractController
         $session->set('idcommande', $commande->getId());
 
         // stripe ne fonctionne pas (probleme de lien url qui ce coupe a partir du # pas trouver de raison (peut etre a cause du http mais pas sur))
-        //  return $this->redirectToRoute('app_stripeCheckout', [
-        //      'id' => $commande->getId()
-        //  ]);
-         return $this->redirectToRoute('app_commandeLivraison');
+         return $this->redirectToRoute('app_stripeCheckout', [
+             'id' => $commande->getId()
+         ]);
+        //  return $this->redirectToRoute('app_commandeLivraison');
     }
 
     #[Route('/commande/confirmation', name: 'app_commandeLivraison')]
