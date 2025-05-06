@@ -39,18 +39,21 @@
 								<div class="carousel-item">
 								{% endif %}
 								<div class="card bg-dark text-light" style="height: 250px;">
-									<div class="row g-0">
-										<div class="col-md-8">
-											<div class="card-body position-relative">
-												<h5 class="card-title">{{ TopProduit.produit.nomProduit }}</h5>
-												<p class="card-text">{{ TopProduit.produit.descriptionLong }}</p>
-												{# <p class="card-text position-absolute bottom-0 end-0">Prix : {{ TopProduit.produit.prixAchatProduit}} €</p> #}
+									<a class="link-light link-offset-2 link-underline-opacity-0" href="{{ path ('app_detailProduit' , {id: TopProduit.produit.id} ) }}">
+
+										<div class="row g-0">
+											<div class="col-md-8">
+												<div class="card-body position-relative">
+													<h5 class="card-title">{{ TopProduit.produit.nomProduit }}</h5>
+													<p class="card-text">{{ TopProduit.produit.descriptionLong }}</p>
+													{# <p class="card-text position-absolute bottom-0 end-0">Prix : {{ TopProduit.produit.prixAchatProduit}} €</p> #}
+												</div>
+											</div>
+											<div class="col-md-4 d-md-block position-relative">
+												<img src="{{ asset ('images/produits/' ~ TopProduit.produit.nomImage ) }}" class="img-fluid rounded object-fit-cover position-absolute end-0" alt="{{ TopProduit.produit.nomProduit }}" style="height: 248px; width: 248px;">
 											</div>
 										</div>
-										<div class="col-md-4 d-md-block position-relative">
-											<img src="{{ asset ('images/produits/' ~ TopProduit.produit.nomImage ) }}" class="img-fluid rounded object-fit-cover position-absolute end-0" alt="{{ TopProduit.produit.nomProduit }}" style="height: 248px;">
-										</div>
-									</div>
+									</a>
 								</div>
 							</div>
 
@@ -75,11 +78,13 @@
 			<div class='d-md-none col-12 justify-content-center'>
 				{% for TopProduit in produitQuantite %}
 					<div class="card bg-dark mx-auto my-3" style="width: 18rem;">
-						<img src="{{ asset ('images/produits/' ~ TopProduit.produit.nomImage ) }}" class="img-fluid card-img-top rounded" alt="{{ TopProduit.produit.nomProduit }}" style="height: 248px;">
-						<div class="card-body text-light">
-							<h5 class="card-title">{{ TopProduit.produit.nomProduit }}</h5>
-							<p class="card-text">{{ TopProduit.produit.descriptionLong }}</p>
-						</div>
+						<a class="link-body-emphasis link-offset-2 link-underline-opacity-0 link-underline-opacity-75-hover" href="{{ path ('app_detailProduit' , {id: TopProduit.produit.id} ) }}">
+							<img src="{{ asset ('images/produits/' ~ TopProduit.produit.nomImage ) }}" class="img-fluid card-img-top rounded" alt="{{ TopProduit.produit.nomProduit }}" style="height: 248px;">
+							<div class="card-body text-light">
+								<h5 class="card-title">{{ TopProduit.produit.nomProduit }}</h5>
+								<p class="card-text">{{ TopProduit.produit.descriptionLong }}</p>
+							</div>
+						</a>
 					</div>
 				{% endfor %}
 			</div>
