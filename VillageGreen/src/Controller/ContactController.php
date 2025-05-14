@@ -16,7 +16,8 @@ class ContactController extends AbstractController
     #[Route('/contact', name: 'app_contact')]
     public function index(Request $request, ContactManager $ContactManager): Response
     {
-        if (!$this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY')) {
+                // Vérifie si l'utilisateur est connecté (ne renvoie pas false ! lance une exception si non autorisé)
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $contact = new Contact();
         $utilisateur = $this->getUser();
 
@@ -24,18 +25,19 @@ class ContactController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
 
+            // Associe l'utilisateur au message de contact
             $contact->setUtilisateur($utilisateur);
+
+            // Enregistre via ton manager
             $ContactManager->setContact($contact);
 
             $this->addFlash('success', 'Vous allez être contacté sous peu');
             return $this->redirectToRoute('app_index');
         } else {
+            // Affichage du formulaire si non soumis ou invalide
             return $this->render('contact/index.html.twig', [
                 'form' => $form
             ]);
-        }} else {
-            $this->addFlash('danger', 'Veuillez vous connecter');
-            return $this->redirectToRoute('app_login');
         }
     }
 

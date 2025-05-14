@@ -25,14 +25,15 @@ use Symfony\Component\Routing\Attribute\Route;
 final class GestionController extends AbstractController
 {
 
+    // Dépendances injectées pour accéder aux repositories et à l'EntityManager
     private $utilisateurRepo;
     private $produitRepo;
-    // private $commandeRepo;
     private $sousRubriqueRepo;
     private $rubriqueRepo;
     private $AvoirRepo;
     private $entityManager;
 
+    // Le constructeur injecte toutes les dépendances nécessaires
     public function __construct(
         UtilisateurRepository $utilisateurRepository,
         ProduitRepository $produitRepository,
@@ -49,7 +50,7 @@ final class GestionController extends AbstractController
         $this->entityManager = $em;
     }
 
-
+    // Route principale de gestion : affiche tous les produits, rubriques, sous-rubriques et utilisateurs
     #[Route('/gestion', name: 'app_gestion')]
     public function gestiopn(): Response
     {
@@ -66,20 +67,23 @@ final class GestionController extends AbstractController
         ]);
     }
 
-    #[Route('/gestion/produit/new', name: 'app_gestion_produit_ajout')]
+    // Ajout d’un nouveau produit
+    #[Route('/gestion/produit/ajouter', name: 'app_gestion_produit_ajout')]
     public function gestionProduitAjout(Request $request): Response
-    {   
+    {
 
         $produit = new Produit();
         $form = $this->createForm(ProduitFormType::class, $produit);
         $form->handleRequest($request);
-        
+
         if ($form->isSubmitted() && $form->isValid()) {
-            
+            // Gestion du fichier image
             $file = $form->get('image')->getData();
             $file->move($this->getParameter('kernel.project_dir') . '/assets/images/produits', $file->getClientOriginalName());
             $produit->setNomImage($file->getClientOriginalName());
-            $this->setSousRubriqueinProduit($form,$produit);
+
+            // Lien avec les sous-rubriques
+            $this->setSousRubriqueinProduit($form, $produit);
 
             $this->addFlash('success', 'Ajout effectuée');
             return $this->redirectToRoute('app_gestion');
@@ -90,21 +94,24 @@ final class GestionController extends AbstractController
         }
     }
 
+    // Modification d’un produit existant
     #[Route('/gestion/produit/{id}', name: 'app_gestion_produit_modification')]
     public function gestionProduitModification(Produit $produit, Request $request): Response
-    {   
+    {
         $form = $this->createForm(ProduitFormType::class, $produit);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
 
+            // Gestion de l’image si elle a été modifiée
             $file = $form->get('image')->getData();
-            if($file){
+            if ($file) {
                 $file->move($this->getParameter('kernel.project_dir') . '/assets/images/produits', $file->getClientOriginalName());
                 $produit->setNomImage($file->getClientOriginalName());
             }
 
-            $this->setSousRubriqueinProduit($form,$produit);
+            // Mise à jour des sous-rubriques
+            $this->setSousRubriqueinProduit($form, $produit);
 
             $this->addFlash('success', 'modification effectuée');
             return $this->redirectToRoute('app_gestion');
@@ -116,9 +123,10 @@ final class GestionController extends AbstractController
         }
     }
 
-    #[Route('/gestion/sousRubrique/new', name: 'app_gestion_sousRubrique_ajout')]
+    // Ajout d’une nouvelle sous-rubrique
+    #[Route('/gestion/sousRubrique/ajouter', name: 'app_gestion_sousRubrique_ajout')]
     public function gestionSousRubriqueAjout(Request $request): Response
-    {   
+    {
         $sousRubrique = new SousRubrique();
         $form = $this->createForm(SousRubriqueFormType::class, $sousRubrique);
 
@@ -126,8 +134,9 @@ final class GestionController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
+            // Gestion de l’image
             $file = $form->get('image')->getData();
-            if($file){
+            if ($file) {
                 $file->move($this->getParameter('kernel.project_dir') . '/assets/images/rubriques-sousRubriques', $file->getClientOriginalName());
                 $sousRubrique->setImageSousRubrique($file->getClientOriginalName());
             }
@@ -138,15 +147,16 @@ final class GestionController extends AbstractController
             $this->addFlash('success', 'modification effectuée');
             return $this->redirectToRoute('app_gestion');
         } else {
-            return $this->render('gestion/formsousRubrique.html.twig', [
+            return $this->render('gestion/formSousRubrique.html.twig', [
                 'form' => $form,
             ]);
         }
     }
 
+    // Modification d’une sous-rubrique existante
     #[Route('/gestion/sousRubrique/{id}', name: 'app_gestion_sousRubrique_modification')]
     public function gestionSousRubriqueModification(SousRubrique $sousRubrique, Request $request): Response
-    {   
+    {
         $form = $this->createForm(SousRubriqueFormType::class, $sousRubrique);
 
         $form->handleRequest($request);
@@ -154,7 +164,7 @@ final class GestionController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             $file = $form->get('image')->getData();
-            if($file){
+            if ($file) {
                 $file->move($this->getParameter('kernel.project_dir') . '/assets/images/rubriques-sousRubriques', $file->getClientOriginalName());
                 $sousRubrique->setImageSousRubrique($file->getClientOriginalName());
             }
@@ -165,16 +175,17 @@ final class GestionController extends AbstractController
             $this->addFlash('success', 'modification effectuée');
             return $this->redirectToRoute('app_gestion');
         } else {
-            return $this->render('gestion/formsousRubrique.html.twig', [
+            return $this->render('gestion/formSousRubrique.html.twig', [
                 'form' => $form,
                 'sousRubrique' => $sousRubrique
             ]);
         }
     }
 
-    #[Route('/gestion/rubrique/new', name: 'app_gestion_rubrique_ajout')]
+    // Ajout d’une nouvelle rubrique
+    #[Route('/gestion/rubrique/ajouter', name: 'app_gestion_rubrique_ajout')]
     public function gestionRubriqueAjout(Request $request): Response
-    {   
+    {
         $rubrique = new Rubrique();
         $form = $this->createForm(RubriqueFormType::class, $rubrique);
 
@@ -183,7 +194,7 @@ final class GestionController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             $file = $form->get('image')->getData();
-            if($file){
+            if ($file) {
                 $file->move($this->getParameter('kernel.project_dir') . '/assets/images/rubriques-sousRubriques', $file->getClientOriginalName());
                 $rubrique->setImageRubrique($file->getClientOriginalName());
             }
@@ -200,9 +211,10 @@ final class GestionController extends AbstractController
         }
     }
 
+    // Modification d’une rubrique existante
     #[Route('/gestion/rubrique/{id}', name: 'app_gestion_rubrique_modification')]
     public function gestionRubriqueModification(Rubrique $rubrique, Request $request): Response
-    {   
+    {
         $form = $this->createForm(RubriqueFormType::class, $rubrique);
 
         $form->handleRequest($request);
@@ -210,7 +222,7 @@ final class GestionController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             $file = $form->get('image')->getData();
-            if($file){
+            if ($file) {
                 $file->move($this->getParameter('kernel.project_dir') . '/assets/images/rubriques-sousRubriques', $file->getClientOriginalName());
                 $rubrique->setImageRubrique($file->getClientOriginalName());
             }
@@ -228,9 +240,10 @@ final class GestionController extends AbstractController
         }
     }
 
+    // Modification des informations d’un utilisateur
     #[Route('/gestion/utilisateur/{id}', name: 'app_gestion_utilisateur_modification')]
     public function gestionUtilisateurModification(Utilisateur $utilisateur, Request $request): Response
-    {   
+    {
         $form = $this->createForm(UtilisateurComFormType::class, $utilisateur);
 
         $form->handleRequest($request);
@@ -251,30 +264,34 @@ final class GestionController extends AbstractController
     }
 
 
-    public function setSousRubriqueinProduit($form,Produit $produit){
+    // Méthode pour lier ou délier un produit de ses sous-rubriques
+    public function setSousRubriqueinProduit($form, Produit $produit)
+    {
         $sousRubriquesform = $form->get('sousRubrique')->getData();
         $sousRubriques = $this->sousRubriqueRepo->findAll();
-        
+
+        // Ajout des nouvelles relations
         foreach ($sousRubriquesform as $sousRubrique) {
-            if($this->AvoirRepo->findOneBy(['produit' => $produit,'sousRubrique' => $sousRubrique]) == null) {
+            if ($this->AvoirRepo->findOneBy(['produit' => $produit, 'sousRubrique' => $sousRubrique]) == null) {
                 $avoir = new Avoir();
                 $avoir->setProduit($produit);
-                $avoir->setSousRubrique($sousRubrique); 
+                $avoir->setSousRubrique($sousRubrique);
                 $this->entityManager->persist($avoir);
             }
         }
+        // Suppression des anciennes relations non sélectionnées
         foreach ($sousRubriques as $sousRubrique) {
             $count = 0;
-            foreach ($sousRubriquesform  as $sousRubriqueform) {
-                if($sousRubriqueform == $sousRubrique) {
+            foreach ($sousRubriquesform as $sousRubriqueform) {
+                if ($sousRubriqueform == $sousRubrique) {
                     $count++;
-                    }
+                }
             }
-            if($count == 0 && $this->AvoirRepo->findOneBy(['produit' => $produit,'sousRubrique' => $sousRubrique]) != null) {
-                $avoir = $this->AvoirRepo->findOneBy(['produit' => $produit,'sousRubrique' => $sousRubrique]);
+            if ($count == 0 && $this->AvoirRepo->findOneBy(['produit' => $produit, 'sousRubrique' => $sousRubrique]) != null) {
+                $avoir = $this->AvoirRepo->findOneBy(['produit' => $produit, 'sousRubrique' => $sousRubrique]);
                 $this->entityManager->remove($avoir);
+            }
         }
-    }
 
         $this->entityManager->persist($produit);
         $this->entityManager->flush();

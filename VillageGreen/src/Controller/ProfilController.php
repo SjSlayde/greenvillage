@@ -25,14 +25,14 @@ final class ProfilController extends AbstractController
 
     public function __construct(
         AdresseRepository $adresserepo,
-        AffiliationAdresseRepository $affiliationAdresseRepo
-        ,
+        AffiliationAdresseRepository $affiliationAdresseRepo,
         LivraisonRepository $livraisonRepo
     ) {
         $this->adresserepo = $adresserepo;
         $this->affiliationAdressesrepo = $affiliationAdresseRepo;
         $this->livraisonRepo = $livraisonRepo;
     }
+
     #[Route('/profil', name: 'app_profil')]
     public function profil(): Response
     {
@@ -40,12 +40,16 @@ final class ProfilController extends AbstractController
 
         /** @var \App\Entity\Utilisateur $user */
         $user = $this->getUser();
+
+        // Récupère les adresses affiliées au client selon leur type
         $affilLivs = $this->affiliationAdressesrepo->findBy(['client' => $user, 'type' => 'adLivraison']);
         $adressesFacs = $this->affiliationAdressesrepo->findBy(['client' => $user, 'type' => 'adFacturation']);
+
 
         $adressesLiv = [];
         $adressesFac = [];
 
+        // Extraction des entités Adresse
         foreach ($affilLivs as $adresseLiv) {
             array_push($adressesLiv, $adresseLiv->getAdresse());
         }
@@ -71,6 +75,7 @@ final class ProfilController extends AbstractController
         $form = $this->createForm(AdresseFormType::class, $adresse);
         $form->handleRequest($request);
 
+        // Détermine le type d'adresse à enregistrer
         if ($form->isSubmitted() && $form->isValid()) {
             $user = $this->getUser();
             $detailAdresse = new AffiliationAdresse();
@@ -87,6 +92,7 @@ final class ProfilController extends AbstractController
                 ]);
             }
 
+            // Association client/adresse
             $detailAdresse->setAdresse($adresse);
             $detailAdresse->setClient($user);
             $em->persist($adresse);
@@ -221,6 +227,8 @@ final class ProfilController extends AbstractController
         if ($affilAd != null) {
             $em->remove($affilAd);
             $em->flush();
+
+            // Si l'adresse n'est plus utilisée ailleurs, on la supprime
             if ($this->affiliationAdressesrepo->findBy(['adresse' => $adresse]) == null && $this->livraisonRepo->findBy(['dateLivraison' => $adresse]) == null && $this->livraisonRepo->findBy(['AdresseFacturation' => $adresse]) == null) {
                 $em->remove($adresse);
             }

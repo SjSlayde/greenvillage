@@ -10,22 +10,15 @@ use App\Repository\AdresseRepository;
 use App\Repository\AffiliationAdresseRepository;
 use App\Repository\CommandeRepository;
 use App\Repository\ContientRepository;
-use App\Repository\DetailLivRepository;
 use App\Repository\LivraisonRepository;
 use App\Repository\ProduitRepository;
 use App\Service\PanierService;
 use Doctrine\ORM\EntityManagerInterface;
-use Stripe\Stripe;
-use Stripe\Checkout\Session;
-use Stripe\StripeClient;
-use Symfony\Component\DependencyInjection\Attribute\Autowire;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 final class CommandeController extends AbstractController
 {
@@ -38,6 +31,7 @@ final class CommandeController extends AbstractController
     private $affiliationAdresseRepo;
     // private StripeClient $client;
 
+    // Injection des services et repositories
     public function __construct(
         PanierService $panierService,
         ProduitRepository $produitRepo,
@@ -63,14 +57,18 @@ final class CommandeController extends AbstractController
     public function commandeAd(Request $request, SessionInterface $session): Response
     {
         $panier = $this->panierService->ShowPanier();
+
+        // Vérifie que le panier n'est pas vide
         if (!empty($panier)) {
             $user = $this->getUser();
 
+            // Récupération des adresses affiliées de livraison et de facturation
             $affadresseLivs = $this->affiliationAdresseRepo->findBy(['client' => $user, 'type' => 'adLivraison']);
             $affadresseFacs = $this->affiliationAdresseRepo->findBy(['client' => $user, 'type' => 'adFacturation']);
             $adresseLivs = [];
             $adresseFacs = [];
 
+            // Récupère les objets Adresse depuis les affiliations
             foreach ($affadresseLivs as $affadresseLiv) {
                 $adresseLiv = $affadresseLiv->getAdresse();
                 array_push($adresseLivs, $adresseLiv);
@@ -80,6 +78,7 @@ final class CommandeController extends AbstractController
                 array_push($adresseFacs, $adresseFac);
             }
 
+            // Redirection si aucune adresse trouvée
             if (empty($adresseLivs)) {
                 $this->addFlash('warning', 'aucun adresse de livraison trouver');
                 return $this->redirectToRoute('app_newadresse', [
@@ -92,10 +91,12 @@ final class CommandeController extends AbstractController
                 ]);
             }
 
+            // Affichage du formulaire de sélection d'adresse
             $form = $this->createForm(CommandeInfoType::class, $user);
             $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
 
+                // Stockage des ID d’adresse en session
                 $adresseLiv = $form->get('adresseLivraison')->getData();
                 $adresseFac = $form->get('adresseFacturation')->getData();
 
@@ -106,6 +107,7 @@ final class CommandeController extends AbstractController
 
             } else {
 
+                // Affichage du formulaire si non soumis ou invalide
                 return $this->render('commande/index.html.twig', [
                     'form' => $form,
                     'adresseLivs' => $adresseLivs,
@@ -115,6 +117,7 @@ final class CommandeController extends AbstractController
             }
 
         } else {
+            // Redirection si panier vide
             $this->addFlash('warning', 'aucun article présent de le panier');
             return $this->redirectToRoute('app_panier');
         }
@@ -125,6 +128,7 @@ final class CommandeController extends AbstractController
     {
         $panier = $this->panierService->ShowPanier();
 
+        // Création d'une nouvelle commande
         $commande = new Commande();
         $commande->setDateCommande();
         $numFacturation = 'FAC' . $commande->getId();
@@ -133,6 +137,7 @@ final class CommandeController extends AbstractController
 
         $commande->setRefClient($this->getUser());
 
+        // Ajout des lignes de commande (Contient)
         foreach ($panier as $id => $quantite) {
             $produit = $this->produitRepo->find($id);
             $contient = new Contient();
@@ -151,24 +156,28 @@ final class CommandeController extends AbstractController
         $this->entityManager->flush();
         $session->set('idcommande', $commande->getId());
 
-        // stripe ne fonctionne pas (probleme de lien url qui ce coupe a partir du # pas trouver de raison (peut etre a cause du http mais pas sur))
-         return $this->redirectToRoute('app_stripeCheckout', [
-             'id' => $commande->getId()
-         ]);
-        //  return $this->redirectToRoute('app_commandeLivraison');
+        // Redirection vers le checkout Stripe
+        return $this->redirectToRoute('app_stripeCheckout', [
+            'id' => $commande->getId()
+        ]);
     }
 
     #[Route('/commande/confirmation', name: 'app_commandeLivraison')]
     public function commandeSleep(Request $request, SessionInterface $session, AdresseRepository $adresseRepo): Response
     {
+        // Récupération de la commande et des adresses
         $commande = $this->commandeRepo->find($session->get('idcommande'));
         $adresseLiv = $adresseRepo->find($session->get('idAdLiv'));
         $adresseFac = $adresseRepo->find($session->get('idAdFac'));
+
+        // Mise à jour de la commande
         $commande->setTotalCommande();
         $commande->setStatut('En préparation');
         $commande->setPaiementValide(1);
         $this->entityManager->persist($commande);
         $this->entityManager->flush();
+
+        // Création de la livraison
         $livraison = new Livraison();
         $dateliv = new \DateTime();
         $dateliv->modify('+5 days');
@@ -178,10 +187,13 @@ final class CommandeController extends AbstractController
         $livraison->setCommande($commande);
         $livraison->setAdresseLivraison($adresseLiv);
         $livraison->setAdresseFacturation($adresseFac);
-        $this->entityManager->persist($livraison);
 
+        $this->entityManager->persist($livraison);
         $this->entityManager->flush();
+
+        // Nettoyage du panier
         $this->panierService->DeleteAllDish();
+
         return $this->redirectToRoute('app_profil');
     }
 }

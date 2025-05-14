@@ -14,12 +14,12 @@ use Symfony\Component\Routing\Requirement\Requirement;
 
 class CatalogueController extends AbstractController
 {
-
     private $rubriqueRepo;
     private $produitRepo;
     private $sousRubriqueRepo;
     private $avoirsRepo;
 
+    // Injection des repositories nécessaires au contrôleur
     public function __construct(RubriqueRepository $rubriqueRepo, ProduitRepository $produitRepo, SousRubriqueRepository $SousRubriqueRepo, AvoirRepository $avoirsRepo)
     {
         $this->rubriqueRepo = $rubriqueRepo;
@@ -31,12 +31,13 @@ class CatalogueController extends AbstractController
     #[Route('/', name: 'app_index')]
     public function index(): Response
     {
+        // Récupération de toutes les rubriques et produits
         $rubriques = $this->rubriqueRepo->findAll();
-        // $sousRubriques = $this->produitRepo->all();
         $produits = $this->produitRepo->findAll();
 
         $produitQuantite = [];
 
+        // Association produit -> quantité vendue
         foreach ($produits as $produit) {
             $quantite = $produit->getQuantiteVendu();
             $produitQuantite[] = [
@@ -45,10 +46,11 @@ class CatalogueController extends AbstractController
             ];
         }
 
+        // Tri décroissant par quantité
         arsort($produitQuantite);
 
+        // On garde les 3 premiers éléments
         $compteur = 0;
-
         foreach ($produitQuantite as $produit => $quantite) {
             if ($compteur == 3) {
                 unset($produitQuantite[$produit]);
@@ -64,12 +66,11 @@ class CatalogueController extends AbstractController
         ]);
     }
 
-
     #[Route('/sous-rubrique', name: 'app_sousRubrique')]
     public function SousRubrique(): Response
     {
+        // Affiche toutes les sous-rubriques
         $sousRubriques = $this->sousRubriqueRepo->findAll();
-
 
         return $this->render('catalogue/sousRubriques.html.twig', [
             'sousRubriques' => $sousRubriques,
@@ -79,9 +80,9 @@ class CatalogueController extends AbstractController
     #[Route('/sous-rubrique-{id}', name: 'app_selectSousRubrique', requirements: ['id' => '\d+'])]
     public function SelectSousRubrique(int $id): Response
     {
+        // Récupère les sous-rubriques liées à une rubrique donnée
         $rubriques = $this->rubriqueRepo->find($id);
         $sousRubriques = $this->sousRubriqueRepo->findBy(['Rubrique' => $rubriques]);
-
 
         return $this->render('catalogue/sousRubriques.html.twig', [
             'sousRubriques' => $sousRubriques,
@@ -91,8 +92,8 @@ class CatalogueController extends AbstractController
     #[Route('/produits', name: 'app_produits')]
     public function Produits(): Response
     {
+        // Affiche tous les produits
         $produits = $this->produitRepo->findAll();
-
 
         return $this->render('catalogue/produits.html.twig', [
             'produits' => $produits,
@@ -102,13 +103,13 @@ class CatalogueController extends AbstractController
     #[Route('/produits-{id}', name: 'app_selectProduits', requirements: ['id' => '\d+'])]
     public function SelectProduits(int $id): Response
     {
+        // Affiche les produits associés à une sous-rubrique via les "avoirs"
         $sousRubrique = $this->sousRubriqueRepo->find($id);
         $avoirs = $this->avoirsRepo->findBy(['sousRubrique' => $sousRubrique]);
         $produits = [];
 
         foreach ($avoirs as $avoir) {
-            $produit = $avoir->getProduit();
-            array_push($produits, $produit);
+            $produits[] = $avoir->getProduit();
         }
 
         return $this->render('catalogue/produits.html.twig', [
@@ -119,6 +120,7 @@ class CatalogueController extends AbstractController
     #[Route('/produit/{id}', name: 'app_detailProduit', requirements: ['id' => '\d+'])]
     public function DetailProduits(int $id): Response
     {
+        // Affiche le détail d’un produit spécifique
         $produit = $this->produitRepo->find($id);
 
         return $this->render('catalogue/detailproduit.html.twig', [

@@ -21,31 +21,38 @@ final class PaymentController extends AbstractController
 
     private $urlGenerator;
 
-    public function __construct(#[Autowire('%env(STRIPE_SECRET_KEY)%')] string $apikey,EntityManagerInterface $entytiManager,UrlGeneratorInterface $urlGenerator){
+    public function __construct(#[Autowire('%env(STRIPE_SECRET_KEY)%')] string $apikey, EntityManagerInterface $entytiManager, UrlGeneratorInterface $urlGenerator)
+    {
         $this->stripeSecretKey = $apikey;
         $this->entityManager = $entytiManager;
         $this->urlGenerator = $urlGenerator;
     }
 
     #[Route('/order/create-session-stripe/{id}', name: 'app_stripeCheckout')]
-    public function stripeCheckout(int $id,Request $request): RedirectResponse
+    public function stripeCheckout(int $id, Request $request): RedirectResponse
     {
         $produitStripe = [];
 
+        // Récupération de la commande via son ID
         $commande = $this->entityManager->getRepository(Commande::class)->find($id);
 
         if (!$commande) {
-            $this->addFlash('warning','une erreur c\'est produite');
+            $this->addFlash('warning', 'une erreur c\'est produite');
             $this->redirectToRoute('app_panier');
         }
 
+        // Clé API Stripe
         Stripe::setApiKey($this->stripeSecretKey);
+
+        // Récupère tous les produits associés à la commande
         $contients = $this->entityManager->getRepository(Contient::class)->findBy(['commande' => $commande]);
 
+        // Préparation des lignes de commande pour Stripe
         foreach ($contients as $contient) {
+            // Calcule le prix unitaire TTC du produit
             $prixProduit = $contient->getPrixUnitaireHT() + $contient->getTVA() / $contient->getQuantite();
             $prixProduit = number_format($prixProduit, 2, '', '');
-            $produitStripe [] = [
+            $produitStripe[] = [
                 'price_data' => [
                     'currency' => 'eur',
                     'unit_amount' => $prixProduit,
@@ -57,6 +64,7 @@ final class PaymentController extends AbstractController
             ];
         }
 
+        // Création de la session de paiement Stripe
         $checkout_session = Session::create([
             'payment_method_types' => ['card'],
             'line_items' => [
@@ -65,10 +73,11 @@ final class PaymentController extends AbstractController
                 ]
             ],
             'mode' => 'payment',
-            'success_url' => $this->urlGenerator->generate('app_commandeLivraison',[],UrlGeneratorInterface::ABSOLUTE_URL),
-            'cancel_url' => $this->urlGenerator->generate('app_panier',[],UrlGeneratorInterface::ABSOLUTE_URL),
+            'success_url' => $this->urlGenerator->generate('app_commandeLivraison', [], UrlGeneratorInterface::ABSOLUTE_URL),
+            'cancel_url' => $this->urlGenerator->generate('app_panier', [], UrlGeneratorInterface::ABSOLUTE_URL),
         ]);
 
+        // Redirection vers l'URL de paiement Stripe
         return new RedirectResponse($checkout_session->url);
     }
 }
