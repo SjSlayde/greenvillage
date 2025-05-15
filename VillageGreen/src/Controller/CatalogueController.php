@@ -46,8 +46,8 @@ class CatalogueController extends AbstractController
             ];
         }
 
-        // Tri décroissant par quantité
-        arsort($produitQuantite);
+        // Tri croissant par quantité
+        asort($produitQuantite);
 
         // On garde les 3 premiers éléments
         $compteur = 0;
