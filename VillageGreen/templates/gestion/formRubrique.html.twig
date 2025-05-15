@@ -34,6 +34,11 @@
 
 			<div class="row col-12 my-3">
 				{{ form_row(form.save) }}
+				{% if rubrique is defined %}
+					<a class="btn btn-danger rounded-pill d-flex justify-content-center col-md-1" href="{{ path('app_gestion_rubrique_remove', {'id': rubrique.id })}}">
+						suppression
+					</a>
+				{% endif %}
 			</div>
 
 		</div>
@@ -41,4 +46,3 @@
 
 	{{ form_end(form) }}
 {% endblock %}
-

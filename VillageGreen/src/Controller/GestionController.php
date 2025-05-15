@@ -240,6 +240,40 @@ final class GestionController extends AbstractController
         }
     }
 
+    // Supression d’une produit existante
+    #[Route('/gestion/produit/remove/{id}', name: 'app_gestion_produit_remove')]
+    public function gestionProduitRemove(Produit $produit): Response
+    {
+        $avoirs = $produit->getAvoirs();
+        foreach ($avoirs as $avoir) {
+            $this->entityManager->remove($avoir);
+        }
+        $this->entityManager->remove($produit);
+        $this->entityManager->flush();
+        $this->addFlash('success', 'suppression effectuée');
+        return $this->redirectToRoute('app_gestion');
+    }
+
+    // Supression d’une rubrique existante
+    #[Route('/gestion/sousRubrique/remove/{id}', name: 'app_gestion_sousRubrique_remove')]
+    public function gestionSousRubriqueRemove(SousRubrique $sousRubrique): Response
+    {
+        $this->entityManager->remove($sousRubrique);
+        $this->entityManager->flush();
+        $this->addFlash('success', 'suppression effectuée');
+        return $this->redirectToRoute('app_gestion');
+    }
+
+    // Supression d’une rubrique existante
+    #[Route('/gestion/rubrique/remove/{id}', name: 'app_gestion_rubrique_remove')]
+    public function gestionRubriqueRemove(Rubrique $rubrique): Response
+    {
+        $this->entityManager->remove($rubrique);
+        $this->entityManager->flush();
+        $this->addFlash('success', 'suppression effectuée');
+        return $this->redirectToRoute('app_gestion');
+    }
+
     // Modification des informations d’un utilisateur
     #[Route('/gestion/utilisateur/{id}', name: 'app_gestion_utilisateur_modification')]
     public function gestionUtilisateurModification(Utilisateur $utilisateur, Request $request): Response
@@ -296,5 +330,4 @@ final class GestionController extends AbstractController
         $this->entityManager->persist($produit);
         $this->entityManager->flush();
     }
-
 }

@@ -78,11 +78,15 @@
 
 			<div class="row col-12 my-3">
 				{{ form_row(form.save) }}
+				{% if produit is defined %}
+				<a class="btn btn-danger rounded-pill d-flex justify-content-center col-md-1" href="{{ path('app_gestion_produit_remove', {'id': produit.id })}}">
+					suppression
+				</a>
+				{% endif %}
 			</div>
-
 		</div>
 	</div>
 
-	{{ form_end(form) }}
-{% endblock %}
 
+		{{ form_end(form) }}
+	{% endblock %}
